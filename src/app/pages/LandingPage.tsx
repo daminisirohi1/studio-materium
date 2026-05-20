@@ -39,7 +39,7 @@ export function LandingPage() {
 
   return (
     <div className="relative min-h-screen overflow-hidden" style={{ background: '#080808' }}>
-      <WardrobeNav gender={hoveredGender || 'men'} onGenderSelect={handleGenderClick} onOpenTray={() => setPanelOpen(true)} />
+      <WardrobeNav gender={hoveredGender || 'men'} onGenderSelect={handleGenderClick} onOpenTray={() => setPanelOpen(true)} showGenderTabs={false} />
 
       {/* Background layers */}
       <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 55% 40%, #1c1c1c 0%, #080808 70%)', transition: 'opacity 0.8s', opacity: hoveredGender ? 0 : 1 }} />
