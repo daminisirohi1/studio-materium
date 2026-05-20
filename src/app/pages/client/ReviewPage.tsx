@@ -47,30 +47,30 @@ function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: 
         <div style={{ flex: 1 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
             <div>
-              <h4 style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#fff', marginBottom: 2 }}>
+              <h4 style={{ fontFamily: "'Poppins', sans-serif", fontSize: 11, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#fff', marginBottom: 2 }}>
                 {item.name}
               </h4>
-              <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.4)' }}>
+              <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.4)' }}>
                 {item.variant} · {item.material}
               </p>
             </div>
             {item.status !== 'pending' && (
-              <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: item.status === 'approved' ? '#2d7a5c' : '#c9a96e', border: `1px solid ${item.status === 'approved' ? 'rgba(45,122,92,0.4)' : 'rgba(201,169,110,0.4)'}`, padding: '2px 7px' }}>
+              <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: item.status === 'approved' ? '#2d7a5c' : '#c9a96e', border: `1px solid ${item.status === 'approved' ? 'rgba(45,122,92,0.4)' : 'rgba(201,169,110,0.4)'}`, padding: '2px 7px' }}>
                 {item.status}
               </span>
             )}
           </div>
 
           <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
-            <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.35)' }}>{item.brand}</span>
+            <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.35)' }}>{item.brand}</span>
             <span style={{ color: '#2a2a2a' }}>·</span>
-            <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.35)' }}>Qty {item.quantity}</span>
+            <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.35)' }}>Qty {item.quantity}</span>
             <span style={{ color: '#2a2a2a' }}>·</span>
             <div style={{ width: 12, height: 12, borderRadius: '50%', background: item.color || '#333', border: '1px solid rgba(255,255,255,0.15)', alignSelf: 'center' }} />
           </div>
 
           {item.clientNote && (
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, color: '#c9a96e', fontStyle: 'italic', marginBottom: 8 }}>
+            <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: '#c9a96e', fontStyle: 'italic', marginBottom: 8 }}>
               Your note: "{item.clientNote}"
             </p>
           )}
@@ -81,7 +81,7 @@ function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: 
               onClick={onApprove}
               disabled={item.status === 'approved'}
               className="flex items-center gap-2"
-              style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: item.status === 'approved' ? 'rgba(45,122,92,0.2)' : 'none', color: item.status === 'approved' ? '#2d7a5c' : 'rgba(255,255,255,0.4)', border: `1px solid ${item.status === 'approved' ? 'rgba(45,122,92,0.4)' : '#333'}`, padding: '6px 12px', cursor: item.status === 'approved' ? 'default' : 'pointer', transition: 'all 0.2s' }}
+              style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: item.status === 'approved' ? 'rgba(45,122,92,0.2)' : 'none', color: item.status === 'approved' ? '#2d7a5c' : 'rgba(255,255,255,0.4)', border: `1px solid ${item.status === 'approved' ? 'rgba(45,122,92,0.4)' : '#333'}`, padding: '6px 12px', cursor: item.status === 'approved' ? 'default' : 'pointer', transition: 'all 0.2s' }}
               onMouseEnter={e => { if (item.status !== 'approved') { e.currentTarget.style.borderColor = '#2d7a5c'; e.currentTarget.style.color = '#2d7a5c'; } }}
               onMouseLeave={e => { if (item.status !== 'approved') { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.color = 'rgba(255,255,255,0.4)'; } }}
             >
@@ -91,7 +91,7 @@ function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: 
             <button
               onClick={() => setShowNote(!showNote)}
               className="flex items-center gap-2"
-              style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: item.status === 'flagged' ? 'rgba(201,169,110,0.15)' : 'none', color: item.status === 'flagged' ? '#c9a96e' : 'rgba(255,255,255,0.4)', border: `1px solid ${item.status === 'flagged' ? 'rgba(201,169,110,0.4)' : '#333'}`, padding: '6px 12px', cursor: 'pointer', transition: 'all 0.2s' }}
+              style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: item.status === 'flagged' ? 'rgba(201,169,110,0.15)' : 'none', color: item.status === 'flagged' ? '#c9a96e' : 'rgba(255,255,255,0.4)', border: `1px solid ${item.status === 'flagged' ? 'rgba(201,169,110,0.4)' : '#333'}`, padding: '6px 12px', cursor: 'pointer', transition: 'all 0.2s' }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = '#c9a96e'; e.currentTarget.style.color = '#c9a96e'; }}
               onMouseLeave={e => { if (item.status !== 'flagged') { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.color = 'rgba(255,255,255,0.4)'; } }}
             >
@@ -115,10 +115,10 @@ function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: 
                 value={note}
                 onChange={e => setNote(e.target.value)}
                 placeholder="Describe your feedback…"
-                style={{ flex: 1, background: '#111', border: '1px solid #2a2a2a', color: '#fff', padding: '8px 12px', fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.05em', outline: 'none' }}
+                style={{ flex: 1, background: '#111', border: '1px solid #2a2a2a', color: '#fff', padding: '8px 12px', fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.05em', outline: 'none' }}
                 onKeyDown={e => { if (e.key === 'Enter') submitFlag(); }}
               />
-              <button onClick={submitFlag} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: '#c9a96e', color: '#000', border: 'none', padding: '8px 16px', cursor: 'pointer' }}>
+              <button onClick={submitFlag} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: '#c9a96e', color: '#000', border: 'none', padding: '8px 16px', cursor: 'pointer' }}>
                 Send
               </button>
               <button onClick={() => setShowNote(false)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.3)', cursor: 'pointer' }}>
@@ -156,7 +156,7 @@ export function ReviewPage() {
       <div style={{ paddingTop: 80 }}>
         {/* Header */}
         <div style={{ padding: '40px 80px', borderBottom: '1px solid #1a1a1a' }}>
-          <button onClick={() => navigate('/client')} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 16 }}>
+          <button onClick={() => navigate('/client')} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 16 }}>
             ← My Wardrobes
           </button>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
@@ -164,7 +164,7 @@ export function ReviewPage() {
               <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 300, letterSpacing: '0.08em', color: '#fff', marginBottom: 6 }}>
                 {project.name}
               </h1>
-              <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, color: 'rgba(255,255,255,0.35)' }}>
+              <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, color: 'rgba(255,255,255,0.35)' }}>
                 Designed by {designer?.name} · {projectItems.length} items
               </p>
             </div>
@@ -172,7 +172,7 @@ export function ReviewPage() {
               {pending > 0 && (
                 <button
                   onClick={approveAll}
-                  style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.25em', textTransform: 'uppercase', background: '#2d7a5c', color: '#fff', border: 'none', padding: '10px 18px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, transition: 'background 0.2s' }}
+                  style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.25em', textTransform: 'uppercase', background: '#2d7a5c', color: '#fff', border: 'none', padding: '10px 18px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, transition: 'background 0.2s' }}
                   onMouseEnter={e => (e.currentTarget.style.background = '#236347')}
                   onMouseLeave={e => (e.currentTarget.style.background = '#2d7a5c')}
                 >
@@ -182,11 +182,11 @@ export function ReviewPage() {
               <div style={{ display: 'flex', gap: 24, textAlign: 'right' }}>
                 <div>
                   <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, color: '#2d7a5c' }}>{approved}</div>
-                  <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Approved</div>
+                  <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Approved</div>
                 </div>
                 <div>
                   <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, color: '#c9a96e' }}>{pending}</div>
-                  <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Pending</div>
+                  <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Pending</div>
                 </div>
               </div>
             </div>

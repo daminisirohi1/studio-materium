@@ -63,7 +63,7 @@ export function WardrobeNav({ gender, onGenderSelect, categoryName, onOpenTray, 
                 <button
                   onClick={() => onGenderSelect(g)}
                   style={{
-                    fontFamily: "'Montserrat', sans-serif",
+                    fontFamily: "'Poppins', sans-serif",
                     fontSize: 9,
                     fontWeight: active ? 600 : 400,
                     letterSpacing: '0.28em',
@@ -93,7 +93,7 @@ export function WardrobeNav({ gender, onGenderSelect, categoryName, onOpenTray, 
             <>
               {showGenderTabs && <span style={{ color: 'rgba(255,255,255,0.1)', fontSize: 10, margin: '0 16px', userSelect: 'none' }}>›</span>}
               <span style={{
-                fontFamily: "'Montserrat', sans-serif",
+                fontFamily: "'Poppins', sans-serif",
                 fontSize: 9,
                 letterSpacing: '0.22em',
                 textTransform: 'uppercase',
@@ -110,7 +110,7 @@ export function WardrobeNav({ gender, onGenderSelect, categoryName, onOpenTray, 
       {/* Right — wardrobe tray (designer only) */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
         {activeProject && user?.role === 'designer' && (
-          <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#c9a96e', background: 'rgba(201,169,110,0.08)', border: '1px solid rgba(201,169,110,0.18)', padding: '3px 9px', whiteSpace: 'nowrap', maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#c9a96e', background: 'rgba(201,169,110,0.08)', border: '1px solid rgba(201,169,110,0.18)', padding: '3px 9px', whiteSpace: 'nowrap', maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis' }}>
             {activeProject.name.split('—')[0].trim()}
           </div>
         )}
@@ -118,7 +118,7 @@ export function WardrobeNav({ gender, onGenderSelect, categoryName, onOpenTray, 
         {user?.role === 'designer' && activeProject && (
           <button
             onClick={onOpenTray}
-            style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.55)', cursor: 'pointer', padding: '6px 14px', fontFamily: "'Montserrat', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', transition: 'all 0.2s' }}
+            style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.55)', cursor: 'pointer', padding: '6px 14px', fontFamily: "'Poppins', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', transition: 'all 0.2s' }}
             onMouseEnter={e => { e.currentTarget.style.borderColor = '#c9a96e'; e.currentTarget.style.color = '#c9a96e'; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; e.currentTarget.style.color = 'rgba(255,255,255,0.55)'; }}
           >

@@ -78,13 +78,13 @@ export function LandingPage() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#c9a96e', textAlign: 'center', marginBottom: 20 }}
+              style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#c9a96e', textAlign: 'center', marginBottom: 20 }}
             >
               Configuring — {activeProject.name.split('—')[0].trim()}
             </motion.p>
           )}
 
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.5em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', textAlign: 'center', marginBottom: 36 }}>
+          <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.5em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', textAlign: 'center', marginBottom: 36 }}>
             {activeProject && user?.role === 'designer' ? 'Select category' : 'New Collection — Spring / Summer 2026'}
           </p>
 

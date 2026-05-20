@@ -57,7 +57,7 @@ export function AppNav({ showGender, onGenderSelect }: AppNavProps) {
               <span key={g} className="flex items-center gap-6">
                 <button
                   onClick={() => onGenderSelect(g)}
-                  style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, fontWeight: 400, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s', padding: '2px 0', borderBottom: '1px solid transparent' }}
+                  style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, fontWeight: 400, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s', padding: '2px 0', borderBottom: '1px solid transparent' }}
                   onMouseEnter={e => { (e.currentTarget.style.color = '#c9a96e'); (e.currentTarget.style.borderBottomColor = '#c9a96e'); }}
                   onMouseLeave={e => { (e.currentTarget.style.color = 'rgba(255,255,255,0.6)'); (e.currentTarget.style.borderBottomColor = 'transparent'); }}
                 >
@@ -72,7 +72,7 @@ export function AppNav({ showGender, onGenderSelect }: AppNavProps) {
             <Link
               key={link.href}
               to={link.href}
-              style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, fontWeight: 400, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', textDecoration: 'none', transition: 'color 0.3s' }}
+              style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, fontWeight: 400, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', textDecoration: 'none', transition: 'color 0.3s' }}
               onMouseEnter={e => ((e.target as HTMLElement).style.color = '#c9a96e')}
               onMouseLeave={e => ((e.target as HTMLElement).style.color = 'rgba(255,255,255,0.5)')}
             >
@@ -87,7 +87,7 @@ export function AppNav({ showGender, onGenderSelect }: AppNavProps) {
         {/* Active project indicator */}
         {activeProject && user?.role === 'designer' && (
           <Link to={`/designer/project/${activeProject.id}`} style={{ textDecoration: 'none' }}>
-            <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#c9a96e', background: 'rgba(201,169,110,0.08)', border: '1px solid rgba(201,169,110,0.2)', padding: '4px 10px' }}>
+            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#c9a96e', background: 'rgba(201,169,110,0.08)', border: '1px solid rgba(201,169,110,0.2)', padding: '4px 10px' }}>
               {activeProject.name.split('—')[0].trim()}
             </div>
           </Link>
@@ -108,7 +108,7 @@ export function AppNav({ showGender, onGenderSelect }: AppNavProps) {
         {/* User + logout */}
         {user ? (
           <div className="flex items-center gap-3">
-            <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>
+            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>
               {user.name.split(' ')[0]}
             </div>
             <button onClick={handleLogout} style={{ color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s' }}

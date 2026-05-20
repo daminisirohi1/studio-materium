@@ -20,7 +20,7 @@ export function ClientDashboard() {
       <div style={{ paddingTop: 96, paddingLeft: 80, paddingRight: 80, paddingBottom: 80 }}>
 
         <div style={{ marginBottom: 56 }}>
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 10 }}>
+          <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 10 }}>
             Welcome back
           </p>
           <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 40, fontWeight: 300, letterSpacing: '0.08em', color: '#fff' }}>
@@ -50,11 +50,11 @@ export function ClientDashboard() {
               >
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-                    <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.25em', textTransform: 'uppercase', color: statusColors[p.status], border: `1px solid ${statusColors[p.status]}40`, padding: '3px 8px' }}>
+                    <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.25em', textTransform: 'uppercase', color: statusColors[p.status], border: `1px solid ${statusColors[p.status]}40`, padding: '3px 8px' }}>
                       {statusLabels[p.status]}
                     </span>
                     {isViewable && pending > 0 && (
-                      <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff', background: '#c9a96e', padding: '3px 8px' }}>
+                      <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff', background: '#c9a96e', padding: '3px 8px' }}>
                         {pending} awaiting review
                       </span>
                     )}
@@ -63,7 +63,7 @@ export function ClientDashboard() {
                   <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 400, letterSpacing: '0.08em', color: '#fff', marginBottom: 6 }}>
                     {p.name}
                   </h2>
-                  <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.06em', color: 'rgba(255,255,255,0.35)' }}>
+                  <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.06em', color: 'rgba(255,255,255,0.35)' }}>
                     Designed by {designer?.name} · {projectItems.length} items
                   </p>
                 </div>
@@ -76,11 +76,11 @@ export function ClientDashboard() {
                     <div key={stat.label}>
                       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}>{stat.icon}</div>
                       <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, color: '#fff' }}>{stat.value}</div>
-                      <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>{stat.label}</div>
+                      <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>{stat.label}</div>
                     </div>
                   ))}
                   {isViewable && (
-                  <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', alignSelf: 'center' }}>
+                  <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', alignSelf: 'center' }}>
                     Review →
                   </div>
                 )}

@@ -12,7 +12,7 @@ export function AdminDesignersPage() {
       <AppNav />
       <div style={{ paddingTop: 96, paddingLeft: 80, paddingRight: 80, paddingBottom: 80 }}>
         <div style={{ marginBottom: 48 }}>
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 10 }}>Admin</p>
+          <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 10 }}>Admin</p>
           <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 300, letterSpacing: '0.08em', color: '#fff' }}>Designers</h1>
         </div>
 
@@ -24,24 +24,24 @@ export function AdminDesignersPage() {
               <motion.div key={d.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}
                 style={{ background: '#0a0a0a', padding: '32px' }}>
                 <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 400, letterSpacing: '0.1em', color: '#fff', marginBottom: 4 }}>{d.name}</h3>
-                <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.35)', marginBottom: 24 }}>{d.email}</p>
+                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.35)', marginBottom: 24 }}>{d.email}</p>
                 <div style={{ display: 'flex', gap: 20 }}>
                   <div>
                     <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, color: '#fff' }}>{designerProjects.length}</div>
-                    <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Total</div>
+                    <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Total</div>
                   </div>
                   <div style={{ width: 1, background: '#1e1e1e' }} />
                   <div>
                     <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, color: '#2d7a5c' }}>{active}</div>
-                    <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Active</div>
+                    <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Active</div>
                   </div>
                 </div>
                 {designerProjects.length > 0 && (
                   <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 6 }}>
                     {designerProjects.slice(0, 3).map(p => (
                       <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.06em' }}>{p.name.split('—')[0].trim()}</span>
-                        <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.15em', textTransform: 'uppercase', color: statusColors[p.status] }}>{statusLabels[p.status]}</span>
+                        <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.06em' }}>{p.name.split('—')[0].trim()}</span>
+                        <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.15em', textTransform: 'uppercase', color: statusColors[p.status] }}>{statusLabels[p.status]}</span>
                       </div>
                     ))}
                   </div>

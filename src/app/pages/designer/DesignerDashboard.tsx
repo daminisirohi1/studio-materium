@@ -38,7 +38,7 @@ export function DesignerDashboard() {
 
         {/* Header */}
         <div style={{ marginBottom: 48 }}>
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 10 }}>
+          <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 10 }}>
             {user?.name}
           </p>
           <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 300, letterSpacing: '0.08em', color: '#fff' }}>
@@ -75,7 +75,7 @@ export function DesignerDashboard() {
               >
                 {/* Status badge */}
                 <div style={{ marginBottom: 20 }}>
-                  <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.25em', textTransform: 'uppercase', color: statusColors[p.status], border: `1px solid ${statusColors[p.status]}40`, padding: '3px 8px' }}>
+                  <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.25em', textTransform: 'uppercase', color: statusColors[p.status], border: `1px solid ${statusColors[p.status]}40`, padding: '3px 8px' }}>
                     {statusLabels[p.status]}
                   </span>
                 </div>
@@ -84,7 +84,7 @@ export function DesignerDashboard() {
                 <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 400, letterSpacing: '0.1em', color: '#fff', marginBottom: 6, lineHeight: 1.3 }}>
                   {p.name}
                 </h3>
-                <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.4)', marginBottom: 24 }}>
+                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.4)', marginBottom: 24 }}>
                   {client?.name} · Updated {new Date(p.updatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                 </p>
 
@@ -93,19 +93,19 @@ export function DesignerDashboard() {
                   <div style={{ display: 'flex', gap: 16, marginBottom: 24 }}>
                     <div>
                       <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, color: '#fff' }}>{items.length}</div>
-                      <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Items</div>
+                      <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Items</div>
                     </div>
                     <div style={{ width: 1, background: '#1e1e1e' }} />
                     <div>
                       <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, color: '#2d7a5c' }}>{approved}</div>
-                      <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Approved</div>
+                      <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Approved</div>
                     </div>
                     {flagged > 0 && (
                       <>
                         <div style={{ width: 1, background: '#1e1e1e' }} />
                         <div>
                           <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, color: '#c9a96e' }}>{flagged}</div>
-                          <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Flagged</div>
+                          <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Flagged</div>
                         </div>
                       </>
                     )}
@@ -117,7 +117,7 @@ export function DesignerDashboard() {
                   <button
                     onClick={e => startBuilding(e, p.id)}
                     className="flex items-center gap-2"
-                    style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.25em', textTransform: 'uppercase', background: '#fff', color: '#000', border: 'none', padding: '10px 18px', cursor: 'pointer', transition: 'background 0.3s' }}
+                    style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.25em', textTransform: 'uppercase', background: '#fff', color: '#000', border: 'none', padding: '10px 18px', cursor: 'pointer', transition: 'background 0.3s' }}
                     onMouseEnter={e => (e.currentTarget.style.background = '#c9a96e')}
                     onMouseLeave={e => (e.currentTarget.style.background = '#fff')}
                   >

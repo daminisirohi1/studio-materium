@@ -6,41 +6,69 @@ import type { StorageInfo, RetailInfo } from '../../types';
 
 // ─── Style tokens ─────────────────────────────────────────────────────────────
 
-const LBL: React.CSSProperties = { fontFamily: "'Montserrat', sans-serif", fontSize: 7, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.22)', whiteSpace: 'nowrap' };
-const VAL: React.CSSProperties = { fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.55)', lineHeight: 1.5 };
-const HD: React.CSSProperties = { fontFamily: "'Montserrat', sans-serif", fontSize: 7, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#c9a96e', marginBottom: 10, display: 'block' };
+const LBL: React.CSSProperties = {
+  fontFamily: "'Poppins', sans-serif",
+  fontSize: 9,
+  letterSpacing: '0.22em',
+  textTransform: 'uppercase',
+  color: 'rgba(255,255,255,0.3)',
+};
+const VAL: React.CSSProperties = {
+  fontFamily: "'Poppins', sans-serif",
+  fontSize: 10,
+  letterSpacing: '0.06em',
+  color: 'rgba(255,255,255,0.7)',
+  lineHeight: 1.55,
+};
+const HD: React.CSSProperties = {
+  fontFamily: "'Poppins', sans-serif",
+  fontSize: 8,
+  letterSpacing: '0.32em',
+  textTransform: 'uppercase',
+  color: '#c9a96e',
+  marginBottom: 12,
+  display: 'block',
+};
 
 const PALETTE = [
-  { bg: 'rgba(201,169,110,0.09)', border: 'rgba(201,169,110,0.28)', accent: '#c9a96e' },
-  { bg: 'rgba(45,122,92,0.09)',   border: 'rgba(45,122,92,0.28)',   accent: '#2d7a5c' },
-  { bg: 'rgba(80,110,200,0.09)',  border: 'rgba(80,110,200,0.22)',  accent: '#7090cc' },
-  { bg: 'rgba(180,80,60,0.09)',   border: 'rgba(180,80,60,0.22)',   accent: '#b45040' },
-  { bg: 'rgba(120,120,120,0.09)', border: 'rgba(120,120,120,0.2)',  accent: '#888' },
+  { bg: 'rgba(201,169,110,0.08)', border: 'rgba(201,169,110,0.3)',  accent: '#c9a96e' },
+  { bg: 'rgba(45,122,92,0.08)',   border: 'rgba(45,122,92,0.3)',    accent: '#2d7a5c' },
+  { bg: 'rgba(80,110,200,0.08)', border: 'rgba(80,110,200,0.25)',  accent: '#7090cc' },
+  { bg: 'rgba(180,80,60,0.08)',  border: 'rgba(180,80,60,0.25)',   accent: '#c06050' },
+  { bg: 'rgba(140,100,180,0.08)',border: 'rgba(140,100,180,0.25)', accent: '#9070c0' },
 ];
 
 function Divider({ compact }: { compact: boolean }) {
-  return <div style={{ height: 1, background: '#161616', margin: compact ? '12px 0' : '18px 0' }} />;
+  return <div style={{ height: 1, background: 'rgba(255,255,255,0.05)', margin: compact ? '14px 0' : '22px 0' }} />;
 }
 
 // ─── Care Icon Grid ───────────────────────────────────────────────────────────
 
 export function CareIconGrid({ care, compact = false }: { care: StorageInfo['care']; compact?: boolean }) {
   return (
-    <div style={{ display: 'flex', gap: compact ? 6 : 10, flexWrap: 'wrap' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(auto-fill, minmax(${compact ? 62 : 80}px, 1fr))`, gap: compact ? 6 : 8 }}>
       {care.map(c => (
         <div key={c.lbl} style={{
           background: 'rgba(255,255,255,0.03)',
           border: '1px solid rgba(255,255,255,0.07)',
-          padding: compact ? '8px 9px' : '11px 13px',
+          borderTop: '2px solid rgba(201,169,110,0.2)',
+          padding: compact ? '10px 8px' : '14px 10px',
           textAlign: 'center',
-          minWidth: compact ? 54 : 68,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: 5,
+          gap: 6,
         }}>
-          <div style={{ fontSize: compact ? 17 : 22 }}>{c.ico}</div>
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: compact ? 5 : 5.5, letterSpacing: '0.13em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.32)', lineHeight: 1.45, textAlign: 'center' }}>{c.lbl}</p>
+          <div style={{ fontSize: compact ? 20 : 26 }}>{c.ico}</div>
+          <p style={{
+            fontFamily: "'Poppins', sans-serif",
+            fontSize: compact ? 6.5 : 7.5,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.4)',
+            lineHeight: 1.45,
+            textAlign: 'center',
+          }}>{c.lbl}</p>
         </div>
       ))}
     </div>
@@ -50,101 +78,184 @@ export function CareIconGrid({ care, compact = false }: { care: StorageInfo['car
 // ─── Blueprint Diagram ────────────────────────────────────────────────────────
 
 export function BlueprintViz({ blueprint, compact = false }: { blueprint: NonNullable<StorageInfo['blueprint']>; compact?: boolean }) {
-  const colW = compact ? 46 : 62;
+  const totalZones = blueprint.length;
 
   return (
-    <div style={{
-      background: 'linear-gradient(135deg, rgba(5,9,20,0.97) 0%, rgba(3,7,16,0.99) 100%)',
-      border: '1px solid rgba(255,255,255,0.07)',
-      padding: compact ? '12px 12px 14px' : '16px',
-    }}>
-      <div style={{ display: 'flex', gap: compact ? 10 : 14, alignItems: 'stretch' }}>
+    <div style={{ display: 'flex', gap: compact ? 10 : 16, alignItems: 'stretch' }}>
 
-        {/* ── Wardrobe silhouette ── */}
-        <div style={{ width: colW, flexShrink: 0, display: 'flex', flexDirection: 'column' }}>
-          {/* Cornice */}
-          <div style={{ height: 5, background: 'rgba(255,255,255,0.06)', borderRadius: '2px 2px 0 0', border: '1px solid rgba(255,255,255,0.1)', borderBottom: 'none' }} />
-          {/* Zone bands */}
-          <div style={{ border: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', flex: 1 }}>
+      {/* ── Left: architectural drawing ── */}
+      <div style={{
+        flexShrink: 0,
+        width: compact ? 100 : 130,
+        background: '#0a1628',
+        border: '1px solid rgba(100,160,255,0.15)',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        {/* Blueprint grid */}
+        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <pattern id="bpgrid" width="10" height="10" patternUnits="userSpaceOnUse">
+              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(100,160,255,0.06)" strokeWidth="0.5" />
+            </pattern>
+            <pattern id="bpgrid2" width="50" height="50" patternUnits="userSpaceOnUse">
+              <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(100,160,255,0.1)" strokeWidth="0.5" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#bpgrid)" />
+          <rect width="100%" height="100%" fill="url(#bpgrid2)" />
+        </svg>
+
+        {/* Wardrobe body */}
+        <div style={{ position: 'relative', margin: compact ? '10px 12px' : '14px 16px', display: 'flex', flexDirection: 'column', height: compact ? 'calc(100% - 20px)' : 'calc(100% - 28px)' }}>
+          {/* Top cornice */}
+          <div style={{ height: compact ? 6 : 8, background: 'rgba(100,160,255,0.12)', border: '1px solid rgba(100,160,255,0.3)', borderBottom: 'none', borderRadius: '1px 1px 0 0' }} />
+
+          {/* Zone rows */}
+          <div style={{ border: '1px solid rgba(100,160,255,0.25)', flex: 1, display: 'flex', flexDirection: 'column' }}>
             {blueprint.map((zone, i) => {
               const p = PALETTE[i % PALETTE.length];
-              const heightNum = zone.height.match(/(\d+)/)?.[1];
+              const isLast = i === totalZones - 1;
+              // Determine zone icon
+              const lz = zone.zone.toLowerCase();
+              const isHang  = lz.includes('hang') || lz.includes('jacket') || lz.includes('suit') || lz.includes('shirt') || lz.includes('dress') || lz.includes('coat');
+              const isShelf = lz.includes('shelf') || lz.includes('fold') || lz.includes('knitwear');
+              const isDraw  = lz.includes('draw') || lz.includes('access') || lz.includes('laundry');
+              const isShoe  = lz.includes('shoe') || lz.includes('boot');
+
               return (
                 <div key={zone.zone} style={{
                   flex: 1,
-                  background: p.bg,
-                  borderBottom: i < blueprint.length - 1 ? '1px dashed rgba(255,255,255,0.07)' : 'none',
+                  borderBottom: !isLast ? `1px dashed rgba(100,160,255,0.15)` : 'none',
+                  background: `rgba(100,160,255,0.025)`,
+                  position: 'relative',
+                  minHeight: compact ? 22 : 28,
                   display: 'flex',
-                  flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  minHeight: compact ? 24 : 30,
-                  position: 'relative',
-                  gap: 3,
+                  overflow: 'hidden',
                 }}>
-                  {/* Zone rail indicator */}
-                  <div style={{ width: '52%', height: 1, background: p.border }} />
-                  {/* Height stamp */}
-                  {heightNum && (
-                    <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: compact ? 4 : 5, color: p.accent, opacity: 0.85, letterSpacing: '0.06em' }}>
-                      {heightNum}cm
-                    </span>
+                  {/* Zone interior element */}
+                  {isHang && (
+                    <svg width="100%" height="100%" viewBox="0 0 80 28" preserveAspectRatio="xMidYMid meet" style={{ opacity: 0.4 }}>
+                      {/* hanging rod */}
+                      <line x1="5" y1="6" x2="75" y2="6" stroke={p.accent} strokeWidth="1.2" />
+                      {/* garment silhouettes */}
+                      {[14, 28, 42, 56].map(x => (
+                        <g key={x} transform={`translate(${x}, 6)`}>
+                          <line x1="0" y1="0" x2="0" y2="4" stroke={p.accent} strokeWidth="0.8" />
+                          <path d="M-6,4 Q-8,10 -7,18 L7,18 Q8,10 6,4 Z" fill={p.bg} stroke={p.border} strokeWidth="0.6" />
+                        </g>
+                      ))}
+                    </svg>
                   )}
-                  {/* Side tick marks */}
-                  <div style={{ position: 'absolute', left: 0, top: '50%', width: 5, height: 1, background: p.border, transform: 'translateY(-50%)' }} />
-                  <div style={{ position: 'absolute', right: 0, top: '50%', width: 5, height: 1, background: p.border, transform: 'translateY(-50%)' }} />
+                  {isShelf && (
+                    <svg width="100%" height="100%" viewBox="0 0 80 28" preserveAspectRatio="xMidYMid meet" style={{ opacity: 0.4 }}>
+                      <rect x="5" y="14" width="70" height="1.5" fill={p.accent} opacity="0.5" />
+                      <rect x="8" y="7" width="18" height="7" rx="0.5" fill={p.bg} stroke={p.border} strokeWidth="0.6" />
+                      <rect x="31" y="7" width="18" height="7" rx="0.5" fill={p.bg} stroke={p.border} strokeWidth="0.6" />
+                      <rect x="54" y="7" width="18" height="7" rx="0.5" fill={p.bg} stroke={p.border} strokeWidth="0.6" />
+                    </svg>
+                  )}
+                  {isDraw && (
+                    <svg width="100%" height="100%" viewBox="0 0 80 28" preserveAspectRatio="xMidYMid meet" style={{ opacity: 0.4 }}>
+                      <rect x="8" y="4" width="64" height="10" rx="1" fill={p.bg} stroke={p.border} strokeWidth="0.7" />
+                      <rect x="8" y="16" width="64" height="9" rx="1" fill={p.bg} stroke={p.border} strokeWidth="0.7" />
+                      <circle cx="40" cy="9" r="2" fill={p.accent} opacity="0.5" />
+                      <circle cx="40" cy="20.5" r="2" fill={p.accent} opacity="0.5" />
+                    </svg>
+                  )}
+                  {isShoe && (
+                    <svg width="100%" height="100%" viewBox="0 0 80 28" preserveAspectRatio="xMidYMid meet" style={{ opacity: 0.4 }}>
+                      {[10, 32, 54].map(x => (
+                        <ellipse key={x} cx={x + 8} cy="16" rx="8" ry="4" fill={p.bg} stroke={p.border} strokeWidth="0.7" />
+                      ))}
+                    </svg>
+                  )}
+
+                  {/* Height label */}
+                  <span style={{
+                    position: 'absolute',
+                    right: 3,
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    fontFamily: "'Poppins', sans-serif",
+                    fontSize: compact ? 4.5 : 5.5,
+                    color: 'rgba(100,180,255,0.45)',
+                    letterSpacing: '0.05em',
+                  }}>
+                    {zone.height.match(/\d+/)?.[0]}
+                  </span>
+
+                  {/* Left dimension tick */}
+                  <div style={{ position: 'absolute', left: 0, top: 0, width: 3, height: '100%', borderRight: `1px solid ${p.border}`, opacity: 0.5 }} />
                 </div>
               );
             })}
           </div>
-          {/* Floor slab */}
-          <div style={{ height: 5, background: 'rgba(255,255,255,0.07)', borderRadius: '0 0 2px 2px', border: '1px solid rgba(255,255,255,0.12)', borderTop: '2px solid rgba(255,255,255,0.16)' }} />
 
-          {/* Depth arrow */}
-          {!compact && (
-            <div style={{ marginTop: 10 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <span style={{ color: 'rgba(255,255,255,0.14)', fontSize: 7, lineHeight: 1 }}>◄</span>
-                <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.1)' }} />
-                <span style={{ color: 'rgba(255,255,255,0.14)', fontSize: 7, lineHeight: 1 }}>►</span>
-              </div>
-              <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 4.5, color: 'rgba(255,255,255,0.18)', letterSpacing: '0.22em', textAlign: 'center', marginTop: 3 }}>DEPTH</p>
-            </div>
-          )}
+          {/* Floor */}
+          <div style={{
+            height: compact ? 4 : 6,
+            background: 'rgba(100,160,255,0.1)',
+            border: '1px solid rgba(100,160,255,0.3)',
+            borderTop: '2px solid rgba(100,160,255,0.35)',
+            borderRadius: '0 0 1px 1px',
+          }} />
+
+          {/* Depth annotation */}
+          <div style={{ marginTop: 5, display: 'flex', alignItems: 'center', gap: 2 }}>
+            <span style={{ color: 'rgba(100,160,255,0.3)', fontSize: 6 }}>◄</span>
+            <div style={{ flex: 1, height: 0.5, background: 'rgba(100,160,255,0.2)' }} />
+            <span style={{ color: 'rgba(100,160,255,0.3)', fontSize: 6 }}>►</span>
+          </div>
+          <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 5, color: 'rgba(100,160,255,0.3)', letterSpacing: '0.3em', textAlign: 'center', marginTop: 2 }}>DEPTH</p>
         </div>
+      </div>
 
-        {/* ── Zone cards ── */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {blueprint.map((zone, i) => {
-            const p = PALETTE[i % PALETTE.length];
-            return (
-              <div key={zone.zone} style={{
-                flex: 1,
-                background: p.bg,
-                border: `1px solid ${p.border}`,
-                padding: compact ? '6px 9px' : '8px 11px',
-                minHeight: compact ? 24 : 30,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                gap: compact ? 2 : 3,
+      {/* ── Right: zone data cards ── */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 3 }}>
+        {blueprint.map((zone, i) => {
+          const p = PALETTE[i % PALETTE.length];
+          return (
+            <div key={zone.zone} style={{
+              flex: 1,
+              background: p.bg,
+              border: `1px solid ${p.border}`,
+              borderLeft: `3px solid ${p.accent}`,
+              padding: compact ? '8px 10px' : '10px 13px',
+              minHeight: compact ? 22 : 28,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              gap: compact ? 3 : 4,
+            }}>
+              <span style={{
+                fontFamily: "'Poppins', sans-serif",
+                fontSize: compact ? 7.5 : 9,
+                fontWeight: 600,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: p.accent,
               }}>
-                <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: compact ? 6.5 : 7.5, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: p.accent }}>
-                  {zone.zone}
+                {zone.zone}
+              </span>
+              <div style={{ display: 'flex', gap: compact ? 8 : 14, flexWrap: 'wrap' }}>
+                <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: compact ? 7 : 8, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.08em' }}>
+                  H {zone.height}
                 </span>
-                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                  <span style={{ ...LBL, fontSize: compact ? 5.5 : 6.5 }}>H — {zone.height}</span>
-                  <span style={{ ...LBL, fontSize: compact ? 5.5 : 6.5 }}>D — {zone.depth}</span>
-                </div>
-                {!compact && (
-                  <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 5.5, color: 'rgba(255,255,255,0.2)', lineHeight: 1.45, letterSpacing: '0.04em' }}>
-                    {zone.note}
-                  </p>
-                )}
+                <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: compact ? 7 : 8, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.08em' }}>
+                  D {zone.depth}
+                </span>
               </div>
-            );
-          })}
-        </div>
+              {!compact && zone.note && (
+                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7, color: 'rgba(255,255,255,0.22)', lineHeight: 1.5, letterSpacing: '0.04em' }}>
+                  {zone.note}
+                </p>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -153,61 +264,95 @@ export function BlueprintViz({ blueprint, compact = false }: { blueprint: NonNul
 // ─── Hanger Visualization ─────────────────────────────────────────────────────
 
 export function HangerViz({ hangers, compact = false }: { hangers: NonNullable<StorageInfo['hangers']>; compact?: boolean }) {
-  const sw = compact ? 46 : 58;
-  const sh = compact ? 38 : 48;
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? 6 : 10 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? 8 : 12 }}>
       {hangers.map((h, idx) => (
         <div key={idx} style={{
-          background: 'linear-gradient(135deg, rgba(5,9,20,0.97) 0%, rgba(3,7,16,0.99) 100%)',
+          background: 'linear-gradient(135deg, #09111f 0%, #060c18 100%)',
           border: '1px solid rgba(255,255,255,0.07)',
-          padding: compact ? '10px 12px' : '14px 16px',
+          padding: compact ? '12px 14px' : '16px 20px',
           display: 'flex',
-          gap: compact ? 12 : 18,
-          alignItems: 'flex-start',
+          gap: compact ? 14 : 22,
+          alignItems: 'center',
         }}>
-          {/* SVG hanger */}
+          {/* SVG — rod with hangers */}
           <div style={{ flexShrink: 0 }}>
-            <svg width={sw} height={sh} viewBox="0 0 58 48">
-              {/* Rail bar */}
-              <rect x="1" y="3" width="56" height="4" rx="2" fill="rgba(201,169,110,0.18)" stroke="rgba(201,169,110,0.38)" strokeWidth="0.6" />
-              {/* Spacing ticks on rail */}
-              <line x1="12" y1="1" x2="12" y2="8" stroke="rgba(201,169,110,0.3)" strokeWidth="0.8" />
-              <line x1="46" y1="1" x2="46" y2="8" stroke="rgba(201,169,110,0.3)" strokeWidth="0.8" />
-              <line x1="12" y1="4.5" x2="46" y2="4.5" stroke="rgba(201,169,110,0.12)" strokeWidth="0.5" strokeDasharray="2,2" />
-              {/* Spacing label */}
-              <text x="21" y="2" fill="rgba(201,169,110,0.5)" fontSize="4" fontFamily="Montserrat" letterSpacing="0.3">spacing</text>
-              {/* Hook curve */}
-              <path
-                d="M 29 7 L 29 13 Q 29 17 25 19 Q 16 22 8 27 Q 3 30 3 35 Q 3 42 10 44 Q 18 46 29 46 Q 40 46 48 44 Q 55 42 55 35 Q 55 30 50 27 Q 42 22 33 19 Q 29 17 29 13"
-                fill="none"
-                stroke="rgba(201,169,110,0.45)"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+            <svg width={compact ? 90 : 110} height={compact ? 62 : 78} viewBox="0 0 110 78">
+              {/* Wall mount brackets */}
+              <rect x="4"  y="10" width="6" height="14" rx="1" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.14)" strokeWidth="0.6" />
+              <rect x="100" y="10" width="6" height="14" rx="1" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.14)" strokeWidth="0.6" />
+
+              {/* Hanging rod */}
+              <rect x="4" y="17" width="102" height="5" rx="2.5"
+                fill="rgba(201,169,110,0.15)"
+                stroke="rgba(201,169,110,0.4)"
+                strokeWidth="0.8"
               />
-              {/* Shoulder width callout */}
-              <line x1="3" y1="44" x2="55" y2="44" stroke="rgba(255,255,255,0.07)" strokeWidth="0.5" strokeDasharray="1.5,2" />
+              {/* Rod highlight */}
+              <rect x="6" y="18" width="98" height="1.5" rx="0.75" fill="rgba(201,169,110,0.2)" />
+
+              {/* Three hangers */}
+              {[24, 55, 86].map((cx, hi) => (
+                <g key={hi}>
+                  {/* Hanging hook */}
+                  <path
+                    d={`M ${cx} 22 L ${cx} 26 Q ${cx} 30 ${cx - 2} 32`}
+                    fill="none"
+                    stroke="rgba(201,169,110,0.55)"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                  />
+                  {/* Hanger body */}
+                  <path
+                    d={`M ${cx} 32 Q ${cx - 18} 38 ${cx - 20} 46 Q ${cx - 20} 50 ${cx - 14} 52 L ${cx + 14} 52 Q ${cx + 20} 50 ${cx + 20} 46 Q ${cx + 18} 38 ${cx} 32`}
+                    fill="rgba(201,169,110,0.07)"
+                    stroke="rgba(201,169,110,0.35)"
+                    strokeWidth="1.2"
+                    strokeLinejoin="round"
+                  />
+                  {/* Cross bar */}
+                  <line x1={cx - 14} y1="52" x2={cx + 14} y2="52" stroke="rgba(201,169,110,0.3)" strokeWidth="1.1" />
+
+                  {/* Garment silhouette */}
+                  <rect
+                    x={cx - 13}
+                    y="52"
+                    width="26"
+                    height={compact ? 16 : 20}
+                    rx="1"
+                    fill={`rgba(255,255,255,${hi === 1 ? 0.04 : 0.025})`}
+                    stroke="rgba(255,255,255,0.08)"
+                    strokeWidth="0.5"
+                  />
+                </g>
+              ))}
+
+              {/* Spacing dimension callout */}
+              <line x1="24" y1="6" x2="55" y2="6" stroke="rgba(201,169,110,0.25)" strokeWidth="0.6" />
+              <line x1="24" y1="4" x2="24" y2="8" stroke="rgba(201,169,110,0.25)" strokeWidth="0.6" />
+              <line x1="55" y1="4" x2="55" y2="8" stroke="rgba(201,169,110,0.25)" strokeWidth="0.6" />
+              <text x="31" y="4" fill="rgba(201,169,110,0.45)" fontSize="5" fontFamily="Poppins" letterSpacing="0.15">spacing</text>
             </svg>
           </div>
 
           {/* Specs */}
           <div style={{ flex: 1 }}>
-            <p style={{ ...VAL, fontSize: compact ? 7 : 7.5, marginBottom: compact ? 5 : 6 }}>{h.type}</p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? 3 : 4 }}>
+            <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: compact ? 9 : 10, color: 'rgba(255,255,255,0.7)', marginBottom: compact ? 8 : 10, letterSpacing: '0.06em' }}>
+              {h.type}
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? 5 : 6 }}>
               {h.barDia && (
-                <div style={{ display: 'flex', gap: 8, alignItems: 'baseline' }}>
-                  <span style={{ ...LBL, fontSize: compact ? 5.5 : 6.5, minWidth: 40 }}>Bar Ø</span>
-                  <span style={{ ...VAL, fontSize: compact ? 6.5 : 7 }}>{h.barDia}</span>
+                <div style={{ display: 'flex', gap: 10, alignItems: 'baseline' }}>
+                  <span style={{ ...LBL, fontSize: compact ? 7 : 8, minWidth: compact ? 46 : 56 }}>Bar Ø</span>
+                  <span style={{ ...VAL, fontSize: compact ? 8 : 9 }}>{h.barDia}</span>
                 </div>
               )}
-              <div style={{ display: 'flex', gap: 8, alignItems: 'baseline' }}>
-                <span style={{ ...LBL, fontSize: compact ? 5.5 : 6.5, minWidth: 40 }}>Spacing</span>
-                <span style={{ ...VAL, fontSize: compact ? 6.5 : 7 }}>{h.spacing}</span>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'baseline' }}>
+                <span style={{ ...LBL, fontSize: compact ? 7 : 8, minWidth: compact ? 46 : 56 }}>Spacing</span>
+                <span style={{ ...VAL, fontSize: compact ? 8 : 9 }}>{h.spacing}</span>
               </div>
               {h.note && (
-                <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: compact ? 5.5 : 6, color: 'rgba(255,255,255,0.22)', lineHeight: 1.45, marginTop: 2 }}>
+                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: compact ? 7 : 8, color: 'rgba(255,255,255,0.25)', lineHeight: 1.5, marginTop: 2 }}>
                   {h.note}
                 </p>
               )}
@@ -222,101 +367,130 @@ export function HangerViz({ hangers, compact = false }: { hangers: NonNullable<S
 // ─── Lighting Visualization ───────────────────────────────────────────────────
 
 export function LightingViz({ lighting, compact = false }: { lighting: NonNullable<RetailInfo['lighting']>; compact?: boolean }) {
-  const angleDeg = Math.min(65, parseInt(lighting.angle.match(/(\d+)/)?.[1] ?? '30'));
+  const angleDeg = Math.min(70, parseInt(lighting.angle.match(/(\d+)/)?.[1] ?? '35'));
   const angleRad = angleDeg * Math.PI / 180;
-  const coneH = compact ? 58 : 76;
-  const svgW  = compact ? 72 : 92;
+  const svgW  = compact ? 100 : 120;
+  const svgH  = compact ? 90 : 110;
   const cx    = svgW / 2;
-  const spreadX = Math.min(cx - 2, Math.tan(angleRad) * coneH);
-  const conePoints = `${cx},9 ${cx - spreadX},${coneH + 9} ${cx + spreadX},${coneH + 9}`;
+  const coneY = 18;
+  const coneH = svgH - coneY - 10;
+  const spreadX = Math.min(cx - 4, Math.tan(angleRad / 2) * coneH);
 
-  // CCT colour
-  const cctNum = parseInt(lighting.cct.match(/(\d{4})/)?.[1] ?? '3500');
-  const warmth = Math.max(0, Math.min(1, (cctNum - 2700) / (6500 - 2700)));
-  const lightFill = `rgba(${Math.round(255 - warmth * 60)}, ${Math.round(210 + warmth * 25)}, ${Math.round(80 + warmth * 175)}, 0.13)`;
+  const cctNum  = parseInt(lighting.cct.match(/(\d{4})/)?.[1] ?? '3500');
+  const warmth  = Math.max(0, Math.min(1, (cctNum - 2700) / (6500 - 2700)));
+  const coneR   = Math.round(255 - warmth * 60);
+  const coneG   = Math.round(220 - warmth * 30);
+  const coneB   = Math.round(100 + warmth * 155);
 
   return (
     <div style={{
-      background: 'linear-gradient(135deg, rgba(5,9,20,0.97) 0%, rgba(3,7,16,0.99) 100%)',
+      background: 'linear-gradient(135deg, #09111f 0%, #060c18 100%)',
       border: '1px solid rgba(255,255,255,0.07)',
-      padding: compact ? '12px' : '16px',
+      padding: compact ? '14px' : '18px',
       display: 'flex',
-      gap: compact ? 12 : 20,
+      gap: compact ? 14 : 22,
       alignItems: 'flex-start',
     }}>
-      {/* SVG light cone diagram */}
-      <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
-        <svg width={svgW} height={coneH + 16} viewBox={`0 0 ${svgW} ${coneH + 16}`}>
-          {/* Ceiling rail */}
-          <rect x="0" y="0" width={svgW} height="5" rx="1" fill="rgba(255,255,255,0.05)" />
-          <rect x="0" y="5" width={svgW} height="1" fill="rgba(255,255,255,0.08)" />
-          {/* Track fixture body */}
-          <rect x={cx - 7} y="4" width="14" height="6" rx="2" fill="rgba(255,220,140,0.28)" />
-          <ellipse cx={cx} cy="10" rx="4.5" ry="2" fill="rgba(255,225,155,0.6)" />
-          {/* Cone */}
-          <polygon points={conePoints} fill={lightFill} stroke="rgba(255,200,100,0.1)" strokeWidth="0.5" />
+      {/* Diagram */}
+      <div style={{ flexShrink: 0 }}>
+        <svg width={svgW} height={svgH} viewBox={`0 0 ${svgW} ${svgH}`}>
+          <defs>
+            <radialGradient id="coneGrad" cx="50%" cy="0%" r="100%">
+              <stop offset="0%" stopColor={`rgb(${coneR},${coneG},${coneB})`} stopOpacity="0.35" />
+              <stop offset="70%" stopColor={`rgb(${coneR},${coneG},${coneB})`} stopOpacity="0.12" />
+              <stop offset="100%" stopColor={`rgb(${coneR},${coneG},${coneB})`} stopOpacity="0" />
+            </radialGradient>
+          </defs>
+
+          {/* Ceiling track */}
+          <rect x="0" y="0" width={svgW} height="6" rx="1" fill="rgba(255,255,255,0.06)" />
+          <rect x="0" y="6" width={svgW} height="1" fill="rgba(255,255,255,0.1)" />
+
+          {/* Track fixture */}
+          <rect x={cx - 10} y="5" width="20" height="9" rx="2" fill="rgba(255,220,140,0.2)" stroke="rgba(255,220,140,0.3)" strokeWidth="0.6" />
+          {/* Lens */}
+          <ellipse cx={cx} cy="14" rx="5.5" ry="2.5" fill="rgba(255,235,180,0.7)" />
+          <ellipse cx={cx} cy="14" rx="3" ry="1.5" fill="rgba(255,248,220,0.9)" />
+
+          {/* Light cone with gradient fill */}
+          <polygon
+            points={`${cx},${coneY} ${cx - spreadX},${svgH - 10} ${cx + spreadX},${svgH - 10}`}
+            fill="url(#coneGrad)"
+          />
+
           {/* Beam edge lines */}
-          <line x1={cx} y1="10" x2={cx - spreadX} y2={coneH + 9} stroke="rgba(255,200,100,0.12)" strokeWidth="0.6" strokeDasharray="3,3" />
-          <line x1={cx} y1="10" x2={cx + spreadX} y2={coneH + 9} stroke="rgba(255,200,100,0.12)" strokeWidth="0.6" strokeDasharray="3,3" />
+          <line x1={cx} y1={coneY} x2={cx - spreadX} y2={svgH - 10}
+            stroke={`rgba(${coneR},${coneG},${coneB},0.2)`} strokeWidth="0.8" strokeDasharray="3,3" />
+          <line x1={cx} y1={coneY} x2={cx + spreadX} y2={svgH - 10}
+            stroke={`rgba(${coneR},${coneG},${coneB},0.2)`} strokeWidth="0.8" strokeDasharray="3,3" />
+
           {/* Angle arc */}
           <path
-            d={`M ${cx} 14 L ${cx - 16 * Math.sin(angleRad)},${14 + 16 * Math.cos(angleRad)} A 16 16 0 0 1 ${cx + 16 * Math.sin(angleRad)},${14 + 16 * Math.cos(angleRad)}`}
+            d={`M ${cx - 16 * Math.sin(angleRad / 2)},${coneY + 16 * Math.cos(angleRad / 2)}
+                A 16 16 0 0 1 ${cx + 16 * Math.sin(angleRad / 2)},${coneY + 16 * Math.cos(angleRad / 2)}`}
             fill="none"
             stroke="rgba(201,169,110,0.5)"
             strokeWidth="0.9"
             strokeDasharray="2,2"
           />
-          {/* Angle label */}
           <text
-            x={cx + 18 * Math.sin(angleRad) + 2}
-            y={14 + 18 * Math.cos(angleRad)}
-            fill="rgba(201,169,110,0.75)"
-            fontSize={compact ? 5.5 : 6.5}
-            fontFamily="Montserrat"
-            letterSpacing="0.4"
+            x={cx + 18 * Math.sin(angleRad / 2) + 2}
+            y={coneY + 18 * Math.cos(angleRad / 2) + 3}
+            fill="rgba(201,169,110,0.8)"
+            fontSize={compact ? 7 : 8}
+            fontFamily="Poppins"
           >{angleDeg}°</text>
-          {/* Lux at beam centre */}
-          <text x={cx - 9} y={coneH / 2 + 14} fill="rgba(255,255,255,0.3)" fontSize={compact ? 5.5 : 6.5} fontFamily="Montserrat">
-            {lighting.lux.split(/[–-]/)[0].trim()}
-          </text>
-          <text x={cx - 4} y={coneH / 2 + 23} fill="rgba(255,255,255,0.18)" fontSize={compact ? 4.5 : 5.5} fontFamily="Montserrat">lux</text>
+
+          {/* Lux centre label */}
+          <text x={cx - 8} y={coneY + coneH * 0.45}
+            fill={`rgba(${coneR},${coneG},${coneB},0.6)`}
+            fontSize={compact ? 7 : 8.5}
+            fontFamily="Poppins"
+            fontWeight="600"
+          >{lighting.lux.split(/[–-]/)[0].trim()}</text>
+          <text x={cx - 4} y={coneY + coneH * 0.45 + 9}
+            fill={`rgba(${coneR},${coneG},${coneB},0.35)`}
+            fontSize={compact ? 6 : 7}
+            fontFamily="Poppins"
+          >lux</text>
+
           {/* Floor */}
-          <rect x="0" y={coneH + 10} width={svgW} height="2" rx="1" fill="rgba(255,255,255,0.06)" />
-          <rect x="0" y={coneH + 12} width={svgW} height="1" fill="rgba(255,255,255,0.03)" />
+          <rect x="0" y={svgH - 10} width={svgW} height="3" rx="0.5" fill="rgba(255,255,255,0.07)" />
+          <rect x="0" y={svgH - 7}  width={svgW} height="1" fill="rgba(255,255,255,0.04)" />
         </svg>
 
-        {/* CCT gradient bar */}
-        <div>
-          <div style={{ height: 4, borderRadius: 2, background: 'linear-gradient(to right, #ff9933, #ffcc55, #fff5d6, #eef4ff, #bbcfff)', position: 'relative' }}>
+        {/* CCT bar */}
+        <div style={{ marginTop: 8 }}>
+          <div style={{ height: 5, borderRadius: 3, background: 'linear-gradient(to right, #ff8c00, #ffc84a, #fff4d6, #e8f0ff, #aac0ff)', position: 'relative' }}>
             <div style={{
               position: 'absolute',
-              top: -3,
+              top: -4,
               left: `${warmth * 100}%`,
               transform: 'translateX(-50%)',
-              width: 2,
-              height: 10,
+              width: 2.5,
+              height: 13,
               background: '#c9a96e',
-              borderRadius: 1,
+              borderRadius: 1.5,
             }} />
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 3 }}>
-            <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 4.5, color: 'rgba(255,160,50,0.45)' }}>2700K</span>
-            <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 4.5, color: 'rgba(180,210,255,0.45)' }}>6500K</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
+            <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 6, color: 'rgba(255,150,50,0.5)' }}>2700K warm</span>
+            <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 6, color: 'rgba(170,200,255,0.5)' }}>6500K cool</span>
           </div>
         </div>
       </div>
 
       {/* Spec rows */}
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: compact ? 8 : 10 }}>
         {([
-          ['Angle', lighting.angle],
+          ['Beam angle', lighting.angle],
           ['Illuminance', lighting.lux],
-          ['Colour Temp', lighting.cct],
+          ['Colour temp', lighting.cct],
           ...(lighting.fixture ? [['Fixture', lighting.fixture]] : []),
         ] as [string, string][]).map(([k, v]) => (
-          <div key={k} style={{ display: 'flex', gap: 8, marginBottom: compact ? 6 : 7, alignItems: 'flex-start' }}>
-            <span style={{ ...LBL, fontSize: compact ? 5.5 : 7, minWidth: compact ? 50 : 62, paddingTop: 1 }}>{k}</span>
-            <span style={{ ...VAL, fontSize: compact ? 7 : 7.5 }}>{v}</span>
+          <div key={k}>
+            <p style={{ ...LBL, fontSize: compact ? 7 : 8, marginBottom: 3 }}>{k}</p>
+            <p style={{ ...VAL, fontSize: compact ? 8.5 : 9.5 }}>{v}</p>
           </div>
         ))}
       </div>
@@ -328,18 +502,35 @@ export function LightingViz({ lighting, compact = false }: { lighting: NonNullab
 
 export function DimensionViz({ dimensions, compact = false }: { dimensions: NonNullable<RetailInfo['dimensions']>; compact?: boolean }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: compact ? 4 : 6 }}>
       {dimensions.map((d, i) => {
         const p = PALETTE[i % PALETTE.length];
         return (
           <div key={d.label} style={{
-            background: 'rgba(5,9,20,0.8)',
-            border: '1px solid rgba(255,255,255,0.05)',
-            borderLeft: `3px solid ${p.border}`,
-            padding: compact ? '8px 10px' : '10px 13px',
+            background: p.bg,
+            border: `1px solid ${p.border}`,
+            borderTop: `3px solid ${p.accent}`,
+            padding: compact ? '10px 12px' : '13px 16px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 5,
           }}>
-            <p style={{ ...VAL, fontSize: compact ? 8 : 9.5, color: '#e8e8e8', fontWeight: 500, marginBottom: 3 }}>{d.value}</p>
-            <p style={{ ...LBL, fontSize: compact ? 5.5 : 6.5, whiteSpace: 'normal', lineHeight: 1.4 }}>{d.label}</p>
+            <p style={{
+              fontFamily: "'Poppins', sans-serif",
+              fontSize: compact ? 14 : 18,
+              fontWeight: 600,
+              color: p.accent,
+              letterSpacing: '0.04em',
+              lineHeight: 1,
+            }}>{d.value}</p>
+            <p style={{
+              fontFamily: "'Poppins', sans-serif",
+              fontSize: compact ? 7 : 8,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.3)',
+              lineHeight: 1.4,
+            }}>{d.label}</p>
           </div>
         );
       })}
@@ -347,42 +538,47 @@ export function DimensionViz({ dimensions, compact = false }: { dimensions: NonN
   );
 }
 
+// ─── Washing Table ────────────────────────────────────────────────────────────
+
+function WashingTable({ washing, compact }: { washing: NonNullable<StorageInfo['washing']>; compact: boolean }) {
+  const rows: [string, string][] = [
+    ['Temperature', washing.temp],
+    ['Cycle',       washing.cycle],
+    ['Drying',      washing.dry],
+    ['Ironing',     washing.iron],
+    ...(washing.special ? [['Special Care', washing.special] as [string, string]] : []),
+  ];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? 8 : 10 }}>
+      {rows.map(([k, v]) => (
+        <div key={k} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', paddingBottom: compact ? 8 : 10, borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+          <span style={{ ...LBL, fontSize: compact ? 7.5 : 9, minWidth: compact ? 64 : 80, paddingTop: 1, flexShrink: 0 }}>{k}</span>
+          <span style={{ ...VAL, fontSize: compact ? 8.5 : 10 }}>{v}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // ─── Full Storage Panel ───────────────────────────────────────────────────────
 
 export function StoragePanel({ storage, compact = false }: { storage: StorageInfo; compact?: boolean }) {
-  const pad = compact ? '0 0 16px' : '4px 32px 28px';
-  const headSz = compact ? 6 : 7;
-
   return (
-    <div style={{ padding: pad }}>
-
+    <div style={{ padding: compact ? '0 0 16px' : '4px 32px 32px' }}>
       <CareIconGrid care={storage.care} compact={compact} />
 
       {storage.washing && (
         <>
           <Divider compact={compact} />
-          <span style={{ ...HD, fontSize: headSz }}>Washing Instructions</span>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: compact ? '5px 14px' : '6px 20px' }}>
-            {([
-              ['Temperature', storage.washing.temp],
-              ['Cycle',       storage.washing.cycle],
-              ['Drying',      storage.washing.dry],
-              ['Ironing',     storage.washing.iron],
-              ...(storage.washing.special ? [['Special Care', storage.washing.special]] : []),
-            ] as [string, string][]).map(([k, v]) => (
-              <div key={k} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                <span style={{ ...LBL, fontSize: compact ? 5.5 : 7, paddingTop: 1, minWidth: compact ? 44 : 56 }}>{k}</span>
-                <span style={{ ...VAL, fontSize: compact ? 6.5 : 7.5 }}>{v}</span>
-              </div>
-            ))}
-          </div>
+          <span style={{ ...HD, fontSize: compact ? 7 : 8 }}>Washing Instructions</span>
+          <WashingTable washing={storage.washing} compact={compact} />
         </>
       )}
 
       {storage.hangers && storage.hangers.length > 0 && (
         <>
           <Divider compact={compact} />
-          <span style={{ ...HD, fontSize: headSz }}>Hanger System</span>
+          <span style={{ ...HD, fontSize: compact ? 7 : 8 }}>Hanger System</span>
           <HangerViz hangers={storage.hangers} compact={compact} />
         </>
       )}
@@ -390,7 +586,7 @@ export function StoragePanel({ storage, compact = false }: { storage: StorageInf
       {storage.blueprint && storage.blueprint.length > 0 && (
         <>
           <Divider compact={compact} />
-          <span style={{ ...HD, fontSize: headSz }}>Wardrobe Blueprint</span>
+          <span style={{ ...HD, fontSize: compact ? 7 : 8 }}>Wardrobe Blueprint</span>
           <BlueprintViz blueprint={storage.blueprint} compact={compact} />
         </>
       )}
@@ -398,9 +594,14 @@ export function StoragePanel({ storage, compact = false }: { storage: StorageInf
       {storage.tips.length > 0 && (
         <>
           <Divider compact={compact} />
-          <span style={{ ...HD, fontSize: headSz }}>Care Tips</span>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? 4 : 3 }}>
-            {storage.tips.map(t => <p key={t} style={{ ...VAL, fontSize: compact ? 6.5 : 7.5 }}>— {t}</p>)}
+          <span style={{ ...HD, fontSize: compact ? 7 : 8 }}>Care Tips</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? 6 : 8 }}>
+            {storage.tips.map(t => (
+              <div key={t} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                <span style={{ color: '#c9a96e', fontSize: compact ? 8 : 10, flexShrink: 0, marginTop: 1 }}>—</span>
+                <p style={{ ...VAL, fontSize: compact ? 8.5 : 10 }}>{t}</p>
+              </div>
+            ))}
           </div>
         </>
       )}
@@ -411,15 +612,11 @@ export function StoragePanel({ storage, compact = false }: { storage: StorageInf
 // ─── Full Retail Panel ────────────────────────────────────────────────────────
 
 export function RetailPanel({ retail, compact = false }: { retail: RetailInfo; compact?: boolean }) {
-  const pad = compact ? '0 0 16px' : '4px 32px 28px';
-  const headSz = compact ? 6 : 7;
-
   return (
-    <div style={{ padding: pad }}>
-
+    <div style={{ padding: compact ? '0 0 16px' : '4px 32px 32px' }}>
       {retail.lighting && (
         <>
-          <span style={{ ...HD, fontSize: headSz }}>Lighting Specification</span>
+          <span style={{ ...HD, fontSize: compact ? 7 : 8 }}>Lighting Specification</span>
           <LightingViz lighting={retail.lighting} compact={compact} />
         </>
       )}
@@ -427,21 +624,30 @@ export function RetailPanel({ retail, compact = false }: { retail: RetailInfo; c
       {retail.dimensions && retail.dimensions.length > 0 && (
         <>
           <Divider compact={compact} />
-          <span style={{ ...HD, fontSize: headSz }}>Display Dimensions</span>
+          <span style={{ ...HD, fontSize: compact ? 7 : 8 }}>Display Dimensions</span>
           <DimensionViz dimensions={retail.dimensions} compact={compact} />
         </>
       )}
 
-      <Divider compact={compact} />
-      <span style={{ ...HD, fontSize: headSz }}>Showcase Guidelines</span>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? 4 : 3 }}>
-        {retail.tips.map(t => <p key={t} style={{ ...VAL, fontSize: compact ? 6.5 : 7.5 }}>— {t}</p>)}
-      </div>
+      {retail.tips.length > 0 && (
+        <>
+          <Divider compact={compact} />
+          <span style={{ ...HD, fontSize: compact ? 7 : 8 }}>Showcase Guidelines</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? 6 : 8 }}>
+            {retail.tips.map(t => (
+              <div key={t} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                <span style={{ color: '#c9a96e', fontSize: compact ? 8 : 10, flexShrink: 0, marginTop: 1 }}>—</span>
+                <p style={{ ...VAL, fontSize: compact ? 8.5 : 10 }}>{t}</p>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
 
-// ─── Accordion wrappers (used in TypePage) ────────────────────────────────────
+// ─── Accordion wrappers (TypePage) ────────────────────────────────────────────
 
 export function StorageAccordion({ storage }: { storage: StorageInfo }) {
   const [open, setOpen] = useState(true);
@@ -451,7 +657,9 @@ export function StorageAccordion({ storage }: { storage: StorageInfo }) {
         onClick={() => setOpen(o => !o)}
         style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 32px', background: 'none', border: 'none', cursor: 'pointer' }}
       >
-        <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>Storage & Care</span>
+        <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>
+          Storage & Care
+        </span>
         <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
           <ChevronDown size={13} color="rgba(255,255,255,0.3)" />
         </motion.div>
@@ -475,7 +683,9 @@ export function RetailAccordion({ retail }: { retail: RetailInfo }) {
         onClick={() => setOpen(o => !o)}
         style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 32px', background: 'none', border: 'none', cursor: 'pointer' }}
       >
-        <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>Retail Display</span>
+        <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>
+          Retail Display
+        </span>
         <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
           <ChevronDown size={13} color="rgba(255,255,255,0.3)" />
         </motion.div>

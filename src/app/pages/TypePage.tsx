@@ -122,7 +122,7 @@ function BrandLogo({ name, selected, onClick }: { name: string; selected: boolea
           style={{ maxWidth: 120, maxHeight: 44, objectFit: 'contain', display: 'block' }}
         />
       ) : (
-        <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 7.5, letterSpacing: '0.25em', textTransform: 'uppercase', color: '#111', fontWeight: 600, textAlign: 'center' }}>
+        <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7.5, letterSpacing: '0.25em', textTransform: 'uppercase', color: '#111', fontWeight: 600, textAlign: 'center' }}>
           {name}
         </span>
       )}
@@ -135,7 +135,7 @@ function BrandLogo({ name, selected, onClick }: { name: string; selected: boolea
 function RowLabel({ label }: { label: string }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
-      <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 7.5, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', whiteSpace: 'nowrap' }}>{label}</span>
+      <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7.5, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', whiteSpace: 'nowrap' }}>{label}</span>
       <div style={{ flex: 1, height: 1, background: '#1a1a1a' }} />
     </div>
   );
@@ -226,7 +226,7 @@ export function TypePage() {
             <img src={product.banner} alt={cat?.name} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.35)' }} referrerPolicy="no-referrer" />
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 20%, rgba(8,8,8,1) 100%)' }} />
             <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px 28px' }}>
-              <button onClick={() => navigate(`/wardrobe/categories?gender=${gender}`)} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 7, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 6, display: 'block' }}>
+              <button onClick={() => navigate(`/wardrobe/categories?gender=${gender}`)} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 6, display: 'block' }}>
                 ← {gender.charAt(0).toUpperCase() + gender.slice(1)}
               </button>
               <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 300, letterSpacing: '0.1em', color: '#fff' }}>{cat?.name ?? id}</h1>
@@ -267,8 +267,8 @@ export function TypePage() {
                             </div>
                           )}
                           <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '10px 8px' }}>
-                            <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 7.5, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: isSelected ? '#c9a96e' : '#fff', marginBottom: 2 }}>{item.name}</div>
-                            {item.sub && <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 6, color: 'rgba(255,255,255,0.35)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.sub.split(' · ').slice(0, 2).join(' · ')}</div>}
+                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7.5, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: isSelected ? '#c9a96e' : '#fff', marginBottom: 2 }}>{item.name}</div>
+                            {item.sub && <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 6, color: 'rgba(255,255,255,0.35)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.sub.split(' · ').slice(0, 2).join(' · ')}</div>}
                           </div>
                         </div>
                       </motion.button>
@@ -313,9 +313,9 @@ export function TypePage() {
                   <img src={config.item.img} alt={config.item.name} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.65)' }} referrerPolicy="no-referrer" />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 55%)' }} />
                   <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '28px 36px' }}>
-                    <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#c9a96e', marginBottom: 6 }}>{config.sectionTitle}</p>
+                    <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#c9a96e', marginBottom: 6 }}>{config.sectionTitle}</p>
                     <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 300, letterSpacing: '0.08em', color: '#fff' }}>{config.item.name}</h2>
-                    {config.item.sub && <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.35)', marginTop: 6 }}>{config.item.sub}</p>}
+                    {config.item.sub && <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.35)', marginTop: 6 }}>{config.item.sub}</p>}
                   </div>
                 </div>
 
@@ -328,7 +328,7 @@ export function TypePage() {
                       <RowLabel label="Variant" />
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                         {config.item.sub.split(' · ').map(v => (
-                          <button key={v} onClick={() => patch({ variant: v })} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 7.5, letterSpacing: '0.14em', textTransform: 'uppercase', padding: '7px 14px', background: config.variant === v ? '#fff' : 'none', color: config.variant === v ? '#000' : 'rgba(255,255,255,0.4)', border: `1px solid ${config.variant === v ? '#fff' : '#2a2a2a'}`, cursor: 'pointer', transition: 'all 0.2s' }}>
+                          <button key={v} onClick={() => patch({ variant: v })} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7.5, letterSpacing: '0.14em', textTransform: 'uppercase', padding: '7px 14px', background: config.variant === v ? '#fff' : 'none', color: config.variant === v ? '#000' : 'rgba(255,255,255,0.4)', border: `1px solid ${config.variant === v ? '#fff' : '#2a2a2a'}`, cursor: 'pointer', transition: 'all 0.2s' }}>
                             {v}
                           </button>
                         ))}
@@ -347,7 +347,7 @@ export function TypePage() {
                               <img src={getMaterialImg(m)} alt={m} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: config.material === m ? 'brightness(0.9)' : 'brightness(0.45)', transition: 'filter 0.2s' }} referrerPolicy="no-referrer" />
                             </div>
                             <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(0,0,0,0.72)', padding: '3px 4px' }}>
-                              <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 5.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: config.material === m ? '#c9a96e' : 'rgba(255,255,255,0.5)', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.split(' ').slice(-1)[0]}</p>
+                              <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 5.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: config.material === m ? '#c9a96e' : 'rgba(255,255,255,0.5)', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.split(' ').slice(-1)[0]}</p>
                             </div>
                             {config.material === m && (
                               <div style={{ position: 'absolute', top: 4, right: 4, width: 16, height: 16, background: '#c9a96e', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -357,7 +357,7 @@ export function TypePage() {
                           </button>
                         ))}
                       </div>
-                      {config.material && <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.35)', marginTop: 8 }}>{config.material}</p>}
+                      {config.material && <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.35)', marginTop: 8 }}>{config.material}</p>}
                     </div>
                   )}
 
@@ -386,7 +386,7 @@ export function TypePage() {
                                 <img src={acc.img} alt={acc.name} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: sel ? 'brightness(0.85)' : 'brightness(0.45)', transition: 'filter 0.2s' }} referrerPolicy="no-referrer" />
                               </div>
                               <div style={{ padding: '5px 4px', background: sel ? 'rgba(201,169,110,0.07)' : '#0d0d0d' }}>
-                                <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 6, letterSpacing: '0.1em', textTransform: 'uppercase', color: sel ? '#c9a96e' : 'rgba(255,255,255,0.35)', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{acc.name}</p>
+                                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 6, letterSpacing: '0.1em', textTransform: 'uppercase', color: sel ? '#c9a96e' : 'rgba(255,255,255,0.35)', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{acc.name}</p>
                               </div>
                               {sel && (
                                 <div style={{ position: 'absolute', top: 5, right: 5, width: 18, height: 18, background: '#c9a96e', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -417,7 +417,7 @@ export function TypePage() {
                     <RowLabel label="Wardrobe Zone" />
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
                       {ZONE_OPTS.map(z => (
-                        <button key={z.id} onClick={() => patch({ zone: z.id })} style={{ padding: '11px 8px', textAlign: 'center', background: config.zone === z.id ? 'rgba(45,122,92,0.1)' : 'none', color: config.zone === z.id ? '#2d7a5c' : 'rgba(255,255,255,0.3)', border: `1px solid ${config.zone === z.id ? 'rgba(45,122,92,0.4)' : '#1e1e1e'}`, cursor: 'pointer', transition: 'all 0.2s', fontFamily: "'Montserrat', sans-serif", fontSize: 7.5, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                        <button key={z.id} onClick={() => patch({ zone: z.id })} style={{ padding: '11px 8px', textAlign: 'center', background: config.zone === z.id ? 'rgba(45,122,92,0.1)' : 'none', color: config.zone === z.id ? '#2d7a5c' : 'rgba(255,255,255,0.3)', border: `1px solid ${config.zone === z.id ? 'rgba(45,122,92,0.4)' : '#1e1e1e'}`, cursor: 'pointer', transition: 'all 0.2s', fontFamily: "'Poppins', sans-serif", fontSize: 7.5, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
                           {z.label}
                         </button>
                       ))}
@@ -430,19 +430,19 @@ export function TypePage() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                       <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #2a2a2a' }}>
                         <button onClick={() => patch({ qty: Math.max(1, config.qty - 1) })} style={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111', border: 'none', cursor: 'pointer', color: '#fff', borderRight: '1px solid #2a2a2a' }}><Minus size={10} /></button>
-                        <span style={{ width: 52, textAlign: 'center', fontFamily: "'Montserrat', sans-serif", fontSize: 14, color: '#fff' }}>{config.qty}</span>
+                        <span style={{ width: 52, textAlign: 'center', fontFamily: "'Poppins', sans-serif", fontSize: 14, color: '#fff' }}>{config.qty}</span>
                         <button onClick={() => patch({ qty: config.qty + 1 })} style={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111', border: 'none', cursor: 'pointer', color: '#fff', borderLeft: '1px solid #2a2a2a' }}><Plus size={10} /></button>
                       </div>
 
                       {canAdd ? (
                         <button
                           onClick={handleAdd}
-                          style={{ flex: 1, fontFamily: "'Montserrat', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', background: added ? '#2d7a5c' : '#fff', color: added ? '#fff' : '#000', border: 'none', height: 40, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.35s, color 0.35s' }}
+                          style={{ flex: 1, fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', background: added ? '#2d7a5c' : '#fff', color: added ? '#fff' : '#000', border: 'none', height: 40, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.35s, color 0.35s' }}
                         >
                           {added ? <><Check size={12} /> Added</> : 'Add to Wardrobe'}
                         </button>
                       ) : (
-                        <div style={{ flex: 1, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #1a1a1a', fontFamily: "'Montserrat', sans-serif", fontSize: 7.5, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)' }}>
+                        <div style={{ flex: 1, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #1a1a1a', fontFamily: "'Poppins', sans-serif", fontSize: 7.5, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)' }}>
                           Select a project to add items
                         </div>
                       )}

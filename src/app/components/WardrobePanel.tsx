@@ -48,7 +48,7 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
             {/* Header */}
             <div style={{ padding: '24px 28px', borderBottom: '1px solid #1a1a1a', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
               <div>
-                <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 4 }}>
+                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 4 }}>
                   Wardrobe
                 </p>
                 <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 400, letterSpacing: '0.1em', color: '#fff' }}>
@@ -56,7 +56,7 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
                 </h3>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.35)' }}>{projectItems.length} items</span>
+                <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.35)' }}>{projectItems.length} items</span>
                 <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.4)' }}>
                   <X size={16} />
                 </button>
@@ -87,13 +87,13 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
                         >
                           <img src={item.img} alt={item.name} style={{ width: 44, height: 60, objectFit: 'cover', flexShrink: 0, filter: 'brightness(0.8)' }} referrerPolicy="no-referrer" />
                           <div style={{ flex: 1, minWidth: 0 }}>
-                            <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#fff', marginBottom: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#fff', marginBottom: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                               {item.name}
                             </div>
-                            <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.35)' }}>
+                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.35)' }}>
                               {item.variant} · Qty {item.quantity}
                             </div>
-                            <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.25)' }}>
+                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.25)' }}>
                               {item.brand}
                             </div>
                           </div>
@@ -145,7 +145,7 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
               <button
                 onClick={handleGoToProject}
                 className="flex items-center justify-center gap-2"
-                style={{ width: '100%', fontFamily: "'Montserrat', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.25em', textTransform: 'uppercase', background: '#fff', color: '#000', border: 'none', padding: '13px', cursor: 'pointer', transition: 'background 0.3s' }}
+                style={{ width: '100%', fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.25em', textTransform: 'uppercase', background: '#fff', color: '#000', border: 'none', padding: '13px', cursor: 'pointer', transition: 'background 0.3s' }}
                 onMouseEnter={e => (e.currentTarget.style.background = '#c9a96e')}
                 onMouseLeave={e => (e.currentTarget.style.background = '#fff')}
               >

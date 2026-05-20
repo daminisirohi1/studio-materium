@@ -59,18 +59,18 @@ export function AdminProjectView() {
         <div style={{ padding: '40px 80px', borderBottom: '1px solid #1a1a1a', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-              <button onClick={() => navigate('/admin')} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer' }}>
+              <button onClick={() => navigate('/admin')} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer' }}>
                 ← Admin
               </button>
               <span style={{ color: '#2a2a2a' }}>·</span>
-              <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.25em', textTransform: 'uppercase', color: statusColors[project.status], border: `1px solid ${statusColors[project.status]}40`, padding: '2px 7px' }}>
+              <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.25em', textTransform: 'uppercase', color: statusColors[project.status], border: `1px solid ${statusColors[project.status]}40`, padding: '2px 7px' }}>
                 {statusLabels[project.status]}
               </span>
             </div>
             <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 300, letterSpacing: '0.08em', color: '#fff', marginBottom: 6 }}>
               {project.name}
             </h1>
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.06em', color: 'rgba(255,255,255,0.35)' }}>
+            <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.06em', color: 'rgba(255,255,255,0.35)' }}>
               Client: {client?.name} · Designer: {designer?.name} · {projectItems.length} items
             </p>
           </div>
@@ -79,17 +79,17 @@ export function AdminProjectView() {
             <div style={{ display: 'flex', gap: 20, marginBottom: 8 }}>
               <div style={{ textAlign: 'right' }}>
                 <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, color: '#2d7a5c' }}>{approved}</div>
-                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Approved</div>
+                <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Approved</div>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, color: '#c9a96e' }}>{flagged}</div>
-                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Flagged</div>
+                <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Flagged</div>
               </div>
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
               {STATUS_ACTIONS.filter(a => a.condition).map(a => (
                 <button key={a.next} onClick={() => updateProjectStatus(project.id, a.next)}
-                  style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: 'none', color: 'rgba(255,255,255,0.5)', border: '1px solid #333', padding: '8px 14px', cursor: 'pointer', transition: 'all 0.2s' }}
+                  style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: 'none', color: 'rgba(255,255,255,0.5)', border: '1px solid #333', padding: '8px 14px', cursor: 'pointer', transition: 'all 0.2s' }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = '#fff'; e.currentTarget.style.color = '#fff'; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.color = 'rgba(255,255,255,0.5)'; }}>
                   {a.label}
@@ -102,9 +102,9 @@ export function AdminProjectView() {
         <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', minHeight: 'calc(100vh - 220px)' }}>
           {/* Left — client profile */}
           <div style={{ borderRight: '1px solid #1a1a1a', padding: '40px 32px' }}>
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', marginBottom: 20 }}>Client Profile</p>
+            <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', marginBottom: 20 }}>Client Profile</p>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 400, color: '#fff', marginBottom: 4 }}>{client?.name}</h3>
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.3)', marginBottom: 28 }}>{client?.email}</p>
+            <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.3)', marginBottom: 28 }}>{client?.email}</p>
 
             {profile && (
               <div className="flex flex-col gap-5">
@@ -115,11 +115,11 @@ export function AdminProjectView() {
                   { label: 'Lifestyle',        items: profile.lifestyle },
                 ].map(section => (
                   <div key={section.label}>
-                    <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.25em', textTransform: 'uppercase', color: '#c9a96e', marginBottom: 8, paddingBottom: 6, borderBottom: '1px solid #1a1a1a' }}>
+                    <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.25em', textTransform: 'uppercase', color: '#c9a96e', marginBottom: 8, paddingBottom: 6, borderBottom: '1px solid #1a1a1a' }}>
                       {section.label}
                     </p>
                     {section.items.map(item => (
-                      <p key={item} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.05em', color: 'rgba(255,255,255,0.5)', marginBottom: 4, lineHeight: 1.5 }}>
+                      <p key={item} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.05em', color: 'rgba(255,255,255,0.5)', marginBottom: 4, lineHeight: 1.5 }}>
                         — {item}
                       </p>
                     ))}
@@ -127,8 +127,8 @@ export function AdminProjectView() {
                 ))}
                 {profile.notes && (
                   <div>
-                    <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.25em', textTransform: 'uppercase', color: '#c9a96e', marginBottom: 8, paddingBottom: 6, borderBottom: '1px solid #1a1a1a' }}>Notes</p>
-                    <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.05em', color: 'rgba(255,255,255,0.4)', lineHeight: 1.7 }}>{profile.notes}</p>
+                    <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.25em', textTransform: 'uppercase', color: '#c9a96e', marginBottom: 8, paddingBottom: 6, borderBottom: '1px solid #1a1a1a' }}>Notes</p>
+                    <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.05em', color: 'rgba(255,255,255,0.4)', lineHeight: 1.7 }}>{profile.notes}</p>
                   </div>
                 )}
               </div>
@@ -137,7 +137,7 @@ export function AdminProjectView() {
 
           {/* Right — items by zone (read-only) */}
           <div style={{ padding: '40px 48px' }}>
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', marginBottom: 24 }}>Wardrobe Configuration</p>
+            <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', marginBottom: 24 }}>Wardrobe Configuration</p>
 
             {ZONES.map(zone => {
               const zoneItems = itemsByZone[zone.id];
@@ -151,8 +151,8 @@ export function AdminProjectView() {
                     style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', background: 'none', border: 'none', cursor: 'pointer', color: '#fff' }}
                   >
                     <div className="flex items-center gap-3">
-                      <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)' }}>{zone.label}</span>
-                      <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.25)' }}>{zoneItems.length} items</span>
+                      <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)' }}>{zone.label}</span>
+                      <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.25)' }}>{zoneItems.length} items</span>
                     </div>
                     <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
                       <ChevronDown size={14} color="rgba(255,255,255,0.3)" />
@@ -173,11 +173,11 @@ export function AdminProjectView() {
                             <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid #1a1a1a' }}>
                               <img src={item.img} alt={item.name} style={{ width: 52, height: 72, objectFit: 'cover', flexShrink: 0 }} referrerPolicy="no-referrer" onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
                               <div style={{ flex: 1 }}>
-                                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fff', marginBottom: 3 }}>{item.name}</div>
-                                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.06em', color: 'rgba(255,255,255,0.4)', marginBottom: 2 }}>{item.variant} · {item.material}</div>
-                                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.3)' }}>{item.brand} · Qty {item.quantity}</div>
+                                <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fff', marginBottom: 3 }}>{item.name}</div>
+                                <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.06em', color: 'rgba(255,255,255,0.4)', marginBottom: 2 }}>{item.variant} · {item.material}</div>
+                                <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.3)' }}>{item.brand} · Qty {item.quantity}</div>
                                 {item.clientNote && (
-                                  <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, color: '#c9a96e', marginTop: 4, fontStyle: 'italic' }}>"{item.clientNote}"</div>
+                                  <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: '#c9a96e', marginTop: 4, fontStyle: 'italic' }}>"{item.clientNote}"</div>
                                 )}
                               </div>
                               <div style={{ width: 6, height: 6, borderRadius: '50%', background: STATUS_DOT[item.status], flexShrink: 0 }} />

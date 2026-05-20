@@ -29,7 +29,7 @@ export function AdminDashboard() {
 
         {/* Page header */}
         <div style={{ marginBottom: 48 }}>
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 10 }}>
+          <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 10 }}>
             Admin
           </p>
           <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 300, letterSpacing: '0.08em', color: '#fff' }}>
@@ -44,7 +44,7 @@ export function AdminDashboard() {
               <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 42, fontWeight: 300, color: '#fff', lineHeight: 1, marginBottom: 8 }}>
                 {s.value}
               </div>
-              <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>
+              <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>
                 {s.label}
               </div>
             </motion.div>
@@ -63,7 +63,7 @@ export function AdminDashboard() {
           {/* Table header */}
           <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 100px', borderBottom: '1px solid #1e1e1e', padding: '12px 24px' }}>
             {['Project', 'Client', 'Designer', 'Status', ''].map(h => (
-              <span key={h} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>
+              <span key={h} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>
                 {h}
               </span>
             ))}
@@ -93,25 +93,25 @@ export function AdminDashboard() {
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
               >
                 <div>
-                  <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 500, letterSpacing: '0.08em', color: '#fff', marginBottom: 3 }}>
+                  <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 11, fontWeight: 500, letterSpacing: '0.08em', color: '#fff', marginBottom: 3 }}>
                     {p.name}
                   </div>
-                  <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.3)' }}>
+                  <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.3)' }}>
                     {items.length} items · Updated {new Date(p.updatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                   </div>
                 </div>
-                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.55)', alignSelf: 'center' }}>
+                <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.55)', alignSelf: 'center' }}>
                   {client?.name}
                 </div>
-                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.55)', alignSelf: 'center' }}>
+                <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.55)', alignSelf: 'center' }}>
                   {designer?.name}
                 </div>
                 <div style={{ alignSelf: 'center' }}>
-                  <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: statusColors[p.status], border: `1px solid ${statusColors[p.status]}40`, padding: '3px 8px' }}>
+                  <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: statusColors[p.status], border: `1px solid ${statusColors[p.status]}40`, padding: '3px 8px' }}>
                     {statusLabels[p.status]}
                   </span>
                 </div>
-                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', alignSelf: 'center' }}>
+                <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', alignSelf: 'center' }}>
                   View →
                 </div>
               </motion.div>

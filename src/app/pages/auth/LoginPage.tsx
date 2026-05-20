@@ -44,7 +44,7 @@ export function LoginPage() {
         <AnimatePresence mode="wait">
           {!selectedRole ? (
             <motion.div key="roles" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', textAlign: 'center', marginBottom: 28 }}>
+              <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', textAlign: 'center', marginBottom: 28 }}>
                 Select your role to continue
               </p>
               <div className="flex flex-col gap-px" style={{ background: '#1e1e1e' }}>
@@ -61,7 +61,7 @@ export function LoginPage() {
                     <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 400, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fff', marginBottom: 6 }}>
                       {role.label}
                     </div>
-                    <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.35)', lineHeight: 1.6 }}>
+                    <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.35)', lineHeight: 1.6 }}>
                       {role.desc}
                     </div>
                   </motion.button>
@@ -72,11 +72,11 @@ export function LoginPage() {
             <motion.div key="users" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <button
                 onClick={() => setSelectedRole(null)}
-                style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}
+                style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}
               >
                 ← Back
               </button>
-              <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', marginBottom: 24 }}>
+              <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', marginBottom: 24 }}>
                 Select account
               </p>
               <div className="flex flex-col gap-px" style={{ background: '#1e1e1e' }}>
@@ -90,10 +90,10 @@ export function LoginPage() {
                     onMouseEnter={e => (e.currentTarget.style.background = '#111')}
                     onMouseLeave={e => (e.currentTarget.style.background = '#0a0a0a')}
                   >
-                    <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#fff', marginBottom: 3 }}>
+                    <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 11, fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#fff', marginBottom: 3 }}>
                       {user.name}
                     </div>
-                    <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.05em', color: 'rgba(255,255,255,0.3)' }}>
+                    <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.05em', color: 'rgba(255,255,255,0.3)' }}>
                       {user.email}
                     </div>
                   </motion.button>

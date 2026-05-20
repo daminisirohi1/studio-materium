@@ -32,7 +32,7 @@ export function CategoriesPage() {
           {Object.entries(groups).map(([groupName, groupCats]) => (
             <div key={groupName} style={{ marginBottom: 52 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginBottom: 24 }}>
-                <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#c9a96e', whiteSpace: 'nowrap' }}>
+                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#c9a96e', whiteSpace: 'nowrap' }}>
                   {groupName}
                 </p>
                 <div style={{ flex: 1, height: 1, background: '#1a1a1a' }} />
@@ -59,10 +59,10 @@ export function CategoriesPage() {
                       />
                       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 55%)' }} />
                       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '18px 16px' }}>
-                        <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#fff', marginBottom: 4 }}>
+                        <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#fff', marginBottom: 4 }}>
                           {cat.name}
                         </div>
-                        <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 7, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.4)', lineHeight: 1.6 }}>
+                        <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.4)', lineHeight: 1.6 }}>
                           {cat.tag}
                         </div>
                       </div>
