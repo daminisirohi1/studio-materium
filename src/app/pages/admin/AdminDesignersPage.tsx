@@ -1,22 +1,26 @@
 import { AppNav } from '../../components/AppNav';
 import { mockUsers, statusLabels, statusColors } from '../../../data/mockData';
 import { useWardrobeStore } from '../../../store/wardrobeStore';
+import { useBreakpoint } from '../../../hooks/useBreakpoint';
 import { motion } from 'motion/react';
 
 export function AdminDesignersPage() {
   const { projects } = useWardrobeStore();
   const designers = mockUsers.filter(u => u.role === 'designer');
+  const { isMobile, isTablet } = useBreakpoint();
+
+  const gridCols = isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)';
 
   return (
     <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#fff' }}>
       <AppNav />
-      <div style={{ paddingTop: 96, paddingLeft: 80, paddingRight: 80, paddingBottom: 80 }}>
+      <div style={{ paddingTop: 96, paddingLeft: 'clamp(16px, 5vw, 80px)', paddingRight: 'clamp(16px, 5vw, 80px)', paddingBottom: 80 }}>
         <div style={{ marginBottom: 48 }}>
           <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 10 }}>Admin</p>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 300, letterSpacing: '0.08em', color: '#fff' }}>Designers</h1>
+          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isMobile ? 28 : 36, fontWeight: 300, letterSpacing: '0.08em', color: '#fff' }}>Designers</h1>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1, background: designers.length > 0 ? '#1e1e1e' : 'transparent' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: gridCols, gap: 1, background: designers.length > 0 ? '#1e1e1e' : 'transparent' }}>
           {designers.map((d, i) => {
             const designerProjects = projects.filter(p => p.designerId === d.id);
             const active = designerProjects.filter(p => p.status === 'configuring' || p.status === 'revisions').length;
@@ -40,8 +44,8 @@ export function AdminDesignersPage() {
                   <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 6 }}>
                     {designerProjects.slice(0, 3).map(p => (
                       <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.06em' }}>{p.name.split('—')[0].trim()}</span>
-                        <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.15em', textTransform: 'uppercase', color: statusColors[p.status] }}>{statusLabels[p.status]}</span>
+                        <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.06em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginRight: 8 }}>{p.name.split('—')[0].trim()}</span>
+                        <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.15em', textTransform: 'uppercase', color: statusColors[p.status], flexShrink: 0 }}>{statusLabels[p.status]}</span>
                       </div>
                     ))}
                   </div>

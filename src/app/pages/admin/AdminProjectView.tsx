@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { AppNav } from '../../components/AppNav';
 import { useWardrobeStore } from '../../../store/wardrobeStore';
 import { getUserById, getClientProfile, statusLabels, statusColors } from '../../../data/mockData';
+import { useBreakpoint } from '../../../hooks/useBreakpoint';
 import type { WardrobeItem, WardrobeZone } from '../../../types';
 
 const ZONES: { id: WardrobeZone; label: string }[] = [
@@ -27,6 +28,7 @@ export function AdminProjectView() {
   const navigate = useNavigate();
   const { projects, items, updateProjectStatus } = useWardrobeStore();
   const [expandedZone, setExpandedZone] = useState<WardrobeZone | null>('hanging-full');
+  const { isMobile, isTablet } = useBreakpoint();
 
   const project = projects.find(p => p.id === projectId);
   if (!project) return <div style={{ color: '#fff', padding: 80 }}>Project not found.</div>;
@@ -50,14 +52,17 @@ export function AdminProjectView() {
     { label: 'Mark Finalized',  next: 'finalized',   condition: project.status === 'review' || project.status === 'revisions' },
   ];
 
+  const isNarrow = isMobile || isTablet;
+  const bannerPadding = isMobile ? '24px 16px' : isTablet ? '32px 32px' : '40px 80px';
+
   return (
     <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#fff' }}>
       <AppNav />
 
       <div style={{ paddingTop: 80 }}>
         {/* Banner */}
-        <div style={{ padding: '40px 80px', borderBottom: '1px solid #1a1a1a', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <div>
+        <div style={{ padding: bannerPadding, borderBottom: '1px solid #1a1a1a', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: isNarrow ? 'wrap' : 'nowrap', gap: isNarrow ? 16 : 0 }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
               <button onClick={() => navigate('/admin')} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer' }}>
                 ← Admin
@@ -67,7 +72,7 @@ export function AdminProjectView() {
                 {statusLabels[project.status]}
               </span>
             </div>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 300, letterSpacing: '0.08em', color: '#fff', marginBottom: 6 }}>
+            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isMobile ? 22 : 28, fontWeight: 300, letterSpacing: '0.08em', color: '#fff', marginBottom: 6 }}>
               {project.name}
             </h1>
             <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.06em', color: 'rgba(255,255,255,0.35)' }}>
@@ -75,18 +80,18 @@ export function AdminProjectView() {
             </p>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-end' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: isNarrow ? 'flex-start' : 'flex-end' }}>
             <div style={{ display: 'flex', gap: 20, marginBottom: 8 }}>
-              <div style={{ textAlign: 'right' }}>
+              <div style={{ textAlign: isNarrow ? 'left' : 'right' }}>
                 <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, color: '#2d7a5c' }}>{approved}</div>
                 <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Approved</div>
               </div>
-              <div style={{ textAlign: 'right' }}>
+              <div style={{ textAlign: isNarrow ? 'left' : 'right' }}>
                 <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, color: '#c9a96e' }}>{flagged}</div>
                 <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Flagged</div>
               </div>
             </div>
-            <div style={{ display: 'flex', gap: 8 }}>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               {STATUS_ACTIONS.filter(a => a.condition).map(a => (
                 <button key={a.next} onClick={() => updateProjectStatus(project.id, a.next)}
                   style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: 'none', color: 'rgba(255,255,255,0.5)', border: '1px solid #333', padding: '8px 14px', cursor: 'pointer', transition: 'all 0.2s' }}
@@ -99,9 +104,9 @@ export function AdminProjectView() {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', minHeight: 'calc(100vh - 220px)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isNarrow ? '1fr' : '320px 1fr', minHeight: 'calc(100vh - 220px)' }}>
           {/* Left — client profile */}
-          <div style={{ borderRight: '1px solid #1a1a1a', padding: '40px 32px' }}>
+          <div style={{ borderRight: isNarrow ? 'none' : '1px solid #1a1a1a', borderBottom: isNarrow ? '1px solid #1a1a1a' : 'none', padding: isMobile ? '24px 16px' : isTablet ? '28px 24px' : '40px 32px' }}>
             <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', marginBottom: 20 }}>Client Profile</p>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 400, color: '#fff', marginBottom: 4 }}>{client?.name}</h3>
             <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.3)', marginBottom: 28 }}>{client?.email}</p>
@@ -136,7 +141,7 @@ export function AdminProjectView() {
           </div>
 
           {/* Right — items by zone (read-only) */}
-          <div style={{ padding: '40px 48px' }}>
+          <div style={{ padding: isMobile ? '24px 16px' : isTablet ? '28px 24px' : '40px 48px' }}>
             <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', marginBottom: 24 }}>Wardrobe Configuration</p>
 
             {ZONES.map(zone => {
@@ -170,9 +175,9 @@ export function AdminProjectView() {
                       >
                         <div style={{ padding: '0 24px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
                           {zoneItems.map(item => (
-                            <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid #1a1a1a' }}>
+                            <div key={item.id} style={{ display: 'flex', alignItems: isMobile ? 'flex-start' : 'center', gap: 14, padding: '14px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid #1a1a1a', flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
                               <img src={item.img} alt={item.name} style={{ width: 52, height: 72, objectFit: 'cover', flexShrink: 0 }} referrerPolicy="no-referrer" onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
-                              <div style={{ flex: 1 }}>
+                              <div style={{ flex: 1, minWidth: 0 }}>
                                 <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fff', marginBottom: 3 }}>{item.name}</div>
                                 <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.06em', color: 'rgba(255,255,255,0.4)', marginBottom: 2 }}>{item.variant} · {item.material}</div>
                                 <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.3)' }}>{item.brand} · Qty {item.quantity}</div>

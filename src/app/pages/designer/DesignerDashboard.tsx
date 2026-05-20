@@ -5,6 +5,7 @@ import { AppNav } from '../../components/AppNav';
 import { useAuthStore } from '../../../store/authStore';
 import { useWardrobeStore } from '../../../store/wardrobeStore';
 import { getUserById, statusLabels, statusColors } from '../../../data/mockData';
+import { useBreakpoint } from '../../../hooks/useBreakpoint';
 
 const STATUS_ORDER: Record<string, number> = { configuring: 0, review: 1, revisions: 2, briefing: 3, finalized: 4 };
 
@@ -12,6 +13,7 @@ export function DesignerDashboard() {
   const navigate = useNavigate();
   const user = useAuthStore(s => s.user);
   const { projects, items, setActiveProject } = useWardrobeStore();
+  const { isMobile, isTablet } = useBreakpoint();
 
   const myProjects = projects
     .filter(p => p.designerId === user?.id)
@@ -30,18 +32,20 @@ export function DesignerDashboard() {
     }
   };
 
+  const gridCols = isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(auto-fill, minmax(300px, 1fr))';
+
   return (
     <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#fff' }}>
       <AppNav />
 
-      <div style={{ paddingTop: 96, paddingLeft: 'clamp(20px, 5vw, 80px)', paddingRight: 'clamp(20px, 5vw, 80px)', paddingBottom: 80 }}>
+      <div style={{ paddingTop: 96, paddingLeft: 'clamp(16px, 5vw, 80px)', paddingRight: 'clamp(16px, 5vw, 80px)', paddingBottom: 80 }}>
 
         {/* Header */}
         <div style={{ marginBottom: 48 }}>
           <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 10 }}>
             {user?.name}
           </p>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 300, letterSpacing: '0.08em', color: '#fff' }}>
+          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isMobile ? 28 : isTablet ? 32 : 36, fontWeight: 300, letterSpacing: '0.08em', color: '#fff' }}>
             My Projects
           </h1>
         </div>
@@ -54,7 +58,7 @@ export function DesignerDashboard() {
             </p>
           </div>
         )}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 1, background: myProjects.length > 0 ? '#1e1e1e' : 'transparent' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: gridCols, gap: 1, background: myProjects.length > 0 ? '#1e1e1e' : 'transparent' }}>
           {myProjects.map((p, i) => {
             const client = getUserById(p.clientId);
             const projectItems = items.filter(i => i.projectId === p.id);

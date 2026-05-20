@@ -1,0 +1,46 @@
+/* Responsive overrides — media-query rules for things that can't be done via the useBreakpoint hook */
+
+/* ── AppNav ─────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .appnav-project-name {
+    display: none !important;
+  }
+}
+
+/* ── WardrobePanel bottom-sheet on mobile ───────────────────────────────── */
+@media (max-width: 767px) {
+  .wardrobe-panel-motion {
+    top: auto !important;
+    right: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    max-height: 85vh !important;
+    border-radius: 16px 16px 0 0 !important;
+  }
+}
+
+/* ── ReviewPage — action buttons full-width on mobile ───────────────────── */
+@media (max-width: 767px) {
+  .review-actions {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  .review-actions button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+/* ── AdminDashboard — project table rows become cards on mobile ──────────── */
+@media (max-width: 767px) {
+  .admin-table-header {
+    display: none !important;
+  }
+  .admin-table-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding: 20px 16px !important;
+  }
+}

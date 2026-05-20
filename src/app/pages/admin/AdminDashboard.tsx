@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { AppNav } from '../../components/AppNav';
 import { useWardrobeStore } from '../../../store/wardrobeStore';
 import { mockUsers, mockWardrobeItems, statusLabels, statusColors, getUserById } from '../../../data/mockData';
+import { useBreakpoint } from '../../../hooks/useBreakpoint';
 
 const STAT_STYLE: React.CSSProperties = {
   background: '#0f0f0f',
@@ -13,6 +14,7 @@ const STAT_STYLE: React.CSSProperties = {
 export function AdminDashboard() {
   const navigate = useNavigate();
   const projects = useWardrobeStore(s => s.projects);
+  const { isMobile, isTablet } = useBreakpoint();
 
   const stats = [
     { label: 'Active Projects', value: projects.filter(p => p.status !== 'finalized').length },
@@ -21,27 +23,29 @@ export function AdminDashboard() {
     { label: 'Items Configured', value: mockWardrobeItems.length },
   ];
 
+  const statsGridCols = isMobile ? 'repeat(2, 1fr)' : isTablet ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)';
+
   return (
     <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#fff' }}>
       <AppNav />
 
-      <div style={{ paddingTop: 96, paddingLeft: 80, paddingRight: 80, paddingBottom: 80 }}>
+      <div style={{ paddingTop: 96, paddingLeft: 'clamp(16px, 5vw, 80px)', paddingRight: 'clamp(16px, 5vw, 80px)', paddingBottom: 80 }}>
 
         {/* Page header */}
         <div style={{ marginBottom: 48 }}>
           <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 10 }}>
             Admin
           </p>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 300, letterSpacing: '0.08em', color: '#fff' }}>
+          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isMobile ? 28 : isTablet ? 32 : 36, fontWeight: 300, letterSpacing: '0.08em', color: '#fff' }}>
             Dashboard
           </h1>
         </div>
 
         {/* Stats */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, background: '#1e1e1e', marginBottom: 56 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: statsGridCols, gap: 1, background: '#1e1e1e', marginBottom: 56 }}>
           {stats.map((s, i) => (
             <motion.div key={s.label} style={STAT_STYLE} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}>
-              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 42, fontWeight: 300, color: '#fff', lineHeight: 1, marginBottom: 8 }}>
+              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isMobile ? 32 : 42, fontWeight: 300, color: '#fff', lineHeight: 1, marginBottom: 8 }}>
                 {s.value}
               </div>
               <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>
@@ -60,14 +64,16 @@ export function AdminDashboard() {
         </div>
 
         <div style={{ border: '1px solid #1e1e1e' }}>
-          {/* Table header */}
-          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 100px', borderBottom: '1px solid #1e1e1e', padding: '12px 24px' }}>
-            {['Project', 'Client', 'Designer', 'Status', ''].map(h => (
-              <span key={h} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>
-                {h}
-              </span>
-            ))}
-          </div>
+          {/* Table header — hidden on mobile via CSS class */}
+          {!isMobile && (
+            <div className="admin-table-header" style={{ display: 'grid', gridTemplateColumns: isTablet ? '2fr 1fr 1fr 100px' : '2fr 1fr 1fr 1fr 100px', borderBottom: '1px solid #1e1e1e', padding: '12px 24px' }}>
+              {(isTablet ? ['Project', 'Client', 'Status', ''] : ['Project', 'Client', 'Designer', 'Status', '']).map(h => (
+                <span key={h} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>
+                  {h}
+                </span>
+              ))}
+            </div>
+          )}
 
           {projects.length === 0 && (
             <div style={{ padding: '64px 24px', textAlign: 'center' }}>
@@ -81,6 +87,33 @@ export function AdminDashboard() {
             const client = getUserById(p.clientId);
             const designer = getUserById(p.designerId);
             const items = mockWardrobeItems.filter(w => w.projectId === p.id);
+
+            if (isMobile) {
+              return (
+                <motion.div
+                  key={p.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: i * 0.04 }}
+                  onClick={() => navigate(`/admin/project/${p.id}`)}
+                  className="admin-table-row"
+                  style={{ padding: '20px 16px', borderBottom: '1px solid #111', cursor: 'pointer', transition: 'background 0.2s', display: 'flex', flexDirection: 'column', gap: 8 }}
+                  onMouseEnter={e => (e.currentTarget.style.background = '#0f0f0f')}
+                  onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 11, fontWeight: 500, letterSpacing: '0.08em', color: '#fff' }}>{p.name}</div>
+                    <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: statusColors[p.status], border: `1px solid ${statusColors[p.status]}40`, padding: '3px 8px', flexShrink: 0, marginLeft: 8 }}>
+                      {statusLabels[p.status]}
+                    </span>
+                  </div>
+                  <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.3)' }}>
+                    {items.length} items · {client?.name} · {designer?.name}
+                  </div>
+                </motion.div>
+              );
+            }
+
             return (
               <motion.div
                 key={p.id}
@@ -88,7 +121,7 @@ export function AdminDashboard() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: i * 0.04 }}
                 onClick={() => navigate(`/admin/project/${p.id}`)}
-                style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 100px', padding: '20px 24px', borderBottom: '1px solid #111', cursor: 'pointer', transition: 'background 0.2s' }}
+                style={{ display: 'grid', gridTemplateColumns: isTablet ? '2fr 1fr 1fr 100px' : '2fr 1fr 1fr 1fr 100px', padding: '20px 24px', borderBottom: '1px solid #111', cursor: 'pointer', transition: 'background 0.2s' }}
                 onMouseEnter={e => (e.currentTarget.style.background = '#0f0f0f')}
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
               >
@@ -103,9 +136,11 @@ export function AdminDashboard() {
                 <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.55)', alignSelf: 'center' }}>
                   {client?.name}
                 </div>
-                <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.55)', alignSelf: 'center' }}>
-                  {designer?.name}
-                </div>
+                {!isTablet && (
+                  <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.55)', alignSelf: 'center' }}>
+                    {designer?.name}
+                  </div>
+                )}
                 <div style={{ alignSelf: 'center' }}>
                   <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: statusColors[p.status], border: `1px solid ${statusColors[p.status]}40`, padding: '3px 8px' }}>
                     {statusLabels[p.status]}

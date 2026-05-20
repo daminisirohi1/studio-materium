@@ -32,7 +32,8 @@ export function LoginPage() {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="w-full max-w-xl px-8"
+        className="w-full max-w-xl"
+        style={{ padding: '0 clamp(16px, 5vw, 32px)' }}
       >
         {/* Logo */}
         <div className="text-center mb-16">

@@ -6,6 +6,7 @@ import { AppNav } from '../../components/AppNav';
 import { useWardrobeStore } from '../../../store/wardrobeStore';
 import { useNotificationStore } from '../../../store/notificationStore';
 import { getUserById, getClientProfile, statusLabels, statusColors } from '../../../data/mockData';
+import { useBreakpoint } from '../../../hooks/useBreakpoint';
 import type { WardrobeItem, WardrobeZone } from '../../../types';
 
 const ZONES: { id: WardrobeZone; label: string }[] = [
@@ -37,6 +38,7 @@ export function ProjectView() {
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [noteItemId, setNoteItemId] = useState<string | null>(null);
   const [noteText, setNoteText] = useState('');
+  const { isMobile, isTablet } = useBreakpoint();
 
   const project = projects.find(p => p.id === projectId);
   if (!project) return <div style={{ color: '#fff', padding: 80 }}>Project not found.</div>;
@@ -66,6 +68,10 @@ export function ProjectView() {
     setNoteText('');
   };
 
+  const isNarrow = isMobile || isTablet;
+  const bannerPadding = isMobile ? '24px 16px' : isTablet ? '32px 32px' : '40px 80px';
+  const sidebarWidth = isMobile ? '100%' : isTablet ? '260px' : '320px';
+
   return (
     <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#fff' }}>
       <AppNav />
@@ -73,9 +79,9 @@ export function ProjectView() {
       <div style={{ paddingTop: 80 }}>
 
         {/* Project banner */}
-        <div style={{ padding: '40px 80px', borderBottom: '1px solid #1a1a1a', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+        <div style={{ padding: bannerPadding, borderBottom: '1px solid #1a1a1a', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: isMobile ? 'wrap' : 'nowrap', gap: isMobile ? 16 : 0 }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12, flexWrap: 'wrap' }}>
               <button onClick={() => navigate('/designer')} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer' }}>
                 ← Projects
               </button>
@@ -84,13 +90,12 @@ export function ProjectView() {
                 {statusLabels[project.status]}
               </span>
             </div>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 300, letterSpacing: '0.08em', color: '#fff', marginBottom: 6 }}>
+            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isMobile ? 22 : 28, fontWeight: 300, letterSpacing: '0.08em', color: '#fff', marginBottom: 6 }}>
               {project.name}
             </h1>
             <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.35)', marginBottom: 12 }}>
               {client?.name} · {projectItems.length} items configured
             </p>
-            {/* Zone fill progress */}
             {(() => {
               const filledZones = ZONES.filter(z => itemsByZone[z.id]?.length > 0).length;
               return (
@@ -107,7 +112,7 @@ export function ProjectView() {
               );
             })()}
           </div>
-          <div className="flex gap-3">
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', flexShrink: 0 }}>
             {(project.status === 'configuring' || project.status === 'revisions') && (
               <>
                 <button onClick={handleAddItems} className="flex items-center gap-2" style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', background: 'none', color: '#fff', border: '1px solid #333', padding: '10px 18px', cursor: 'pointer', transition: 'all 0.3s' }}
@@ -131,10 +136,10 @@ export function ProjectView() {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', minHeight: 'calc(100vh - 200px)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isNarrow ? '1fr' : `${sidebarWidth} 1fr`, minHeight: 'calc(100vh - 200px)' }}>
 
           {/* Left — client profile */}
-          <div style={{ borderRight: '1px solid #1a1a1a', padding: '40px 32px' }}>
+          <div style={{ borderRight: isNarrow ? 'none' : '1px solid #1a1a1a', borderBottom: isNarrow ? '1px solid #1a1a1a' : 'none', padding: isMobile ? '24px 16px' : isTablet ? '28px 24px' : '40px 32px' }}>
             <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', marginBottom: 20 }}>Client Profile</p>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 400, color: '#fff', marginBottom: 4 }}>{client?.name}</h3>
             <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.3)', marginBottom: 28 }}>{client?.email}</p>
@@ -169,7 +174,7 @@ export function ProjectView() {
           </div>
 
           {/* Right — configured items by zone */}
-          <div style={{ padding: '40px 48px' }}>
+          <div style={{ padding: isMobile ? '24px 16px' : isTablet ? '28px 24px' : '40px 48px' }}>
             <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', marginBottom: 24 }}>Wardrobe Configuration</p>
 
             {ZONES.map(zone => {
@@ -203,9 +208,9 @@ export function ProjectView() {
                       >
                         <div style={{ padding: '0 24px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
                           {zoneItems.map(item => (
-                            <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', background: STATUS_BG[item.status], border: `1px solid ${STATUS_DOT[item.status]}20` }}>
+                            <div key={item.id} style={{ display: 'flex', alignItems: isMobile ? 'flex-start' : 'center', gap: 14, padding: '14px 16px', background: STATUS_BG[item.status], border: `1px solid ${STATUS_DOT[item.status]}20`, flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
                               <img src={item.img} alt={item.name} style={{ width: 52, height: 72, objectFit: 'cover', flexShrink: 0 }} referrerPolicy="no-referrer" />
-                              <div style={{ flex: 1 }}>
+                              <div style={{ flex: 1, minWidth: 0 }}>
                                 <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fff', marginBottom: 3 }}>{item.name}</div>
                                 <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.06em', color: 'rgba(255,255,255,0.4)', marginBottom: 2 }}>{item.variant} · {item.material}</div>
                                 <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.3)' }}>{item.brand} · Qty {item.quantity}</div>
@@ -224,14 +229,14 @@ export function ProjectView() {
                                   </button>
                                 )}
                                 {noteItemId === item.id && (
-                                  <div style={{ display: 'flex', gap: 6, marginTop: 6 }}>
+                                  <div style={{ display: 'flex', gap: 6, marginTop: 6, flexWrap: 'wrap' }}>
                                     <input
                                       autoFocus
                                       value={noteText}
                                       onChange={e => setNoteText(e.target.value)}
                                       placeholder="Response to client…"
                                       onKeyDown={e => { if (e.key === 'Enter') saveDesignerNote(item.id); if (e.key === 'Escape') { setNoteItemId(null); setNoteText(''); } }}
-                                      style={{ flex: 1, background: '#111', border: '1px solid #2a2a2a', color: '#fff', padding: '5px 8px', fontFamily: "'Poppins', sans-serif", fontSize: 9, outline: 'none' }}
+                                      style={{ flex: 1, minWidth: 120, background: '#111', border: '1px solid #2a2a2a', color: '#fff', padding: '5px 8px', fontFamily: "'Poppins', sans-serif", fontSize: 9, outline: 'none' }}
                                     />
                                     <button onClick={() => saveDesignerNote(item.id)} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, background: '#c9a96e', color: '#000', border: 'none', padding: '4px 10px', cursor: 'pointer' }}>Save</button>
                                     <button onClick={() => { setNoteItemId(null); setNoteText(''); }} style={{ background: 'none', border: '1px solid #333', color: 'rgba(255,255,255,0.3)', padding: '4px 6px', cursor: 'pointer', fontSize: 10 }}>✕</button>

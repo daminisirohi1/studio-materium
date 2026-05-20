@@ -4,12 +4,14 @@ import { AppNav } from '../../components/AppNav';
 import { useAuthStore } from '../../../store/authStore';
 import { useWardrobeStore } from '../../../store/wardrobeStore';
 import { getUserById, statusLabels, statusColors } from '../../../data/mockData';
+import { useBreakpoint } from '../../../hooks/useBreakpoint';
 import { CheckCircle, Flag } from 'lucide-react';
 
 export function ClientDashboard() {
   const navigate = useNavigate();
   const user = useAuthStore(s => s.user);
   const { projects, items } = useWardrobeStore();
+  const { isMobile } = useBreakpoint();
 
   const myProjects = projects.filter(p => p.clientId === user?.id);
 
@@ -17,13 +19,13 @@ export function ClientDashboard() {
     <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#fff' }}>
       <AppNav />
 
-      <div style={{ paddingTop: 96, paddingLeft: 'clamp(20px, 5vw, 80px)', paddingRight: 'clamp(20px, 5vw, 80px)', paddingBottom: 80 }}>
+      <div style={{ paddingTop: 96, paddingLeft: 'clamp(16px, 5vw, 80px)', paddingRight: 'clamp(16px, 5vw, 80px)', paddingBottom: 80 }}>
 
         <div style={{ marginBottom: 56 }}>
           <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 10 }}>
             Welcome back
           </p>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 40, fontWeight: 300, letterSpacing: '0.08em', color: '#fff' }}>
+          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isMobile ? 32 : 40, fontWeight: 300, letterSpacing: '0.08em', color: '#fff' }}>
             {user?.name?.split(' ')[0]}
           </h1>
         </div>
@@ -44,12 +46,12 @@ export function ClientDashboard() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }}
                 onClick={() => isViewable && navigate(`/client/review/${p.id}`)}
-                style={{ background: '#0a0a0a', padding: '36px 40px', cursor: isViewable ? 'pointer' : 'default', display: 'grid', gridTemplateColumns: '1fr auto', gap: 32, alignItems: 'center', transition: 'background 0.2s' }}
+                style={{ background: '#0a0a0a', padding: isMobile ? '24px 16px' : '36px 40px', cursor: isViewable ? 'pointer' : 'default', display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'space-between', gap: isMobile ? 20 : 32, alignItems: isMobile ? 'flex-start' : 'center', transition: 'background 0.2s' }}
                 onMouseEnter={e => { if (isViewable) e.currentTarget.style.background = '#0f0f0f'; }}
                 onMouseLeave={e => (e.currentTarget.style.background = '#0a0a0a')}
               >
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12, flexWrap: 'wrap' }}>
                     <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.25em', textTransform: 'uppercase', color: statusColors[p.status], border: `1px solid ${statusColors[p.status]}40`, padding: '3px 8px' }}>
                       {statusLabels[p.status]}
                     </span>
@@ -60,7 +62,7 @@ export function ClientDashboard() {
                     )}
                   </div>
 
-                  <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 400, letterSpacing: '0.08em', color: isViewable ? '#fff' : 'rgba(255,255,255,0.4)', marginBottom: 6 }}>
+                  <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isMobile ? 18 : 22, fontWeight: 400, letterSpacing: '0.08em', color: isViewable ? '#fff' : 'rgba(255,255,255,0.4)', marginBottom: 6 }}>
                     {p.name}
                   </h2>
                   <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.06em', color: 'rgba(255,255,255,0.35)' }}>
@@ -73,7 +75,7 @@ export function ClientDashboard() {
                   )}
                 </div>
 
-                <div style={{ display: 'flex', gap: 24, textAlign: 'center' }}>
+                <div style={{ display: 'flex', gap: isMobile ? 16 : 24, textAlign: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
                   {[
                     { icon: <CheckCircle size={14} color="#2d7a5c" />, value: approved, label: 'Approved' },
                     { icon: <Flag size={14} color="#c9a96e" />, value: flagged, label: 'Flagged' },
@@ -87,7 +89,7 @@ export function ClientDashboard() {
                   {isViewable && (
                     <button
                       onClick={() => navigate(`/client/review/${p.id}`)}
-                      style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', background: '#fff', color: '#000', border: 'none', padding: '10px 18px', cursor: 'pointer', transition: 'background 0.25s', alignSelf: 'center', whiteSpace: 'nowrap' }}
+                      style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', background: '#fff', color: '#000', border: 'none', padding: '10px 18px', cursor: 'pointer', transition: 'background 0.25s', whiteSpace: 'nowrap' }}
                       onMouseEnter={e => (e.currentTarget.style.background = '#c9a96e')}
                       onMouseLeave={e => (e.currentTarget.style.background = '#fff')}
                     >

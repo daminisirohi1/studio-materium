@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
-import { Check, Plus, Minus } from 'lucide-react';
+import { Check, Plus, Minus, ArrowLeft } from 'lucide-react';
 import { WardrobeNav } from '../components/WardrobeNav';
 import { WardrobePanel } from '../components/WardrobePanel';
 import { StorageAccordion, RetailAccordion } from '../components/StorageRetailPanels';
 import { CATS, getProductById } from '../../data/catalog';
 import { useAuthStore } from '../../store/authStore';
 import { useWardrobeStore } from '../../store/wardrobeStore';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 import type { Gender, WardrobeZone, CatalogItem, CatalogProduct } from '../../types';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -149,10 +150,12 @@ export function TypePage() {
   const navigate = useNavigate();
   const user = useAuthStore(s => s.user);
   const { activeProject, addItem, items } = useWardrobeStore();
+  const { isMobile, isTablet } = useBreakpoint();
 
   const [config, setConfig] = useState<ConfigState | null>(null);
   const [wardrobePanelOpen, setWardrobePanelOpen] = useState(false);
   const [added, setAdded] = useState(false);
+  const [mobileView, setMobileView] = useState<'list' | 'detail'>('list');
 
   const gender = (searchParams.get('gender') || 'men') as Gender;
   const id = categoryId ?? '';
@@ -181,6 +184,7 @@ export function TypePage() {
       zone: defaultZone(id),
       qty: 1,
     });
+    if (isMobile || isTablet) setMobileView('detail');
   };
 
   const patch = (p: Partial<ConfigState>) => setConfig(prev => prev ? { ...prev, ...p } : prev);
@@ -212,252 +216,279 @@ export function TypePage() {
     setTimeout(() => setAdded(false), 2400);
   };
 
+  const isNarrow = isMobile || isTablet;
+
+  const leftWidth = isMobile ? '100%' : isTablet ? '40%' : '40%';
+  const rightWidth = isMobile ? '100%' : isTablet ? '60%' : '60%';
+
+  const leftPanel = (
+    <div style={{ flex: isNarrow ? 'none' : '0 0 40%', width: isNarrow ? leftWidth : undefined, overflowY: 'auto', borderRight: isNarrow ? 'none' : '1px solid #1a1a1a', display: isNarrow && mobileView === 'detail' ? 'none' : 'block' }}>
+
+      {/* Compact banner */}
+      <div style={{ position: 'relative', height: 180, overflow: 'hidden' }}>
+        <img src={product.banner} alt={cat?.name} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.35)' }} referrerPolicy="no-referrer" />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 20%, rgba(8,8,8,1) 100%)' }} />
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px 28px' }}>
+          <button onClick={() => navigate(`/wardrobe/categories?gender=${gender}`)} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 6, display: 'block' }}>
+            ← {gender.charAt(0).toUpperCase() + gender.slice(1)}
+          </button>
+          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 300, letterSpacing: '0.1em', color: '#fff' }}>{cat?.name ?? id}</h1>
+        </div>
+      </div>
+
+      {/* Sections */}
+      <div style={{ padding: '28px 20px 0' }}>
+        {product.sections.map((section, si) => (
+          <div key={section.title} style={{ marginBottom: 36 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 15, fontWeight: 400, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fff', whiteSpace: 'nowrap' }}>{section.title}</h2>
+              <div style={{ flex: 1, height: 1, background: '#1a1a1a' }} />
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 2 }}>
+              {section.items.map((item, ii) => {
+                const isSelected = config?.item === item;
+                return (
+                  <motion.button
+                    key={`${si}-${ii}`}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: ii * 0.04 }}
+                    onClick={() => handleSelectItem(section.title, item)}
+                    style={{ padding: 0, background: 'none', border: `2px solid ${isSelected ? '#c9a96e' : 'transparent'}`, cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.2s' }}
+                  >
+                    <div style={{ position: 'relative', aspectRatio: '3/4', overflow: 'hidden' }}>
+                      <motion.img
+                        src={item.img} alt={item.name}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', filter: isSelected ? 'brightness(0.85)' : 'brightness(0.6)' }}
+                        whileHover={{ scale: 1.05 }} transition={{ duration: 0.4 }}
+                        referrerPolicy="no-referrer"
+                      />
+                      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 55%)' }} />
+                      {isSelected && (
+                        <div style={{ position: 'absolute', top: 6, right: 6, width: 18, height: 18, background: '#c9a96e', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Check size={9} color="#000" />
+                        </div>
+                      )}
+                      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '10px 8px' }}>
+                        <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7.5, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: isSelected ? '#c9a96e' : '#fff', marginBottom: 2 }}>{item.name}</div>
+                        {item.sub && <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 6, color: 'rgba(255,255,255,0.35)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.sub.split(' · ').slice(0, 2).join(' · ')}</div>}
+                      </div>
+                    </div>
+                  </motion.button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ height: 40 }} />
+    </div>
+  );
+
+  const rightPanel = (
+    <div style={{ flex: isNarrow ? 'none' : '0 0 60%', width: isNarrow ? rightWidth : undefined, overflowY: 'auto', background: '#0a0a0a', display: isNarrow && mobileView === 'list' ? 'none' : 'block' }}>
+      <AnimatePresence mode="wait">
+        {!config ? (
+          <motion.div
+            key="empty"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, padding: 48 }}
+          >
+            <div style={{ position: 'relative', width: '100%', height: 320, overflow: 'hidden' }}>
+              <img src={product.banner} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.25)' }} referrerPolicy="no-referrer" />
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
+                <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontSize: 22, fontWeight: 300, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em' }}>
+                  Select an item to configure
+                </p>
+                <div style={{ width: 1, height: 40, background: 'linear-gradient(to bottom, rgba(201,169,110,0.4), transparent)' }} />
+              </div>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div key={config.item.name} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+
+            {/* Back button on mobile/tablet */}
+            {isNarrow && (
+              <div style={{ padding: '16px 20px 0' }}>
+                <button
+                  onClick={() => setMobileView('list')}
+                  style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.4)', fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', padding: 0 }}
+                >
+                  <ArrowLeft size={12} /> Back to list
+                </button>
+              </div>
+            )}
+
+            {/* Hero image */}
+            <div style={{ position: 'relative', height: isNarrow ? 260 : 360, overflow: 'hidden' }}>
+              <img src={config.item.img} alt={config.item.name} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.65)' }} referrerPolicy="no-referrer" />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 55%)' }} />
+              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '28px 36px' }}>
+                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#c9a96e', marginBottom: 6 }}>{config.sectionTitle}</p>
+                <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isNarrow ? 26 : 36, fontWeight: 300, letterSpacing: '0.08em', color: '#fff' }}>{config.item.name}</h2>
+                {config.item.sub && <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.35)', marginTop: 6 }}>{config.item.sub}</p>}
+              </div>
+            </div>
+
+            {/* Options */}
+            <div style={{ padding: isNarrow ? '20px 20px' : '28px 36px' }}>
+
+              {/* Variant */}
+              {config.item.sub && config.item.sub.split(' · ').length > 1 && (
+                <div style={{ marginBottom: 28 }}>
+                  <RowLabel label="Variant" />
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                    {config.item.sub.split(' · ').map(v => (
+                      <button key={v} onClick={() => patch({ variant: v })} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7.5, letterSpacing: '0.14em', textTransform: 'uppercase', padding: '7px 14px', background: config.variant === v ? '#fff' : 'none', color: config.variant === v ? '#000' : 'rgba(255,255,255,0.4)', border: `1px solid ${config.variant === v ? '#fff' : '#2a2a2a'}`, cursor: 'pointer', transition: 'all 0.2s' }}>
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Material */}
+              {config.item.mat && (
+                <div style={{ marginBottom: 28 }}>
+                  <RowLabel label="Material" />
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    {config.item.mat.split(', ').map(m => (
+                      <button key={m} onClick={() => patch({ material: m })} style={{ padding: 0, background: 'none', border: `2px solid ${config.material === m ? '#c9a96e' : 'transparent'}`, cursor: 'pointer', position: 'relative', transition: 'border-color 0.2s' }}>
+                        <div style={{ width: 90, height: 90, overflow: 'hidden' }}>
+                          <img src={getMaterialImg(m)} alt={m} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: config.material === m ? 'brightness(0.9)' : 'brightness(0.45)', transition: 'filter 0.2s' }} referrerPolicy="no-referrer" />
+                        </div>
+                        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(0,0,0,0.72)', padding: '3px 4px' }}>
+                          <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 5.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: config.material === m ? '#c9a96e' : 'rgba(255,255,255,0.5)', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.split(' ').slice(-1)[0]}</p>
+                        </div>
+                        {config.material === m && (
+                          <div style={{ position: 'absolute', top: 4, right: 4, width: 16, height: 16, background: '#c9a96e', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <Check size={9} color="#000" />
+                          </div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                  {config.material && <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.35)', marginTop: 8 }}>{config.material}</p>}
+                </div>
+              )}
+
+              {/* Colour */}
+              {config.item.col && (
+                <div style={{ marginBottom: 28 }}>
+                  <RowLabel label="Colour" />
+                  <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                    {config.item.col.split(',').map(c => (
+                      <button key={c} onClick={() => patch({ color: c })} title={c} style={{ width: 40, height: 40, borderRadius: '50%', background: c, border: 'none', cursor: 'pointer', outline: config.color === c ? '2px solid #c9a96e' : '1px solid rgba(255,255,255,0.1)', outlineOffset: config.color === c ? 3 : 0, transition: 'outline 0.2s, outline-offset 0.2s' }} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Accessories */}
+              {accessories.length > 0 && (
+                <div style={{ marginBottom: 28 }}>
+                  <RowLabel label="Accessories" />
+                  <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 6 }}>
+                    {accessories.map(acc => {
+                      const sel = config.selectedAccessories.includes(acc.name);
+                      return (
+                        <button key={acc.name} onClick={() => toggleAccessory(acc.name)} style={{ flex: '0 0 auto', width: 100, padding: 0, background: 'none', border: `2px solid ${sel ? '#c9a96e' : '#1a1a1a'}`, cursor: 'pointer', position: 'relative', transition: 'border-color 0.2s' }}>
+                          <div style={{ height: 120, overflow: 'hidden' }}>
+                            <img src={acc.img} alt={acc.name} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: sel ? 'brightness(0.85)' : 'brightness(0.45)', transition: 'filter 0.2s' }} referrerPolicy="no-referrer" />
+                          </div>
+                          <div style={{ padding: '5px 4px', background: sel ? 'rgba(201,169,110,0.07)' : '#0d0d0d' }}>
+                            <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 6, letterSpacing: '0.1em', textTransform: 'uppercase', color: sel ? '#c9a96e' : 'rgba(255,255,255,0.35)', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{acc.name}</p>
+                          </div>
+                          {sel && (
+                            <div style={{ position: 'absolute', top: 5, right: 5, width: 18, height: 18, background: '#c9a96e', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <Check size={10} color="#000" />
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Brands */}
+              {brands.length > 0 && (
+                <div style={{ marginBottom: 28 }}>
+                  <RowLabel label="Brand" />
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                    {brands.map(b => (
+                      <BrandLogo key={b} name={b} selected={config.brand === b} onClick={() => patch({ brand: b })} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Wardrobe Zone */}
+              <div style={{ marginBottom: 28 }}>
+                <RowLabel label="Wardrobe Zone" />
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+                  {ZONE_OPTS.map(z => (
+                    <button key={z.id} onClick={() => patch({ zone: z.id })} style={{ padding: '11px 8px', textAlign: 'center', background: config.zone === z.id ? 'rgba(45,122,92,0.1)' : 'none', color: config.zone === z.id ? '#2d7a5c' : 'rgba(255,255,255,0.3)', border: `1px solid ${config.zone === z.id ? 'rgba(45,122,92,0.4)' : '#1e1e1e'}`, cursor: 'pointer', transition: 'all 0.2s', fontFamily: "'Poppins', sans-serif", fontSize: 7.5, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                      {z.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Quantity + Add */}
+              <div>
+                <RowLabel label="Quantity" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #2a2a2a' }}>
+                    <button onClick={() => patch({ qty: Math.max(1, config.qty - 1) })} style={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111', border: 'none', cursor: 'pointer', color: '#fff', borderRight: '1px solid #2a2a2a' }}><Minus size={10} /></button>
+                    <span style={{ width: 52, textAlign: 'center', fontFamily: "'Poppins', sans-serif", fontSize: 14, color: '#fff' }}>{config.qty}</span>
+                    <button onClick={() => patch({ qty: config.qty + 1 })} style={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111', border: 'none', cursor: 'pointer', color: '#fff', borderLeft: '1px solid #2a2a2a' }}><Plus size={10} /></button>
+                  </div>
+
+                  {canAdd ? (
+                    <button
+                      onClick={handleAdd}
+                      style={{ flex: 1, fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', background: added ? '#2d7a5c' : '#fff', color: added ? '#fff' : '#000', border: 'none', height: 40, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.35s, color 0.35s' }}
+                    >
+                      {added ? <><Check size={12} /> Added</> : 'Add to Wardrobe'}
+                    </button>
+                  ) : (
+                    <div style={{ flex: 1, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #1a1a1a', fontFamily: "'Poppins', sans-serif", fontSize: 7.5, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)' }}>
+                      Select a project to add items
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Storage & Retail accordions */}
+            {product.storage && <StorageAccordion storage={product.storage} />}
+            {product.retail && <RetailAccordion retail={product.retail} />}
+            <div style={{ height: 40 }} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+
   return (
     <div style={{ background: '#080808', color: '#fff' }}>
       <WardrobeNav gender={gender} onGenderSelect={(g) => navigate(`/wardrobe/categories?gender=${g}`)} onOpenTray={() => setWardrobePanelOpen(true)} showGenderTabs={false} categoryName={cat?.name ?? id} />
 
-      <div style={{ paddingTop: 56, display: 'flex', height: 'calc(100vh - 56px)', overflow: 'hidden' }}>
-
-        {/* ── LEFT 40%: Browse grid ────────────────────────────────────────── */}
-        <div style={{ flex: '0 0 40%', overflowY: 'auto', borderRight: '1px solid #1a1a1a' }}>
-
-          {/* Compact banner */}
-          <div style={{ position: 'relative', height: 180, overflow: 'hidden' }}>
-            <img src={product.banner} alt={cat?.name} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.35)' }} referrerPolicy="no-referrer" />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 20%, rgba(8,8,8,1) 100%)' }} />
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px 28px' }}>
-              <button onClick={() => navigate(`/wardrobe/categories?gender=${gender}`)} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 6, display: 'block' }}>
-                ← {gender.charAt(0).toUpperCase() + gender.slice(1)}
-              </button>
-              <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 300, letterSpacing: '0.1em', color: '#fff' }}>{cat?.name ?? id}</h1>
-            </div>
-          </div>
-
-          {/* Sections */}
-          <div style={{ padding: '28px 20px 0' }}>
-            {product.sections.map((section, si) => (
-              <div key={section.title} style={{ marginBottom: 36 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
-                  <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 15, fontWeight: 400, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fff', whiteSpace: 'nowrap' }}>{section.title}</h2>
-                  <div style={{ flex: 1, height: 1, background: '#1a1a1a' }} />
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 2 }}>
-                  {section.items.map((item, ii) => {
-                    const isSelected = config?.item === item;
-                    return (
-                      <motion.button
-                        key={`${si}-${ii}`}
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: ii * 0.04 }}
-                        onClick={() => handleSelectItem(section.title, item)}
-                        style={{ padding: 0, background: 'none', border: `2px solid ${isSelected ? '#c9a96e' : 'transparent'}`, cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.2s' }}
-                      >
-                        <div style={{ position: 'relative', aspectRatio: '3/4', overflow: 'hidden' }}>
-                          <motion.img
-                            src={item.img} alt={item.name}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover', filter: isSelected ? 'brightness(0.85)' : 'brightness(0.6)' }}
-                            whileHover={{ scale: 1.05 }} transition={{ duration: 0.4 }}
-                            referrerPolicy="no-referrer"
-                          />
-                          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 55%)' }} />
-                          {isSelected && (
-                            <div style={{ position: 'absolute', top: 6, right: 6, width: 18, height: 18, background: '#c9a96e', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                              <Check size={9} color="#000" />
-                            </div>
-                          )}
-                          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '10px 8px' }}>
-                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7.5, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: isSelected ? '#c9a96e' : '#fff', marginBottom: 2 }}>{item.name}</div>
-                            {item.sub && <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 6, color: 'rgba(255,255,255,0.35)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.sub.split(' · ').slice(0, 2).join(' · ')}</div>}
-                          </div>
-                        </div>
-                      </motion.button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ height: 40 }} />
-        </div>
-
-        {/* ── RIGHT 60%: Configurator ──────────────────────────────────────── */}
-        <div style={{ flex: '0 0 60%', overflowY: 'auto', background: '#0a0a0a' }}>
-          <AnimatePresence mode="wait">
-            {!config ? (
-              /* Empty state */
-              <motion.div
-                key="empty"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, padding: 48 }}
-              >
-                <div style={{ position: 'relative', width: '100%', height: 320, overflow: 'hidden' }}>
-                  <img src={product.banner} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.25)' }} referrerPolicy="no-referrer" />
-                  <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
-                    <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontSize: 22, fontWeight: 300, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em' }}>
-                      Select an item to configure
-                    </p>
-                    <div style={{ width: 1, height: 40, background: 'linear-gradient(to bottom, rgba(201,169,110,0.4), transparent)' }} />
-                  </div>
-                </div>
-              </motion.div>
-            ) : (
-              /* Configurator */
-              <motion.div key={config.item.name} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
-
-                {/* Hero image */}
-                <div style={{ position: 'relative', height: 360, overflow: 'hidden' }}>
-                  <img src={config.item.img} alt={config.item.name} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.65)' }} referrerPolicy="no-referrer" />
-                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 55%)' }} />
-                  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '28px 36px' }}>
-                    <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#c9a96e', marginBottom: 6 }}>{config.sectionTitle}</p>
-                    <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 300, letterSpacing: '0.08em', color: '#fff' }}>{config.item.name}</h2>
-                    {config.item.sub && <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.35)', marginTop: 6 }}>{config.item.sub}</p>}
-                  </div>
-                </div>
-
-                {/* Options */}
-                <div style={{ padding: '28px 36px' }}>
-
-                  {/* Variant */}
-                  {config.item.sub && config.item.sub.split(' · ').length > 1 && (
-                    <div style={{ marginBottom: 28 }}>
-                      <RowLabel label="Variant" />
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                        {config.item.sub.split(' · ').map(v => (
-                          <button key={v} onClick={() => patch({ variant: v })} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7.5, letterSpacing: '0.14em', textTransform: 'uppercase', padding: '7px 14px', background: config.variant === v ? '#fff' : 'none', color: config.variant === v ? '#000' : 'rgba(255,255,255,0.4)', border: `1px solid ${config.variant === v ? '#fff' : '#2a2a2a'}`, cursor: 'pointer', transition: 'all 0.2s' }}>
-                            {v}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Material */}
-                  {config.item.mat && (
-                    <div style={{ marginBottom: 28 }}>
-                      <RowLabel label="Material" />
-                      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                        {config.item.mat.split(', ').map(m => (
-                          <button key={m} onClick={() => patch({ material: m })} style={{ padding: 0, background: 'none', border: `2px solid ${config.material === m ? '#c9a96e' : 'transparent'}`, cursor: 'pointer', position: 'relative', transition: 'border-color 0.2s' }}>
-                            <div style={{ width: 90, height: 90, overflow: 'hidden' }}>
-                              <img src={getMaterialImg(m)} alt={m} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: config.material === m ? 'brightness(0.9)' : 'brightness(0.45)', transition: 'filter 0.2s' }} referrerPolicy="no-referrer" />
-                            </div>
-                            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(0,0,0,0.72)', padding: '3px 4px' }}>
-                              <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 5.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: config.material === m ? '#c9a96e' : 'rgba(255,255,255,0.5)', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.split(' ').slice(-1)[0]}</p>
-                            </div>
-                            {config.material === m && (
-                              <div style={{ position: 'absolute', top: 4, right: 4, width: 16, height: 16, background: '#c9a96e', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                <Check size={9} color="#000" />
-                              </div>
-                            )}
-                          </button>
-                        ))}
-                      </div>
-                      {config.material && <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.35)', marginTop: 8 }}>{config.material}</p>}
-                    </div>
-                  )}
-
-                  {/* Colour */}
-                  {config.item.col && (
-                    <div style={{ marginBottom: 28 }}>
-                      <RowLabel label="Colour" />
-                      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                        {config.item.col.split(',').map(c => (
-                          <button key={c} onClick={() => patch({ color: c })} title={c} style={{ width: 40, height: 40, borderRadius: '50%', background: c, border: 'none', cursor: 'pointer', outline: config.color === c ? '2px solid #c9a96e' : '1px solid rgba(255,255,255,0.1)', outlineOffset: config.color === c ? 3 : 0, transition: 'outline 0.2s, outline-offset 0.2s' }} />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Accessories */}
-                  {accessories.length > 0 && (
-                    <div style={{ marginBottom: 28 }}>
-                      <RowLabel label="Accessories" />
-                      <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 6 }}>
-                        {accessories.map(acc => {
-                          const sel = config.selectedAccessories.includes(acc.name);
-                          return (
-                            <button key={acc.name} onClick={() => toggleAccessory(acc.name)} style={{ flex: '0 0 auto', width: 100, padding: 0, background: 'none', border: `2px solid ${sel ? '#c9a96e' : '#1a1a1a'}`, cursor: 'pointer', position: 'relative', transition: 'border-color 0.2s' }}>
-                              <div style={{ height: 120, overflow: 'hidden' }}>
-                                <img src={acc.img} alt={acc.name} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: sel ? 'brightness(0.85)' : 'brightness(0.45)', transition: 'filter 0.2s' }} referrerPolicy="no-referrer" />
-                              </div>
-                              <div style={{ padding: '5px 4px', background: sel ? 'rgba(201,169,110,0.07)' : '#0d0d0d' }}>
-                                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 6, letterSpacing: '0.1em', textTransform: 'uppercase', color: sel ? '#c9a96e' : 'rgba(255,255,255,0.35)', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{acc.name}</p>
-                              </div>
-                              {sel && (
-                                <div style={{ position: 'absolute', top: 5, right: 5, width: 18, height: 18, background: '#c9a96e', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                  <Check size={10} color="#000" />
-                                </div>
-                              )}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Brands — flat grid, actual logos */}
-                  {brands.length > 0 && (
-                    <div style={{ marginBottom: 28 }}>
-                      <RowLabel label="Brand" />
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                        {brands.map(b => (
-                          <BrandLogo key={b} name={b} selected={config.brand === b} onClick={() => patch({ brand: b })} />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Wardrobe Zone */}
-                  <div style={{ marginBottom: 28 }}>
-                    <RowLabel label="Wardrobe Zone" />
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
-                      {ZONE_OPTS.map(z => (
-                        <button key={z.id} onClick={() => patch({ zone: z.id })} style={{ padding: '11px 8px', textAlign: 'center', background: config.zone === z.id ? 'rgba(45,122,92,0.1)' : 'none', color: config.zone === z.id ? '#2d7a5c' : 'rgba(255,255,255,0.3)', border: `1px solid ${config.zone === z.id ? 'rgba(45,122,92,0.4)' : '#1e1e1e'}`, cursor: 'pointer', transition: 'all 0.2s', fontFamily: "'Poppins', sans-serif", fontSize: 7.5, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-                          {z.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Quantity + Add */}
-                  <div>
-                    <RowLabel label="Quantity" />
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #2a2a2a' }}>
-                        <button onClick={() => patch({ qty: Math.max(1, config.qty - 1) })} style={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111', border: 'none', cursor: 'pointer', color: '#fff', borderRight: '1px solid #2a2a2a' }}><Minus size={10} /></button>
-                        <span style={{ width: 52, textAlign: 'center', fontFamily: "'Poppins', sans-serif", fontSize: 14, color: '#fff' }}>{config.qty}</span>
-                        <button onClick={() => patch({ qty: config.qty + 1 })} style={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111', border: 'none', cursor: 'pointer', color: '#fff', borderLeft: '1px solid #2a2a2a' }}><Plus size={10} /></button>
-                      </div>
-
-                      {canAdd ? (
-                        <button
-                          onClick={handleAdd}
-                          style={{ flex: 1, fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', background: added ? '#2d7a5c' : '#fff', color: added ? '#fff' : '#000', border: 'none', height: 40, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.35s, color 0.35s' }}
-                        >
-                          {added ? <><Check size={12} /> Added</> : 'Add to Wardrobe'}
-                        </button>
-                      ) : (
-                        <div style={{ flex: 1, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #1a1a1a', fontFamily: "'Poppins', sans-serif", fontSize: 7.5, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)' }}>
-                          Select a project to add items
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Storage & Retail accordions — shown once an item is selected */}
-                {product.storage && <StorageAccordion storage={product.storage} />}
-                {product.retail && <RetailAccordion retail={product.retail} />}
-                <div style={{ height: 40 }} />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+      <div style={{ paddingTop: 56, display: 'flex', height: 'calc(100vh - 56px)', overflow: 'hidden', flexDirection: 'row' }}>
+        {isNarrow ? (
+          <>
+            {mobileView === 'list' ? leftPanel : rightPanel}
+          </>
+        ) : (
+          <>
+            {leftPanel}
+            {rightPanel}
+          </>
+        )}
       </div>
 
       <WardrobePanel open={wardrobePanelOpen} onClose={() => setWardrobePanelOpen(false)} />

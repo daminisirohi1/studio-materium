@@ -6,10 +6,10 @@ const F = (kw: string, w = 600, h = 0, lk = 0) =>
 export const mockUsers: User[] = [
   { id: 'u1', name: 'Priya Sharma',    email: 'priya@studiomaterium.com',   role: 'admin' },
   { id: 'u2', name: 'Arjun Mehta',     email: 'arjun@studiomaterium.com',   role: 'designer' },
-  { id: 'u3', name: 'Sofia Chen',      email: 'sofia@studiomaterium.com',   role: 'designer' },
+  { id: 'u3', name: 'Kavya Nair',       email: 'kavya@studiomaterium.com',   role: 'designer' },
   { id: 'u4', name: 'Rahul Kapoor',    email: 'rahul@kapoorindustries.com',  role: 'client' },
   { id: 'u5', name: 'Natasha Singh',   email: 'natasha@nsingh.co',           role: 'client' },
-  { id: 'u6', name: 'James Whitfield', email: 'james@whitfieldgroup.com',    role: 'client' },
+  { id: 'u6', name: 'Vikram Malhotra',  email: 'vikram@malhotragroup.com',    role: 'client' },
 ];
 
 export const mockProjects: Project[] = [
@@ -35,7 +35,7 @@ export const mockProjects: Project[] = [
   },
   {
     id: 'p3',
-    name: 'Whitfield Manor — Dressing Room',
+    name: 'Malhotra Estate — Dressing Room',
     clientId: 'u6',
     designerId: 'u2',
     status: 'briefing',
@@ -83,8 +83,8 @@ export const mockClientProfiles: ClientProfile[] = [
     preferredBrands: ['Brioni', 'Turnbull & Asser', 'John Lobb'],
     avoidBrands: [],
     colorPalette: ['Black', 'Charcoal', 'Navy', 'Tweed Browns', 'Ivory'],
-    lifestyle: ['Estate management', 'Equestrian', 'London / Country bi-weekly'],
-    notes: 'Classic British tailoring aesthetic. Heritage and provenance important.',
+    lifestyle: ['Estate management', 'Polo', 'Mumbai / Delhi bi-weekly'],
+    notes: 'Classic bespoke tailoring aesthetic. Heritage and provenance important.',
   },
 ];
 

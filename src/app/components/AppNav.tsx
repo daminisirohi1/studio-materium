@@ -4,6 +4,7 @@ import { User, LogOut, Bell, X } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useWardrobeStore } from '../../store/wardrobeStore';
 import { useNotificationStore } from '../../store/notificationStore';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 
 interface AppNavProps {
   showGender?: boolean;
@@ -38,6 +39,7 @@ export function AppNav({ showGender, onGenderSelect }: AppNavProps) {
   const logout = useAuthStore(s => s.logout);
   const activeProject = useWardrobeStore(s => s.activeProject);
   const navigate = useNavigate();
+  const { isMobile, isTablet } = useBreakpoint();
 
   const { notifications, markRead, markAllRead } = useNotificationStore();
   const unreadCount = notifications.filter(n => !n.read).length;
@@ -61,10 +63,12 @@ export function AppNav({ showGender, onGenderSelect }: AppNavProps) {
     navigate('/login');
   };
 
+  const navPadding = isMobile ? '0 16px' : isTablet ? '0 24px' : '0 48px';
+
   return (
     <nav
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between"
-      style={{ height: 64, background: '#0a0a0a', borderBottom: '1px solid #1a1a1a', padding: '0 48px' }}
+      style={{ height: 64, background: '#0a0a0a', borderBottom: '1px solid #1a1a1a', padding: navPadding }}
     >
       {/* Logo */}
       <Link to={homeHref} style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
@@ -72,42 +76,44 @@ export function AppNav({ showGender, onGenderSelect }: AppNavProps) {
       </Link>
 
       {/* Centre — gender nav or role nav */}
-      <div className="flex items-center gap-6">
-        {showGender && onGenderSelect ? (
-          <>
-            {(['men', 'women', 'kids'] as const).map((g, i) => (
-              <span key={g} className="flex items-center gap-6">
-                <button
-                  onClick={() => onGenderSelect(g)}
-                  style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, fontWeight: 400, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s', padding: '2px 0', borderBottom: '1px solid transparent' }}
-                  onMouseEnter={e => { (e.currentTarget.style.color = '#c9a96e'); (e.currentTarget.style.borderBottomColor = '#c9a96e'); }}
-                  onMouseLeave={e => { (e.currentTarget.style.color = 'rgba(255,255,255,0.6)'); (e.currentTarget.style.borderBottomColor = 'transparent'); }}
-                >
-                  {g.charAt(0).toUpperCase() + g.slice(1)}
-                </button>
-                {i < 2 && <span style={{ color: '#2a2a2a', fontSize: 12 }}>|</span>}
-              </span>
-            ))}
-          </>
-        ) : (
-          links.map(link => (
-            <Link
-              key={link.href}
-              to={link.href}
-              style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, fontWeight: 400, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', textDecoration: 'none', transition: 'color 0.3s' }}
-              onMouseEnter={e => ((e.target as HTMLElement).style.color = '#c9a96e')}
-              onMouseLeave={e => ((e.target as HTMLElement).style.color = 'rgba(255,255,255,0.5)')}
-            >
-              {link.label}
-            </Link>
-          ))
-        )}
-      </div>
+      {!isMobile && (
+        <div className="flex items-center gap-6">
+          {showGender && onGenderSelect ? (
+            <>
+              {(['men', 'women', 'kids'] as const).map((g, i) => (
+                <span key={g} className="flex items-center gap-6">
+                  <button
+                    onClick={() => onGenderSelect(g)}
+                    style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, fontWeight: 400, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s', padding: '2px 0', borderBottom: '1px solid transparent' }}
+                    onMouseEnter={e => { (e.currentTarget.style.color = '#c9a96e'); (e.currentTarget.style.borderBottomColor = '#c9a96e'); }}
+                    onMouseLeave={e => { (e.currentTarget.style.color = 'rgba(255,255,255,0.6)'); (e.currentTarget.style.borderBottomColor = 'transparent'); }}
+                  >
+                    {g.charAt(0).toUpperCase() + g.slice(1)}
+                  </button>
+                  {i < 2 && <span style={{ color: '#2a2a2a', fontSize: 12 }}>|</span>}
+                </span>
+              ))}
+            </>
+          ) : (
+            links.map(link => (
+              <Link
+                key={link.href}
+                to={link.href}
+                style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, fontWeight: 400, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', textDecoration: 'none', transition: 'color 0.3s' }}
+                onMouseEnter={e => ((e.target as HTMLElement).style.color = '#c9a96e')}
+                onMouseLeave={e => ((e.target as HTMLElement).style.color = 'rgba(255,255,255,0.5)')}
+              >
+                {link.label}
+              </Link>
+            ))
+          )}
+        </div>
+      )}
 
       {/* Right */}
       <div className="flex items-center gap-4">
         {/* Active project indicator */}
-        {activeProject && user?.role === 'designer' && (
+        {activeProject && user?.role === 'designer' && !isMobile && (
           <Link to={`/designer/project/${activeProject.id}`} style={{ textDecoration: 'none' }}>
             <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#c9a96e', background: 'rgba(201,169,110,0.08)', border: '1px solid rgba(201,169,110,0.2)', padding: '4px 10px' }}>
               {activeProject.name.split('—')[0].trim()}
@@ -131,7 +137,7 @@ export function AppNav({ showGender, onGenderSelect }: AppNavProps) {
             </button>
 
             {bellOpen && (
-              <div style={{ position: 'absolute', top: 40, right: 0, width: 320, background: '#0f0f0f', border: '1px solid #1e1e1e', zIndex: 999, maxHeight: 420, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ position: 'absolute', top: 40, right: 0, width: isMobile ? 'calc(100vw - 32px)' : 320, background: '#0f0f0f', border: '1px solid #1e1e1e', zIndex: 999, maxHeight: 420, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', borderBottom: '1px solid #1a1a1a', flexShrink: 0 }}>
                   <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>
                     Notifications {unreadCount > 0 && `· ${unreadCount} new`}
@@ -182,9 +188,11 @@ export function AppNav({ showGender, onGenderSelect }: AppNavProps) {
         {/* User + logout */}
         {user ? (
           <div className="flex items-center gap-3">
-            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>
-              {user.name.split(' ')[0]}
-            </div>
+            {!isMobile && (
+              <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>
+                {user.name.split(' ')[0]}
+              </div>
+            )}
             <button onClick={handleLogout} style={{ color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s' }}
               onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#c9a96e')}
               onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.3)')}>

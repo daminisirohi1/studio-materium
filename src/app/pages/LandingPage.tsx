@@ -5,6 +5,7 @@ import { WardrobeNav } from '../components/WardrobeNav';
 import { WardrobePanel } from '../components/WardrobePanel';
 import { useWardrobeStore } from '../../store/wardrobeStore';
 import { useAuthStore } from '../../store/authStore';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 import type { Gender } from '../../types';
 
 const HERO_IMAGES: Record<Gender, string[]> = {
@@ -32,10 +33,14 @@ export function LandingPage() {
   const [hoveredGender, setHoveredGender] = useState<Gender | null>(null);
   const [slideIdx, setSlideIdx] = useState(0);
   const [panelOpen, setPanelOpen] = useState(false);
+  const { isMobile, isTablet } = useBreakpoint();
 
   const handleGenderClick = (g: Gender) => {
     navigate(`/wardrobe/categories?gender=${g}`);
   };
+
+  const watermarkSize = isMobile ? '14vw' : isTablet ? '10vw' : '8.5vw';
+  const genderFontSize = isMobile ? 'clamp(32px, 8vw, 48px)' : isTablet ? 'clamp(36px, 5vw, 52px)' : 'clamp(38px, 4.5vw, 60px)';
 
   return (
     <div className="relative min-h-screen overflow-hidden" style={{ background: '#080808' }}>
@@ -72,7 +77,7 @@ export function LandingPage() {
 
       {/* Main hero content */}
       <div className="relative flex items-center justify-center min-h-screen" style={{ zIndex: 10, paddingTop: 56 }}>
-        <div>
+        <div style={{ width: '100%', paddingLeft: isMobile ? 24 : 0, paddingRight: isMobile ? 24 : 0 }}>
           {/* Eyebrow */}
           {activeProject && user?.role === 'designer' && (
             <motion.p
@@ -84,26 +89,32 @@ export function LandingPage() {
             </motion.p>
           )}
 
-          <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.5em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', textAlign: 'center', marginBottom: 36 }}>
+          <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: isMobile ? 8 : 9, letterSpacing: '0.5em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', textAlign: 'center', marginBottom: 36 }}>
             {activeProject && user?.role === 'designer' ? 'Select category' : 'New Collection — Spring / Summer 2026'}
           </p>
 
           {/* Watermark */}
-          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '8.5vw', fontWeight: 300, color: 'rgba(255,255,255,0.04)', letterSpacing: '0.2em', textTransform: 'uppercase', lineHeight: 1, marginBottom: 72, textAlign: 'center', userSelect: 'none', whiteSpace: 'nowrap' }}>
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: watermarkSize, fontWeight: 300, color: 'rgba(255,255,255,0.04)', letterSpacing: '0.2em', textTransform: 'uppercase', lineHeight: 1, marginBottom: isMobile ? 48 : 72, textAlign: 'center', userSelect: 'none', whiteSpace: isMobile ? 'normal' : 'nowrap', wordBreak: 'break-word' }}>
             Studio Materium
           </div>
 
           {/* Gender links */}
-          <div className="flex items-center justify-center" style={{ gap: 60 }}>
+          <div
+            className="flex items-center justify-center"
+            style={{
+              flexDirection: isMobile ? 'column' : 'row',
+              gap: isMobile ? 32 : 60,
+            }}
+          >
             {(['men', 'women', 'kids'] as Gender[]).map((g, i) => (
-              <span key={g} className="flex items-center" style={{ gap: 60 }}>
+              <span key={g} className="flex items-center" style={{ gap: isMobile ? 0 : 60, flexDirection: isMobile ? 'column' : 'row' }}>
                 <motion.button
-                  onMouseEnter={() => { setHoveredGender(g); setSlideIdx(0); }}
-                  onMouseLeave={() => setHoveredGender(null)}
+                  onMouseEnter={() => { if (!isMobile) { setHoveredGender(g); setSlideIdx(0); } }}
+                  onMouseLeave={() => { if (!isMobile) setHoveredGender(null); }}
                   onClick={() => handleGenderClick(g)}
                   style={{
                     fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: 'clamp(38px, 4.5vw, 60px)',
+                    fontSize: genderFontSize,
                     fontWeight: 400,
                     color: '#fff',
                     textDecoration: 'none',
@@ -126,15 +137,15 @@ export function LandingPage() {
                     transition={{ duration: 0.5 }}
                   />
                 </motion.button>
-                {i < 2 && <span style={{ color: 'rgba(255,255,255,0.15)', fontSize: 22, fontWeight: 100 }}>|</span>}
+                {!isMobile && i < 2 && <span style={{ color: 'rgba(255,255,255,0.15)', fontSize: 22, fontWeight: 100 }}>|</span>}
               </span>
             ))}
           </div>
         </div>
 
         {/* Footer tagline */}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '36px 64px' }}>
-          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontSize: 15, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em' }}>
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: isMobile ? '24px 24px' : '36px 64px' }}>
+          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontSize: isMobile ? 13 : 15, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em' }}>
             Crafted with precision. Worn with intention.
           </span>
         </div>

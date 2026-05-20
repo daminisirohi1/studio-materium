@@ -8,6 +8,7 @@ import { useNotificationStore } from '../../../store/notificationStore';
 import { getUserById } from '../../../data/mockData';
 import { getProductById } from '../../../data/catalog';
 import { StoragePanel, RetailPanel } from '../../components/StorageRetailPanels';
+import { useBreakpoint } from '../../../hooks/useBreakpoint';
 import type { WardrobeItem } from '../../../types';
 
 const ZONES = [
@@ -19,7 +20,7 @@ const ZONES = [
   { id: 'accessories',   label: 'Accessories' },
 ] as const;
 
-function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: () => void; onFlag: (note: string) => void }) {
+function ItemCard({ item, onApprove, onFlag, isMobile }: { item: WardrobeItem; onApprove: () => void; onFlag: (note: string) => void; isMobile: boolean }) {
   const [showNote, setShowNote] = useState(false);
   const [note, setNote] = useState('');
   const [showCare, setShowCare] = useState(false);
@@ -42,16 +43,16 @@ function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: 
         overflow: 'hidden',
       }}
     >
-      <div style={{ display: 'flex', gap: 20, padding: '20px 24px' }}>
+      <div style={{ display: 'flex', gap: 20, padding: '20px 24px', flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
         {/* Image */}
         <div style={{ flexShrink: 0, width: 72, height: 96, overflow: 'hidden' }}>
           <img src={item.img} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.85)' }} referrerPolicy="no-referrer" />
         </div>
 
         {/* Info */}
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
-            <div>
+            <div style={{ flex: 1, minWidth: 0, marginRight: 8 }}>
               <h4 style={{ fontFamily: "'Poppins', sans-serif", fontSize: 11, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#fff', marginBottom: 2 }}>
                 {item.name}
               </h4>
@@ -60,7 +61,7 @@ function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: 
               </p>
             </div>
             {item.status !== 'pending' && (
-              <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: item.status === 'approved' ? '#2d7a5c' : '#c9a96e', border: `1px solid ${item.status === 'approved' ? 'rgba(45,122,92,0.4)' : 'rgba(201,169,110,0.4)'}`, padding: '2px 7px' }}>
+              <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: item.status === 'approved' ? '#2d7a5c' : '#c9a96e', border: `1px solid ${item.status === 'approved' ? 'rgba(45,122,92,0.4)' : 'rgba(201,169,110,0.4)'}`, padding: '2px 7px', flexShrink: 0 }}>
                 {item.status}
               </span>
             )}
@@ -70,8 +71,6 @@ function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: 
             <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.35)' }}>{item.brand}</span>
             <span style={{ color: '#2a2a2a' }}>·</span>
             <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.35)' }}>Qty {item.quantity}</span>
-            <span style={{ color: '#2a2a2a' }}>·</span>
-            <div style={{ width: 18, height: 18, borderRadius: '50%', background: item.color || '#333', border: '2px solid rgba(255,255,255,0.2)', alignSelf: 'center', flexShrink: 0 }} />
           </div>
 
           {item.clientNote && (
@@ -86,7 +85,7 @@ function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: 
               onClick={onApprove}
               disabled={item.status === 'approved'}
               className="flex items-center gap-2"
-              style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: item.status === 'approved' ? 'rgba(45,122,92,0.2)' : 'none', color: item.status === 'approved' ? '#2d7a5c' : 'rgba(255,255,255,0.4)', border: `1px solid ${item.status === 'approved' ? 'rgba(45,122,92,0.4)' : '#333'}`, padding: '6px 12px', cursor: item.status === 'approved' ? 'default' : 'pointer', transition: 'all 0.2s' }}
+              style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: item.status === 'approved' ? 'rgba(45,122,92,0.2)' : 'none', color: item.status === 'approved' ? '#2d7a5c' : 'rgba(255,255,255,0.4)', border: `1px solid ${item.status === 'approved' ? 'rgba(45,122,92,0.4)' : '#333'}`, padding: '6px 12px', cursor: item.status === 'approved' ? 'default' : 'pointer', transition: 'all 0.2s', flex: isMobile ? 1 : 'none', justifyContent: isMobile ? 'center' : 'flex-start' }}
               onMouseEnter={e => { if (item.status !== 'approved') { e.currentTarget.style.borderColor = '#2d7a5c'; e.currentTarget.style.color = '#2d7a5c'; } }}
               onMouseLeave={e => { if (item.status !== 'approved') { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.color = 'rgba(255,255,255,0.4)'; } }}
             >
@@ -96,7 +95,7 @@ function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: 
             <button
               onClick={() => setShowNote(!showNote)}
               className="flex items-center gap-2"
-              style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: item.status === 'flagged' ? 'rgba(201,169,110,0.15)' : 'none', color: item.status === 'flagged' ? '#c9a96e' : 'rgba(255,255,255,0.4)', border: `1px solid ${item.status === 'flagged' ? 'rgba(201,169,110,0.4)' : '#333'}`, padding: '6px 12px', cursor: 'pointer', transition: 'all 0.2s' }}
+              style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: item.status === 'flagged' ? 'rgba(201,169,110,0.15)' : 'none', color: item.status === 'flagged' ? '#c9a96e' : 'rgba(255,255,255,0.4)', border: `1px solid ${item.status === 'flagged' ? 'rgba(201,169,110,0.4)' : '#333'}`, padding: '6px 12px', cursor: 'pointer', transition: 'all 0.2s', flex: isMobile ? 1 : 'none', justifyContent: isMobile ? 'center' : 'flex-start' }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = '#c9a96e'; e.currentTarget.style.color = '#c9a96e'; }}
               onMouseLeave={e => { if (item.status !== 'flagged') { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.color = 'rgba(255,255,255,0.4)'; } }}
             >
@@ -148,24 +147,26 @@ function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: 
             exit={{ height: 0, opacity: 0 }}
             style={{ overflow: 'hidden', borderTop: '1px solid #1a1a1a' }}
           >
-            <div style={{ padding: '16px 24px', display: 'flex', gap: 12 }}>
+            <div style={{ padding: '16px 24px', display: 'flex', gap: 12, flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
               <input
                 value={note}
                 onChange={e => setNote(e.target.value)}
                 placeholder="Describe your feedback…"
-                style={{ flex: 1, background: '#111', border: '1px solid #2a2a2a', color: '#fff', padding: '8px 12px', fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.05em', outline: 'none' }}
+                style={{ flex: 1, minWidth: isMobile ? '100%' : 'auto', background: '#111', border: '1px solid #2a2a2a', color: '#fff', padding: '8px 12px', fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.05em', outline: 'none' }}
                 onKeyDown={e => { if (e.key === 'Enter') submitFlag(); }}
               />
-              <button
-                onClick={submitFlag}
-                disabled={!note.trim()}
-                style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: note.trim() ? '#c9a96e' : '#2a2a2a', color: note.trim() ? '#000' : 'rgba(255,255,255,0.2)', border: 'none', padding: '8px 16px', cursor: note.trim() ? 'pointer' : 'not-allowed', transition: 'all 0.2s' }}
-              >
-                Send
-              </button>
-              <button onClick={() => setShowNote(false)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.3)', cursor: 'pointer' }}>
-                <X size={14} />
-              </button>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button
+                  onClick={submitFlag}
+                  disabled={!note.trim()}
+                  style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: note.trim() ? '#c9a96e' : '#2a2a2a', color: note.trim() ? '#000' : 'rgba(255,255,255,0.2)', border: 'none', padding: '8px 16px', cursor: note.trim() ? 'pointer' : 'not-allowed', transition: 'all 0.2s', flex: isMobile ? 1 : 'none' }}
+                >
+                  Send
+                </button>
+                <button onClick={() => setShowNote(false)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.3)', cursor: 'pointer' }}>
+                  <X size={14} />
+                </button>
+              </div>
             </div>
           </motion.div>
         )}
@@ -179,6 +180,7 @@ export function ReviewPage() {
   const navigate = useNavigate();
   const { projects, items, updateItemStatus, updateProjectStatus } = useWardrobeStore();
   const { addNotification } = useNotificationStore();
+  const { isMobile, isTablet } = useBreakpoint();
 
   const project = projects.find(p => p.id === projectId);
   if (!project) return <div style={{ color: '#fff', padding: 80 }}>Project not found.</div>;
@@ -211,6 +213,7 @@ export function ReviewPage() {
   const approved = projectItems.filter(i => i.status === 'approved').length;
   const pending = projectItems.filter(i => i.status === 'pending').length;
   const allApproved = projectItems.length > 0 && approved === projectItems.length && project.status !== 'finalized';
+  const gridCols = isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(auto-fill, minmax(380px, 1fr))';
 
   return (
     <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#fff' }}>
@@ -218,20 +221,20 @@ export function ReviewPage() {
 
       <div style={{ paddingTop: 80 }}>
         {/* Header */}
-        <div style={{ padding: '40px clamp(20px, 5vw, 80px)', borderBottom: '1px solid #1a1a1a' }}>
+        <div style={{ padding: `40px clamp(16px, 5vw, 80px)`, borderBottom: '1px solid #1a1a1a' }}>
           <button onClick={() => navigate('/client')} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 16 }}>
             ← My Wardrobes
           </button>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: isMobile ? 'flex-start' : 'flex-end', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? 16 : 0 }}>
             <div>
-              <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 300, letterSpacing: '0.08em', color: '#fff', marginBottom: 6 }}>
+              <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isMobile ? 22 : 28, fontWeight: 300, letterSpacing: '0.08em', color: '#fff', marginBottom: 6 }}>
                 {project.name}
               </h1>
               <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, color: 'rgba(255,255,255,0.35)' }}>
                 Designed by {designer?.name} · {projectItems.length} items
               </p>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 16 : 32, flexWrap: 'wrap' }}>
               {pending > 0 && (
                 <button
                   onClick={approveAll}
@@ -258,7 +261,7 @@ export function ReviewPage() {
 
         {/* Finalize banner */}
         {allApproved && (
-          <div style={{ margin: '0 clamp(20px, 5vw, 80px)', padding: '20px 24px', background: 'rgba(45,122,92,0.1)', border: '1px solid rgba(45,122,92,0.3)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ margin: `0 clamp(16px, 5vw, 80px)`, padding: '20px 24px', background: 'rgba(45,122,92,0.1)', border: '1px solid rgba(45,122,92,0.3)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
             <div>
               <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 400, color: '#2d7a5c', marginBottom: 2 }}>All items approved</p>
               <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em' }}>Finalize your wardrobe to complete the review.</p>
@@ -275,7 +278,7 @@ export function ReviewPage() {
         )}
 
         {/* Items by zone */}
-        <div style={{ padding: '48px clamp(20px, 5vw, 80px)' }}>
+        <div style={{ padding: `48px clamp(16px, 5vw, 80px)` }}>
           {ZONES.map(zone => {
             const zoneItems = projectItems.filter(i => i.zone === zone.id);
             if (zoneItems.length === 0) return null;
@@ -289,11 +292,12 @@ export function ReviewPage() {
                   <div style={{ flex: 1, height: 1, background: '#1a1a1a' }} />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: 1, background: '#1a1a1a' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: gridCols, gap: 1, background: '#1a1a1a' }}>
                   {zoneItems.map(item => (
                     <ItemCard
                       key={item.id}
                       item={item}
+                      isMobile={isMobile}
                       onApprove={() => handleApprove(item.id, item.name)}
                       onFlag={(note) => handleFlag(item.id, item.name, note)}
                     />
