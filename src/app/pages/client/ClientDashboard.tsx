@@ -17,7 +17,7 @@ export function ClientDashboard() {
     <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#fff' }}>
       <AppNav />
 
-      <div style={{ paddingTop: 96, paddingLeft: 80, paddingRight: 80, paddingBottom: 80 }}>
+      <div style={{ paddingTop: 96, paddingLeft: 'clamp(20px, 5vw, 80px)', paddingRight: 'clamp(20px, 5vw, 80px)', paddingBottom: 80 }}>
 
         <div style={{ marginBottom: 56 }}>
           <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 10 }}>
@@ -44,7 +44,7 @@ export function ClientDashboard() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }}
                 onClick={() => isViewable && navigate(`/client/review/${p.id}`)}
-                style={{ background: '#0a0a0a', padding: '36px 40px', cursor: isViewable ? 'pointer' : 'default', display: 'grid', gridTemplateColumns: '1fr auto', gap: 32, alignItems: 'center', transition: 'background 0.2s', opacity: isViewable ? 1 : 0.55 }}
+                style={{ background: '#0a0a0a', padding: '36px 40px', cursor: isViewable ? 'pointer' : 'default', display: 'grid', gridTemplateColumns: '1fr auto', gap: 32, alignItems: 'center', transition: 'background 0.2s' }}
                 onMouseEnter={e => { if (isViewable) e.currentTarget.style.background = '#0f0f0f'; }}
                 onMouseLeave={e => (e.currentTarget.style.background = '#0a0a0a')}
               >
@@ -60,12 +60,17 @@ export function ClientDashboard() {
                     )}
                   </div>
 
-                  <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 400, letterSpacing: '0.08em', color: '#fff', marginBottom: 6 }}>
+                  <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 400, letterSpacing: '0.08em', color: isViewable ? '#fff' : 'rgba(255,255,255,0.4)', marginBottom: 6 }}>
                     {p.name}
                   </h2>
                   <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.06em', color: 'rgba(255,255,255,0.35)' }}>
                     Designed by {designer?.name} · {projectItems.length} items
                   </p>
+                  {!isViewable && (
+                    <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8.5, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.25)', marginTop: 8, fontStyle: 'italic' }}>
+                      {p.status === 'briefing' ? 'Your designer is preparing the brief.' : 'Your designer is currently configuring this wardrobe.'}
+                    </p>
+                  )}
                 </div>
 
                 <div style={{ display: 'flex', gap: 24, textAlign: 'center' }}>
@@ -80,10 +85,15 @@ export function ClientDashboard() {
                     </div>
                   ))}
                   {isViewable && (
-                  <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', alignSelf: 'center' }}>
-                    Review →
-                  </div>
-                )}
+                    <button
+                      onClick={() => navigate(`/client/review/${p.id}`)}
+                      style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', background: '#fff', color: '#000', border: 'none', padding: '10px 18px', cursor: 'pointer', transition: 'background 0.25s', alignSelf: 'center', whiteSpace: 'nowrap' }}
+                      onMouseEnter={e => (e.currentTarget.style.background = '#c9a96e')}
+                      onMouseLeave={e => (e.currentTarget.style.background = '#fff')}
+                    >
+                      Review →
+                    </button>
+                  )}
                 </div>
               </motion.div>
             );

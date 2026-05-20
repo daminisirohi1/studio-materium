@@ -4,14 +4,14 @@ import { Plus } from 'lucide-react';
 import { AppNav } from '../../components/AppNav';
 import { useAuthStore } from '../../../store/authStore';
 import { useWardrobeStore } from '../../../store/wardrobeStore';
-import { getUserById, statusLabels, statusColors, getItemsByProject } from '../../../data/mockData';
+import { getUserById, statusLabels, statusColors } from '../../../data/mockData';
 
 const STATUS_ORDER: Record<string, number> = { configuring: 0, review: 1, revisions: 2, briefing: 3, finalized: 4 };
 
 export function DesignerDashboard() {
   const navigate = useNavigate();
   const user = useAuthStore(s => s.user);
-  const { projects, setActiveProject } = useWardrobeStore();
+  const { projects, items, setActiveProject } = useWardrobeStore();
 
   const myProjects = projects
     .filter(p => p.designerId === user?.id)
@@ -34,7 +34,7 @@ export function DesignerDashboard() {
     <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#fff' }}>
       <AppNav />
 
-      <div style={{ paddingTop: 96, paddingLeft: 80, paddingRight: 80, paddingBottom: 80 }}>
+      <div style={{ paddingTop: 96, paddingLeft: 'clamp(20px, 5vw, 80px)', paddingRight: 'clamp(20px, 5vw, 80px)', paddingBottom: 80 }}>
 
         {/* Header */}
         <div style={{ marginBottom: 48 }}>
@@ -54,12 +54,12 @@ export function DesignerDashboard() {
             </p>
           </div>
         )}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1, background: myProjects.length > 0 ? '#1e1e1e' : 'transparent' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 1, background: myProjects.length > 0 ? '#1e1e1e' : 'transparent' }}>
           {myProjects.map((p, i) => {
             const client = getUserById(p.clientId);
-            const items = getItemsByProject(p.id);
-            const approved = items.filter(i => i.status === 'approved').length;
-            const flagged = items.filter(i => i.status === 'flagged').length;
+            const projectItems = items.filter(i => i.projectId === p.id);
+            const approved = projectItems.filter(i => i.status === 'approved').length;
+            const flagged = projectItems.filter(i => i.status === 'flagged').length;
             const isActive = p.status === 'configuring' || p.status === 'revisions';
 
             return (
@@ -84,15 +84,27 @@ export function DesignerDashboard() {
                 <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 400, letterSpacing: '0.1em', color: '#fff', marginBottom: 6, lineHeight: 1.3 }}>
                   {p.name}
                 </h3>
-                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.4)', marginBottom: 24 }}>
+                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.4)', marginBottom: 16 }}>
                   {client?.name} · Updated {new Date(p.updatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                 </p>
 
+                {/* Approval progress bar */}
+                {projectItems.length > 0 && (
+                  <div style={{ marginBottom: 20 }}>
+                    <div style={{ height: 2, background: '#1a1a1a', marginBottom: 6, position: 'relative', overflow: 'hidden' }}>
+                      <div style={{ position: 'absolute', left: 0, top: 0, height: '100%', width: `${Math.round((approved / projectItems.length) * 100)}%`, background: '#2d7a5c', transition: 'width 0.4s' }} />
+                    </div>
+                    <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7.5, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)' }}>
+                      {Math.round((approved / projectItems.length) * 100)}% approved
+                    </span>
+                  </div>
+                )}
+
                 {/* Item stats */}
-                {items.length > 0 && (
+                {projectItems.length > 0 && (
                   <div style={{ display: 'flex', gap: 16, marginBottom: 24 }}>
                     <div>
-                      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, color: '#fff' }}>{items.length}</div>
+                      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, color: '#fff' }}>{projectItems.length}</div>
                       <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Items</div>
                     </div>
                     <div style={{ width: 1, background: '#1e1e1e' }} />

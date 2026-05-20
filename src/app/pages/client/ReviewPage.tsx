@@ -1,10 +1,13 @@
 import { useParams, useNavigate } from 'react-router';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { CheckCircle, Flag, MessageSquare, X } from 'lucide-react';
+import { CheckCircle, Flag, X, ChevronDown } from 'lucide-react';
 import { AppNav } from '../../components/AppNav';
 import { useWardrobeStore } from '../../../store/wardrobeStore';
-import { getUserById, statusLabels, statusColors } from '../../../data/mockData';
+import { useNotificationStore } from '../../../store/notificationStore';
+import { getUserById } from '../../../data/mockData';
+import { getProductById } from '../../../data/catalog';
+import { StoragePanel, RetailPanel } from '../../components/StorageRetailPanels';
 import type { WardrobeItem } from '../../../types';
 
 const ZONES = [
@@ -19,6 +22,8 @@ const ZONES = [
 function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: () => void; onFlag: (note: string) => void }) {
   const [showNote, setShowNote] = useState(false);
   const [note, setNote] = useState('');
+  const [showCare, setShowCare] = useState(false);
+  const prod = getProductById(item.categoryId);
 
   const submitFlag = () => {
     onFlag(note);
@@ -66,7 +71,7 @@ function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: 
             <span style={{ color: '#2a2a2a' }}>·</span>
             <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.35)' }}>Qty {item.quantity}</span>
             <span style={{ color: '#2a2a2a' }}>·</span>
-            <div style={{ width: 12, height: 12, borderRadius: '50%', background: item.color || '#333', border: '1px solid rgba(255,255,255,0.15)', alignSelf: 'center' }} />
+            <div style={{ width: 18, height: 18, borderRadius: '50%', background: item.color || '#333', border: '2px solid rgba(255,255,255,0.2)', alignSelf: 'center', flexShrink: 0 }} />
           </div>
 
           {item.clientNote && (
@@ -76,7 +81,7 @@ function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: 
           )}
 
           {/* Action buttons */}
-          <div className="flex items-center gap-3">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
             <button
               onClick={onApprove}
               disabled={item.status === 'approved'}
@@ -97,9 +102,42 @@ function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: 
             >
               <Flag size={10} /> Flag
             </button>
+
+            {(prod.storage || prod.retail) && (
+              <button
+                onClick={() => setShowCare(s => !s)}
+                style={{ display: 'flex', alignItems: 'center', gap: 5, fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.15em', textTransform: 'uppercase', color: showCare ? '#c9a96e' : 'rgba(255,255,255,0.3)', background: 'none', border: `1px solid ${showCare ? 'rgba(201,169,110,0.3)' : '#222'}`, padding: '6px 10px', cursor: 'pointer', transition: 'all 0.2s' }}
+              >
+                Care & Storage
+                <motion.span animate={{ rotate: showCare ? 180 : 0 }} transition={{ duration: 0.2 }} style={{ display: 'flex' }}>
+                  <ChevronDown size={10} />
+                </motion.span>
+              </button>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Care & Storage panel */}
+      <AnimatePresence>
+        {showCare && (prod.storage || prod.retail) && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            style={{ overflow: 'hidden', borderTop: '1px solid #1a1a1a' }}
+          >
+            <div style={{ padding: '0 24px' }}>
+              {prod.storage && <StoragePanel storage={prod.storage} compact={false} />}
+              {prod.retail && (
+                <div style={{ borderTop: prod.storage ? '1px solid #1a1a1a' : 'none' }}>
+                  <RetailPanel retail={prod.retail} compact={false} />
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Note input */}
       <AnimatePresence>
@@ -118,7 +156,11 @@ function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: 
                 style={{ flex: 1, background: '#111', border: '1px solid #2a2a2a', color: '#fff', padding: '8px 12px', fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.05em', outline: 'none' }}
                 onKeyDown={e => { if (e.key === 'Enter') submitFlag(); }}
               />
-              <button onClick={submitFlag} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: '#c9a96e', color: '#000', border: 'none', padding: '8px 16px', cursor: 'pointer' }}>
+              <button
+                onClick={submitFlag}
+                disabled={!note.trim()}
+                style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', background: note.trim() ? '#c9a96e' : '#2a2a2a', color: note.trim() ? '#000' : 'rgba(255,255,255,0.2)', border: 'none', padding: '8px 16px', cursor: note.trim() ? 'pointer' : 'not-allowed', transition: 'all 0.2s' }}
+              >
                 Send
               </button>
               <button onClick={() => setShowNote(false)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.3)', cursor: 'pointer' }}>
@@ -135,7 +177,8 @@ function ItemCard({ item, onApprove, onFlag }: { item: WardrobeItem; onApprove: 
 export function ReviewPage() {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
-  const { projects, items, updateItemStatus } = useWardrobeStore();
+  const { projects, items, updateItemStatus, updateProjectStatus } = useWardrobeStore();
+  const { addNotification } = useNotificationStore();
 
   const project = projects.find(p => p.id === projectId);
   if (!project) return <div style={{ color: '#fff', padding: 80 }}>Project not found.</div>;
@@ -143,11 +186,31 @@ export function ReviewPage() {
   const designer = getUserById(project.designerId);
   const projectItems = items.filter(i => i.projectId === projectId);
 
-  const approveAll = () => {
-    projectItems.filter(i => i.status === 'pending').forEach(i => updateItemStatus(i.id, 'approved'));
+  const handleApprove = (itemId: string, itemName: string) => {
+    updateItemStatus(itemId, 'approved');
+    addNotification({ type: 'item-approved', message: `You approved "${itemName}"`, projectId: project.id });
   };
+
+  const handleFlag = (itemId: string, itemName: string, note: string) => {
+    updateItemStatus(itemId, 'flagged', note);
+    addNotification({ type: 'item-flagged', message: `You flagged "${itemName}"`, projectId: project.id });
+  };
+
+  const approveAll = () => {
+    projectItems.filter(i => i.status === 'pending').forEach(i => {
+      updateItemStatus(i.id, 'approved');
+    });
+    addNotification({ type: 'item-approved', message: `All items approved for ${project.name}`, projectId: project.id });
+  };
+
+  const handleFinalize = () => {
+    updateProjectStatus(project.id, 'finalized');
+    addNotification({ type: 'project-finalized', message: `${project.name} has been finalized`, projectId: project.id });
+  };
+
   const approved = projectItems.filter(i => i.status === 'approved').length;
   const pending = projectItems.filter(i => i.status === 'pending').length;
+  const allApproved = projectItems.length > 0 && approved === projectItems.length && project.status !== 'finalized';
 
   return (
     <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#fff' }}>
@@ -155,7 +218,7 @@ export function ReviewPage() {
 
       <div style={{ paddingTop: 80 }}>
         {/* Header */}
-        <div style={{ padding: '40px 80px', borderBottom: '1px solid #1a1a1a' }}>
+        <div style={{ padding: '40px clamp(20px, 5vw, 80px)', borderBottom: '1px solid #1a1a1a' }}>
           <button onClick={() => navigate('/client')} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 16 }}>
             ← My Wardrobes
           </button>
@@ -193,8 +256,26 @@ export function ReviewPage() {
           </div>
         </div>
 
+        {/* Finalize banner */}
+        {allApproved && (
+          <div style={{ margin: '0 clamp(20px, 5vw, 80px)', padding: '20px 24px', background: 'rgba(45,122,92,0.1)', border: '1px solid rgba(45,122,92,0.3)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 400, color: '#2d7a5c', marginBottom: 2 }}>All items approved</p>
+              <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em' }}>Finalize your wardrobe to complete the review.</p>
+            </div>
+            <button
+              onClick={handleFinalize}
+              style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.25em', textTransform: 'uppercase', background: '#2d7a5c', color: '#fff', border: 'none', padding: '12px 24px', cursor: 'pointer', transition: 'background 0.2s' }}
+              onMouseEnter={e => (e.currentTarget.style.background = '#236347')}
+              onMouseLeave={e => (e.currentTarget.style.background = '#2d7a5c')}
+            >
+              Finalize Wardrobe
+            </button>
+          </div>
+        )}
+
         {/* Items by zone */}
-        <div style={{ padding: '48px 80px' }}>
+        <div style={{ padding: '48px clamp(20px, 5vw, 80px)' }}>
           {ZONES.map(zone => {
             const zoneItems = projectItems.filter(i => i.zone === zone.id);
             if (zoneItems.length === 0) return null;
@@ -208,13 +289,13 @@ export function ReviewPage() {
                   <div style={{ flex: 1, height: 1, background: '#1a1a1a' }} />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 1, background: '#1a1a1a' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: 1, background: '#1a1a1a' }}>
                   {zoneItems.map(item => (
                     <ItemCard
                       key={item.id}
                       item={item}
-                      onApprove={() => updateItemStatus(item.id, 'approved')}
-                      onFlag={(note) => updateItemStatus(item.id, 'flagged', note)}
+                      onApprove={() => handleApprove(item.id, item.name)}
+                      onFlag={(note) => handleFlag(item.id, item.name, note)}
                     />
                   ))}
                 </div>

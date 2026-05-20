@@ -10,16 +10,21 @@ export function CategoriesPage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [panelOpen, setPanelOpen] = useState(false);
+  const [search, setSearch] = useState('');
 
   const gender = (searchParams.get('gender') || 'men') as Gender;
   const cats = CATS[gender] ?? CATS.men;
 
-  const groups = cats.reduce<Record<string, typeof cats>>((acc, cat) => {
+  const filtered = search.trim()
+    ? cats.filter(c => c.name.toLowerCase().includes(search.toLowerCase()) || c.tag.toLowerCase().includes(search.toLowerCase()))
+    : cats;
+
+  const groups = filtered.reduce<Record<string, typeof cats>>((acc, cat) => {
     (acc[cat.parent] ??= []).push(cat);
     return acc;
   }, {});
 
-  const handleGenderSelect = (g: Gender) => setSearchParams({ gender: g });
+  const handleGenderSelect = (g: Gender) => { setSearch(''); setSearchParams({ gender: g }); };
 
   return (
     <div style={{ minHeight: '100vh', background: '#080808', color: '#fff' }}>
@@ -27,8 +32,23 @@ export function CategoriesPage() {
 
       <div style={{ paddingTop: 56 }}>
 
+        {/* Search */}
+        <div style={{ padding: '32px 80px 0' }}>
+          <input
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search categories…"
+            style={{ width: '100%', maxWidth: 380, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#fff', padding: '10px 16px', fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.06em', outline: 'none', boxSizing: 'border-box' }}
+          />
+        </div>
+
         {/* Groups */}
-        <div style={{ padding: '48px 80px 80px' }}>
+        <div style={{ padding: '32px 80px 80px' }}>
+          {Object.keys(groups).length === 0 && (
+            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontSize: 16, color: 'rgba(255,255,255,0.2)', padding: '40px 0' }}>
+              No categories match "{search}".
+            </p>
+          )}
           {Object.entries(groups).map(([groupName, groupCats]) => (
             <div key={groupName} style={{ marginBottom: 52 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginBottom: 24 }}>

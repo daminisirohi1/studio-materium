@@ -4,6 +4,7 @@ import { ChevronDown, Plus, Trash2, Send } from 'lucide-react';
 import { useState } from 'react';
 import { AppNav } from '../../components/AppNav';
 import { useWardrobeStore } from '../../../store/wardrobeStore';
+import { useNotificationStore } from '../../../store/notificationStore';
 import { getUserById, getClientProfile, statusLabels, statusColors } from '../../../data/mockData';
 import type { WardrobeItem, WardrobeZone } from '../../../types';
 
@@ -30,8 +31,12 @@ const STATUS_DOT: Record<WardrobeItem['status'], string> = {
 export function ProjectView() {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
-  const { projects, items, setActiveProject, removeItem, updateItemZone, updateProjectStatus } = useWardrobeStore();
+  const { projects, items, setActiveProject, removeItem, updateItemZone, updateProjectStatus, updateDesignerNote } = useWardrobeStore();
+  const { addNotification } = useNotificationStore();
   const [expandedZone, setExpandedZone] = useState<WardrobeZone | null>('hanging-full');
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [noteItemId, setNoteItemId] = useState<string | null>(null);
+  const [noteText, setNoteText] = useState('');
 
   const project = projects.find(p => p.id === projectId);
   if (!project) return <div style={{ color: '#fff', padding: 80 }}>Project not found.</div>;
@@ -52,6 +57,13 @@ export function ProjectView() {
 
   const handleSubmitForReview = () => {
     updateProjectStatus(project.id, 'review');
+    addNotification({ type: 'review-submitted', message: `${project.name} has been submitted for client review`, projectId: project.id });
+  };
+
+  const saveDesignerNote = (itemId: string) => {
+    if (noteText.trim()) updateDesignerNote(itemId, noteText.trim());
+    setNoteItemId(null);
+    setNoteText('');
   };
 
   return (
@@ -75,9 +87,25 @@ export function ProjectView() {
             <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 300, letterSpacing: '0.08em', color: '#fff', marginBottom: 6 }}>
               {project.name}
             </h1>
-            <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.35)' }}>
+            <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.35)', marginBottom: 12 }}>
               {client?.name} · {projectItems.length} items configured
             </p>
+            {/* Zone fill progress */}
+            {(() => {
+              const filledZones = ZONES.filter(z => itemsByZone[z.id]?.length > 0).length;
+              return (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ display: 'flex', gap: 3 }}>
+                    {ZONES.map(z => (
+                      <div key={z.id} style={{ width: 24, height: 3, borderRadius: 1.5, background: itemsByZone[z.id]?.length > 0 ? '#2d7a5c' : '#222' }} />
+                    ))}
+                  </div>
+                  <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)' }}>
+                    {filledZones}/{ZONES.length} zones
+                  </span>
+                </div>
+              );
+            })()}
           </div>
           <div className="flex gap-3">
             {(project.status === 'configuring' || project.status === 'revisions') && (
@@ -87,10 +115,16 @@ export function ProjectView() {
                   onMouseLeave={e => { e.currentTarget.style.borderColor = '#333'; }}>
                   <Plus size={12} /> Add Items
                 </button>
-                <button onClick={handleSubmitForReview} className="flex items-center gap-2" style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', background: '#fff', color: '#000', border: 'none', padding: '10px 18px', cursor: 'pointer', transition: 'background 0.3s' }}
-                  onMouseEnter={e => (e.currentTarget.style.background = '#c9a96e')}
-                  onMouseLeave={e => (e.currentTarget.style.background = '#fff')}>
-                  <Send size={12} /> Submit for Review
+                <button
+                  onClick={handleSubmitForReview}
+                  disabled={projectItems.length === 0}
+                  className="flex items-center gap-2"
+                  title={projectItems.length === 0 ? 'Add items before submitting' : undefined}
+                  style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', background: projectItems.length === 0 ? '#222' : '#fff', color: projectItems.length === 0 ? 'rgba(255,255,255,0.2)' : '#000', border: 'none', padding: '10px 18px', cursor: projectItems.length === 0 ? 'not-allowed' : 'pointer', transition: 'background 0.3s' }}
+                  onMouseEnter={e => { if (projectItems.length > 0) e.currentTarget.style.background = '#c9a96e'; }}
+                  onMouseLeave={e => { if (projectItems.length > 0) e.currentTarget.style.background = '#fff'; }}
+                >
+                  <Send size={12} /> {project.status === 'revisions' ? 'Resubmit for Review' : 'Submit for Review'}
                 </button>
               </>
             )}
@@ -176,16 +210,61 @@ export function ProjectView() {
                                 <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.06em', color: 'rgba(255,255,255,0.4)', marginBottom: 2 }}>{item.variant} · {item.material}</div>
                                 <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.3)' }}>{item.brand} · Qty {item.quantity}</div>
                                 {item.clientNote && (
-                                  <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: '#c9a96e', marginTop: 4, fontStyle: 'italic' }}>"{item.clientNote}"</div>
+                                  <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: '#c9a96e', marginTop: 4, fontStyle: 'italic' }}>Client: "{item.clientNote}"</div>
+                                )}
+                                {item.designerNote && noteItemId !== item.id && (
+                                  <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.5)', marginTop: 4, fontStyle: 'italic' }}>Note: "{item.designerNote}"</div>
+                                )}
+                                {item.status === 'flagged' && noteItemId !== item.id && (
+                                  <button
+                                    onClick={() => { setNoteItemId(item.id); setNoteText(item.designerNote ?? ''); }}
+                                    style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c9a96e', background: 'none', border: '1px solid rgba(201,169,110,0.3)', padding: '3px 8px', cursor: 'pointer', marginTop: 6 }}
+                                  >
+                                    {item.designerNote ? 'Edit Note' : '+ Add Note'}
+                                  </button>
+                                )}
+                                {noteItemId === item.id && (
+                                  <div style={{ display: 'flex', gap: 6, marginTop: 6 }}>
+                                    <input
+                                      autoFocus
+                                      value={noteText}
+                                      onChange={e => setNoteText(e.target.value)}
+                                      placeholder="Response to client…"
+                                      onKeyDown={e => { if (e.key === 'Enter') saveDesignerNote(item.id); if (e.key === 'Escape') { setNoteItemId(null); setNoteText(''); } }}
+                                      style={{ flex: 1, background: '#111', border: '1px solid #2a2a2a', color: '#fff', padding: '5px 8px', fontFamily: "'Poppins', sans-serif", fontSize: 9, outline: 'none' }}
+                                    />
+                                    <button onClick={() => saveDesignerNote(item.id)} style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, background: '#c9a96e', color: '#000', border: 'none', padding: '4px 10px', cursor: 'pointer' }}>Save</button>
+                                    <button onClick={() => { setNoteItemId(null); setNoteText(''); }} style={{ background: 'none', border: '1px solid #333', color: 'rgba(255,255,255,0.3)', padding: '4px 6px', cursor: 'pointer', fontSize: 10 }}>✕</button>
+                                  </div>
                                 )}
                               </div>
                               <div className="flex items-center gap-3">
                                 <div style={{ width: 6, height: 6, borderRadius: '50%', background: STATUS_DOT[item.status] }} />
-                                <button onClick={() => removeItem(item.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.2)', transition: 'color 0.2s' }}
-                                  onMouseEnter={e => (e.currentTarget.style.color = '#ff6b6b')}
-                                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}>
-                                  <Trash2 size={13} />
-                                </button>
+                                {confirmDeleteId === item.id ? (
+                                  <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                                    <button
+                                      onClick={() => { removeItem(item.id); setConfirmDeleteId(null); }}
+                                      style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7.5, letterSpacing: '0.1em', background: '#c0392b', color: '#fff', border: 'none', padding: '3px 8px', cursor: 'pointer' }}
+                                    >
+                                      Remove
+                                    </button>
+                                    <button
+                                      onClick={() => setConfirmDeleteId(null)}
+                                      style={{ background: 'none', border: '1px solid #333', color: 'rgba(255,255,255,0.4)', padding: '3px 6px', cursor: 'pointer', fontFamily: "'Poppins', sans-serif", fontSize: 7.5 }}
+                                    >
+                                      ✕
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <button
+                                    onClick={() => setConfirmDeleteId(item.id)}
+                                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.2)', transition: 'color 0.2s' }}
+                                    onMouseEnter={e => (e.currentTarget.style.color = '#ff6b6b')}
+                                    onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
+                                  >
+                                    <Trash2 size={13} />
+                                  </button>
+                                )}
                               </div>
                             </div>
                           ))}

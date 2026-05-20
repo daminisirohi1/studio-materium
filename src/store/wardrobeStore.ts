@@ -1,8 +1,7 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import type { Project, WardrobeItem, WardrobeZone, ItemStatus } from '../types';
 import { mockProjects, mockWardrobeItems } from '../data/mockData';
-
-let nextId = 100;
 
 interface WardrobeState {
   activeProject: Project | null;
@@ -17,52 +16,71 @@ interface WardrobeState {
   updateItemStatus: (id: string, status: ItemStatus, note?: string) => void;
   updateItemZone: (id: string, zone: WardrobeZone) => void;
   updateItemQuantity: (id: string, quantity: number) => void;
+  updateDesignerNote: (id: string, note: string) => void;
 
   getItemsByProject: (projectId: string) => WardrobeItem[];
   updateProjectStatus: (projectId: string, status: Project['status']) => void;
 }
 
-export const useWardrobeStore = create<WardrobeState>((set, get) => ({
-  activeProject: null,
-  projects: [...mockProjects],
-  items: [...mockWardrobeItems],
+export const useWardrobeStore = create<WardrobeState>()(
+  persist(
+    (set, get) => ({
+      activeProject: null,
+      projects: [...mockProjects],
+      items: [...mockWardrobeItems],
 
-  setActiveProject: (project) => set({ activeProject: project }),
-  clearActiveProject: () => set({ activeProject: null }),
+      setActiveProject: (project) => set({ activeProject: project }),
+      clearActiveProject: () => set({ activeProject: null }),
 
-  addItem: (itemData) => {
-    const item: WardrobeItem = {
-      ...itemData,
-      id: `wi${++nextId}`,
-      status: 'pending',
-      addedAt: new Date().toISOString(),
-    };
-    set(s => ({ items: [...s.items, item] }));
-    return item;
-  },
+      addItem: (itemData) => {
+        const item: WardrobeItem = {
+          ...itemData,
+          id: `wi-${Date.now()}`,
+          status: 'pending',
+          addedAt: new Date().toISOString(),
+        };
+        set(s => ({ items: [...s.items, item] }));
+        return item;
+      },
 
-  removeItem: (id) => set(s => ({ items: s.items.filter(i => i.id !== id) })),
+      removeItem: (id) => set(s => ({ items: s.items.filter(i => i.id !== id) })),
 
-  updateItemStatus: (id, status, note) =>
-    set(s => ({
-      items: s.items.map(i =>
-        i.id === id
-          ? { ...i, status, ...(note ? { clientNote: note } : {}) }
-          : i
-      ),
-    })),
+      updateItemStatus: (id, status, note) =>
+        set(s => ({
+          items: s.items.map(i =>
+            i.id === id ? { ...i, status, ...(note ? { clientNote: note } : {}) } : i
+          ),
+        })),
 
-  updateItemZone: (id, zone) =>
-    set(s => ({ items: s.items.map(i => (i.id === id ? { ...i, zone } : i)) })),
+      updateItemZone: (id, zone) =>
+        set(s => ({ items: s.items.map(i => (i.id === id ? { ...i, zone } : i)) })),
 
-  updateItemQuantity: (id, quantity) =>
-    set(s => ({ items: s.items.map(i => (i.id === id ? { ...i, quantity } : i)) })),
+      updateItemQuantity: (id, quantity) =>
+        set(s => ({ items: s.items.map(i => (i.id === id ? { ...i, quantity } : i)) })),
 
-  getItemsByProject: (projectId) => get().items.filter(i => i.projectId === projectId),
+      updateDesignerNote: (id, note) =>
+        set(s => ({ items: s.items.map(i => (i.id === id ? { ...i, designerNote: note } : i)) })),
 
-  updateProjectStatus: (projectId, status) =>
-    set(s => ({
-      projects: s.projects.map(p => (p.id === projectId ? { ...p, status, updatedAt: new Date().toISOString() } : p)),
-      activeProject: s.activeProject?.id === projectId ? { ...s.activeProject, status } : s.activeProject,
-    })),
-}));
+      getItemsByProject: (projectId) => get().items.filter(i => i.projectId === projectId),
+
+      updateProjectStatus: (projectId, status) =>
+        set(s => ({
+          projects: s.projects.map(p =>
+            p.id === projectId ? { ...p, status, updatedAt: new Date().toISOString() } : p
+          ),
+          activeProject:
+            s.activeProject?.id === projectId
+              ? { ...s.activeProject, status }
+              : s.activeProject,
+        })),
+    }),
+    {
+      name: 'sm-wardrobe-v1',
+      partialize: (state) => ({
+        projects: state.projects,
+        items: state.items,
+        activeProject: state.activeProject,
+      }),
+    }
+  )
+);
