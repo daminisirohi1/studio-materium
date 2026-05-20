@@ -1,5 +1,7 @@
-// All images served from public/kc/ (symlink → ../../kc wardrobe)
-const K = (p: string) => `/kc/${p}`;
+// Local: images served from public/kc/ symlink
+// Production: set VITE_KC_BASE_URL to your Vercel Blob store base URL
+const BASE = (import.meta.env.VITE_KC_BASE_URL ?? '').replace(/\/$/, '');
+const K = (p: string) => `${BASE}/kc/${p}`;
 
 // ── Formalwear ───────────────────────────────────────────────────────────────
 export const FORMAL = {
