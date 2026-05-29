@@ -8,21 +8,21 @@ import type { StorageInfo, RetailInfo } from '../../types';
 
 const LBL: React.CSSProperties = {
   fontFamily: "'Poppins', sans-serif",
-  fontSize: 9,
+  fontSize: 11,
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
-  color: 'rgba(255,255,255,0.3)',
+  color: 'rgba(255,255,255,0.55)',
 };
 const VAL: React.CSSProperties = {
   fontFamily: "'Poppins', sans-serif",
-  fontSize: 10,
+  fontSize: 13,
   letterSpacing: '0.06em',
-  color: 'rgba(255,255,255,0.7)',
+  color: 'rgba(255,255,255,0.85)',
   lineHeight: 1.55,
 };
 const HD: React.CSSProperties = {
   fontFamily: "'Poppins', sans-serif",
-  fontSize: 8,
+  fontSize: 11,
   letterSpacing: '0.32em',
   textTransform: 'uppercase',
   color: '#c9a96e',
@@ -62,10 +62,10 @@ export function CareIconGrid({ care, compact = false }: { care: StorageInfo['car
           <div style={{ fontSize: compact ? 20 : 26 }}>{c.ico}</div>
           <p style={{
             fontFamily: "'Poppins', sans-serif",
-            fontSize: compact ? 6.5 : 7.5,
+            fontSize: compact ? 9 : 11,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.4)',
+            color: 'rgba(255,255,255,0.75)',
             lineHeight: 1.45,
             textAlign: 'center',
           }}>{c.lbl}</p>
@@ -232,7 +232,7 @@ export function BlueprintViz({ blueprint, compact = false }: { blueprint: NonNul
             }}>
               <span style={{
                 fontFamily: "'Poppins', sans-serif",
-                fontSize: compact ? 7.5 : 9,
+                fontSize: compact ? 10 : 12,
                 fontWeight: 600,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
@@ -241,15 +241,15 @@ export function BlueprintViz({ blueprint, compact = false }: { blueprint: NonNul
                 {zone.zone}
               </span>
               <div style={{ display: 'flex', gap: compact ? 8 : 14, flexWrap: 'wrap' }}>
-                <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: compact ? 7 : 8, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.08em' }}>
+                <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: compact ? 9 : 11, color: 'rgba(255,255,255,0.65)', letterSpacing: '0.08em' }}>
                   H {zone.height}
                 </span>
-                <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: compact ? 7 : 8, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.08em' }}>
+                <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: compact ? 9 : 11, color: 'rgba(255,255,255,0.65)', letterSpacing: '0.08em' }}>
                   D {zone.depth}
                 </span>
               </div>
               {!compact && zone.note && (
-                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7, color: 'rgba(255,255,255,0.22)', lineHeight: 1.5, letterSpacing: '0.04em' }}>
+                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, color: 'rgba(255,255,255,0.5)', lineHeight: 1.5, letterSpacing: '0.04em' }}>
                   {zone.note}
                 </p>
               )}
@@ -337,22 +337,22 @@ export function HangerViz({ hangers, compact = false }: { hangers: NonNullable<S
 
           {/* Specs */}
           <div style={{ flex: 1 }}>
-            <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: compact ? 9 : 10, color: 'rgba(255,255,255,0.7)', marginBottom: compact ? 8 : 10, letterSpacing: '0.06em' }}>
+            <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: compact ? 11 : 13, color: 'rgba(255,255,255,0.85)', marginBottom: compact ? 8 : 10, letterSpacing: '0.06em' }}>
               {h.type}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? 5 : 6 }}>
               {h.barDia && (
                 <div style={{ display: 'flex', gap: 10, alignItems: 'baseline' }}>
-                  <span style={{ ...LBL, fontSize: compact ? 7 : 8, minWidth: compact ? 46 : 56 }}>Bar Ø</span>
-                  <span style={{ ...VAL, fontSize: compact ? 8 : 9 }}>{h.barDia}</span>
+                  <span style={{ ...LBL, fontSize: compact ? 9 : 11, minWidth: compact ? 52 : 64 }}>Bar Ø</span>
+                  <span style={{ ...VAL, fontSize: compact ? 11 : 13 }}>{h.barDia}</span>
                 </div>
               )}
               <div style={{ display: 'flex', gap: 10, alignItems: 'baseline' }}>
-                <span style={{ ...LBL, fontSize: compact ? 7 : 8, minWidth: compact ? 46 : 56 }}>Spacing</span>
-                <span style={{ ...VAL, fontSize: compact ? 8 : 9 }}>{h.spacing}</span>
+                <span style={{ ...LBL, fontSize: compact ? 9 : 11, minWidth: compact ? 52 : 64 }}>Spacing</span>
+                <span style={{ ...VAL, fontSize: compact ? 11 : 13 }}>{h.spacing}</span>
               </div>
               {h.note && (
-                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: compact ? 7 : 8, color: 'rgba(255,255,255,0.25)', lineHeight: 1.5, marginTop: 2 }}>
+                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: compact ? 9 : 11, color: 'rgba(255,255,255,0.55)', lineHeight: 1.5, marginTop: 2 }}>
                   {h.note}
                 </p>
               )}
@@ -517,7 +517,7 @@ export function DimensionViz({ dimensions, compact = false }: { dimensions: NonN
           }}>
             <p style={{
               fontFamily: "'Poppins', sans-serif",
-              fontSize: compact ? 14 : 18,
+              fontSize: compact ? 16 : 20,
               fontWeight: 600,
               color: p.accent,
               letterSpacing: '0.04em',
@@ -525,10 +525,10 @@ export function DimensionViz({ dimensions, compact = false }: { dimensions: NonN
             }}>{d.value}</p>
             <p style={{
               fontFamily: "'Poppins', sans-serif",
-              fontSize: compact ? 7 : 8,
+              fontSize: compact ? 10 : 11,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.3)',
+              color: 'rgba(255,255,255,0.65)',
               lineHeight: 1.4,
             }}>{d.label}</p>
           </div>
@@ -551,9 +551,9 @@ function WashingTable({ washing, compact }: { washing: NonNullable<StorageInfo['
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? 8 : 10 }}>
       {rows.map(([k, v]) => (
-        <div key={k} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', paddingBottom: compact ? 8 : 10, borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-          <span style={{ ...LBL, fontSize: compact ? 7.5 : 9, minWidth: compact ? 64 : 80, paddingTop: 1, flexShrink: 0 }}>{k}</span>
-          <span style={{ ...VAL, fontSize: compact ? 8.5 : 10 }}>{v}</span>
+        <div key={k} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', paddingBottom: compact ? 8 : 10, borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+          <span style={{ ...LBL, fontSize: compact ? 10 : 12, minWidth: compact ? 76 : 96, paddingTop: 1, flexShrink: 0 }}>{k}</span>
+          <span style={{ ...VAL, fontSize: compact ? 11 : 13 }}>{v}</span>
         </div>
       ))}
     </div>
@@ -599,7 +599,7 @@ export function StoragePanel({ storage, compact = false }: { storage: StorageInf
             {storage.tips.map(t => (
               <div key={t} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                 <span style={{ color: '#c9a96e', fontSize: compact ? 8 : 10, flexShrink: 0, marginTop: 1 }}>—</span>
-                <p style={{ ...VAL, fontSize: compact ? 8.5 : 10 }}>{t}</p>
+                <p style={{ ...VAL, fontSize: compact ? 11 : 13 }}>{t}</p>
               </div>
             ))}
           </div>
@@ -637,7 +637,7 @@ export function RetailPanel({ retail, compact = false }: { retail: RetailInfo; c
             {retail.tips.map(t => (
               <div key={t} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                 <span style={{ color: '#c9a96e', fontSize: compact ? 8 : 10, flexShrink: 0, marginTop: 1 }}>—</span>
-                <p style={{ ...VAL, fontSize: compact ? 8.5 : 10 }}>{t}</p>
+                <p style={{ ...VAL, fontSize: compact ? 11 : 13 }}>{t}</p>
               </div>
             ))}
           </div>
@@ -650,18 +650,18 @@ export function RetailPanel({ retail, compact = false }: { retail: RetailInfo; c
 // ─── Accordion wrappers (TypePage) ────────────────────────────────────────────
 
 export function StorageAccordion({ storage }: { storage: StorageInfo }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   return (
     <div style={{ borderTop: '1px solid #1a1a1a' }}>
       <button
         onClick={() => setOpen(o => !o)}
-        style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 32px', background: 'none', border: 'none', cursor: 'pointer' }}
+        style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '18px 28px', background: open ? 'rgba(255,255,255,0.03)' : 'none', border: 'none', cursor: 'pointer', transition: 'background 0.2s' }}
       >
-        <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>
-          Storage & Care
+        <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 12, letterSpacing: '0.22em', textTransform: 'uppercase', color: open ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.6)', transition: 'color 0.2s' }}>
+          Storage &amp; Washing Instructions
         </span>
         <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
-          <ChevronDown size={13} color="rgba(255,255,255,0.3)" />
+          <ChevronDown size={15} color={open ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.4)'} />
         </motion.div>
       </button>
       <AnimatePresence>
@@ -676,18 +676,18 @@ export function StorageAccordion({ storage }: { storage: StorageInfo }) {
 }
 
 export function RetailAccordion({ retail }: { retail: RetailInfo }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   return (
     <div style={{ borderTop: '1px solid #1a1a1a' }}>
       <button
         onClick={() => setOpen(o => !o)}
-        style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 32px', background: 'none', border: 'none', cursor: 'pointer' }}
+        style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '18px 28px', background: open ? 'rgba(255,255,255,0.03)' : 'none', border: 'none', cursor: 'pointer', transition: 'background 0.2s' }}
       >
-        <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>
-          Retail Display
+        <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 12, letterSpacing: '0.22em', textTransform: 'uppercase', color: open ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.6)', transition: 'color 0.2s' }}>
+          Retail Display Showcase
         </span>
         <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
-          <ChevronDown size={13} color="rgba(255,255,255,0.3)" />
+          <ChevronDown size={15} color={open ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.4)'} />
         </motion.div>
       </button>
       <AnimatePresence>

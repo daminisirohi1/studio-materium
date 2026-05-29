@@ -67,15 +67,15 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
             {/* Header */}
             <div style={{ padding: '24px 28px', borderBottom: '1px solid #1a1a1a', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
               <div>
-                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 4 }}>
+                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 4 }}>
                   Wardrobe
                 </p>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 400, letterSpacing: '0.1em', color: '#fff' }}>
+                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 400, letterSpacing: '0.1em', color: '#fff' }}>
                   {activeProject?.name?.split('—')[0]?.trim() ?? 'No Project'}
                 </h3>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, color: 'rgba(255,255,255,0.35)' }}>{projectItems.length} items</span>
+                <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.65)' }}>{projectItems.length} items</span>
                 <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.4)' }}>
                   <X size={16} />
                 </button>
@@ -110,16 +110,16 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
                             referrerPolicy="no-referrer"
                           />
                           <div style={{ flex: 1, minWidth: 0 }}>
-                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#fff', marginBottom: 3, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 12, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#fff', marginBottom: 3, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                               {item.name}
                             </div>
-                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, color: 'rgba(255,255,255,0.4)', marginBottom: 2 }}>
+                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 11, color: 'rgba(255,255,255,0.7)', marginBottom: 2 }}>
                               {item.variant}
                             </div>
-                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, color: 'rgba(255,255,255,0.3)', marginBottom: 6 }}>
+                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 11, color: 'rgba(255,255,255,0.55)', marginBottom: 6 }}>
                               {item.brand} · Qty {item.quantity}
                             </div>
-                            <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#2d7a5c', background: 'rgba(45,122,92,0.1)', border: '1px solid rgba(45,122,92,0.2)', padding: '2px 6px' }}>
+                            <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#2d7a5c', background: 'rgba(45,122,92,0.1)', border: '1px solid rgba(45,122,92,0.2)', padding: '2px 7px' }}>
                               {ZONE_OPTS.find(z => z.id === item.zone)?.label ?? item.zone}
                             </span>
                           </div>
@@ -168,7 +168,7 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
                               <div style={{ borderTop: '1px solid #141414', padding: '14px 16px' }}>
 
                                 {/* Quantity */}
-                                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', marginBottom: 8 }}>Quantity</p>
+                                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', marginBottom: 8 }}>Quantity</p>
                                 <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #222', width: 'fit-content', marginBottom: 14 }}>
                                   <button
                                     onClick={() => updateItemQuantity(item.id, Math.max(1, item.quantity - 1))}
@@ -186,7 +186,7 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
                                 </div>
 
                                 {/* Zone selector */}
-                                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', marginBottom: 8 }}>Wardrobe Zone</p>
+                                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', marginBottom: 8 }}>Wardrobe Zone</p>
                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 3, marginBottom: 14 }}>
                                   {ZONE_OPTS.map(z => (
                                     <button
@@ -196,11 +196,11 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
                                         padding: '6px 4px',
                                         textAlign: 'center',
                                         fontFamily: "'Poppins', sans-serif",
-                                        fontSize: 6.5,
+                                        fontSize: 10,
                                         letterSpacing: '0.1em',
                                         textTransform: 'uppercase',
                                         background: item.zone === z.id ? 'rgba(45,122,92,0.12)' : 'none',
-                                        color: item.zone === z.id ? '#2d7a5c' : 'rgba(255,255,255,0.28)',
+                                        color: item.zone === z.id ? '#2d7a5c' : 'rgba(255,255,255,0.6)',
                                         border: `1px solid ${item.zone === z.id ? 'rgba(45,122,92,0.4)' : '#1e1e1e'}`,
                                         cursor: 'pointer',
                                         transition: 'all 0.15s',
@@ -238,7 +238,7 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
               <button
                 onClick={handleGoToProject}
                 className="flex items-center justify-center gap-2"
-                style={{ width: '100%', fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.25em', textTransform: 'uppercase', background: '#fff', color: '#000', border: 'none', padding: '13px', cursor: 'pointer', transition: 'background 0.3s' }}
+                style={{ width: '100%', fontFamily: "'Poppins', sans-serif", fontSize: 12, fontWeight: 600, letterSpacing: '0.25em', textTransform: 'uppercase', background: '#fff', color: '#000', border: 'none', padding: '14px', cursor: 'pointer', transition: 'background 0.3s' }}
                 onMouseEnter={e => (e.currentTarget.style.background = '#c9a96e')}
                 onMouseLeave={e => (e.currentTarget.style.background = '#fff')}
               >
