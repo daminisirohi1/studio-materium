@@ -92,7 +92,7 @@ export const mockWardrobeItems: WardrobeItem[] = [
   {
     id: 'wi1', projectId: 'p1', categoryId: 'formalwear', categoryName: 'Formalwear',
     sectionTitle: 'Black Tie', name: 'Tuxedo', variant: 'Single-Breasted',
-    material: 'Wool Barathea', color: '#111', accessories: ['Satin Bow Tie', 'White Pocket Square'],
+    material: 'Wool Barathea', color: '#F1F2EF', accessories: ['Satin Bow Tie', 'White Pocket Square'],
     brand: 'Tom Ford', quantity: 2, zone: 'hanging-full', status: 'approved',
     img: F('tuxedo', 300, 420, 1), addedAt: '2026-05-01T10:00:00Z',
   },
@@ -106,7 +106,7 @@ export const mockWardrobeItems: WardrobeItem[] = [
   {
     id: 'wi3', projectId: 'p1', categoryId: 'formalwear', categoryName: 'Formalwear',
     sectionTitle: 'Black Tie', name: 'Bow Tie', variant: 'Self-Tie Silk',
-    material: 'Silk Grosgrain', color: '#111', accessories: [],
+    material: 'Silk Grosgrain', color: '#F1F2EF', accessories: [],
     brand: 'Drake\'s', quantity: 2, zone: 'accessories', status: 'approved',
     img: F('bowtie', 300, 420, 3), addedAt: '2026-05-01T10:20:00Z',
   },
@@ -178,9 +178,9 @@ export const statusLabels: Record<Project['status'], string> = {
 };
 
 export const statusColors: Record<Project['status'], string> = {
-  briefing: '#555',
-  configuring: '#c9a96e',
-  review: '#2d7a5c',
-  revisions: '#c9a96e',
-  finalized: '#444',
+  briefing: '#70767A',
+  configuring: '#21493F',
+  review: '#21493F',
+  revisions: '#21493F',
+  finalized: '#70767A',
 };

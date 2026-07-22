@@ -89,7 +89,7 @@ export const TROUSERS = {
 
 // ── Casuals ───────────────────────────────────────────────────────────────────
 export const CASUALS = {
-  banner: K('casuals/casuals (1).jpg'),
+  banner: 'https://www.careofcarl.com/bilder/artiklar/zoom/25557311r_1.jpg?m=1693573631',
   items:  [1,2,3,4,5,6,7,8,9].map(n => K(`casuals/casuals (${n}).jpg`)),
 };
 

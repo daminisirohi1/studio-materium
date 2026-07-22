@@ -39,15 +39,22 @@ export function LandingPage() {
     navigate(`/wardrobe/categories?gender=${g}`);
   };
 
-  const watermarkSize = isMobile ? '14vw' : isTablet ? '10vw' : '8.5vw';
   const genderFontSize = isMobile ? 'clamp(32px, 8vw, 48px)' : isTablet ? 'clamp(36px, 5vw, 52px)' : 'clamp(38px, 4.5vw, 60px)';
 
   return (
-    <div className="relative min-h-screen overflow-hidden" style={{ background: '#080808' }}>
+    <div className="relative min-h-screen overflow-hidden editorial-page">
       <WardrobeNav gender={hoveredGender || 'men'} onGenderSelect={handleGenderClick} onOpenTray={() => setPanelOpen(true)} showGenderTabs={false} />
 
-      {/* Background layers */}
-      <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 55% 40%, #1c1c1c 0%, #080808 70%)', transition: 'opacity 0.8s', opacity: hoveredGender ? 0 : 1 }} />
+      <div
+        className="absolute inset-0"
+        style={{
+          background: 'linear-gradient(135deg, rgba(248,247,244,0.98) 0%, rgba(255,255,255,0.92) 48%, rgba(241,242,239,0.98) 100%)',
+          transition: 'opacity 0.8s',
+          opacity: hoveredGender ? 0 : 1,
+        }}
+      />
+
+      <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 14% 20%, rgba(33,73,63,0.08), transparent 22%)' }} />
 
       <AnimatePresence>
         {hoveredGender && HERO_IMAGES[hoveredGender].map((src, i) => (
@@ -60,12 +67,12 @@ export function LandingPage() {
               exit={{ opacity: 0 }}
               transition={{ duration: 1.2 }}
             >
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.55) 100%)', zIndex: 1 }} />
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(0,0,0,0.4) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.3) 100%)', zIndex: 1 }} />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(248,247,244,0.82) 0%, rgba(248,247,244,0.18) 42%, rgba(248,247,244,0.88) 100%)', zIndex: 1 }} />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(248,247,244,0.84) 0%, transparent 42%, transparent 64%, rgba(248,247,244,0.78) 100%)', zIndex: 1 }} />
               <motion.img
                 src={src}
                 alt={hoveredGender}
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 h-full w-full object-cover"
                 animate={{ scale: [1.07, 1] }}
                 transition={{ duration: 9, ease: 'easeInOut' }}
                 referrerPolicy="no-referrer"
@@ -75,48 +82,40 @@ export function LandingPage() {
         ))}
       </AnimatePresence>
 
-      {/* Main hero content */}
-      <div className="relative flex items-center justify-center min-h-screen" style={{ zIndex: 10, paddingTop: 56 }}>
+      <div className="relative flex min-h-screen items-center justify-center" style={{ zIndex: 10, paddingTop: 56 }}>
         <div style={{ width: '100%', paddingLeft: isMobile ? 24 : 0, paddingRight: isMobile ? 24 : 0 }}>
-          {/* Eyebrow */}
           {activeProject && user?.role === 'designer' && (
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#c9a96e', textAlign: 'center', marginBottom: 20 }}
+              style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#21493F', textAlign: 'center', marginBottom: 20 }}
             >
               Configuring — {activeProject.name.split('—')[0].trim()}
             </motion.p>
           )}
 
-          <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: isMobile ? 8 : 9, letterSpacing: '0.5em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', textAlign: 'center', marginBottom: 36 }}>
+          <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: isMobile ? 8 : 9, letterSpacing: '0.5em', textTransform: 'uppercase', color: '#70767A', textAlign: 'center', marginBottom: 36 }}>
             {activeProject && user?.role === 'designer' ? 'Select category' : 'New Collection — Spring / Summer 2026'}
           </p>
 
-          {/* Watermark */}
-          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: watermarkSize, fontWeight: 300, color: 'rgba(255,255,255,0.04)', letterSpacing: '0.2em', textTransform: 'uppercase', lineHeight: 1, marginBottom: isMobile ? 48 : 72, textAlign: 'center', userSelect: 'none', whiteSpace: isMobile ? 'normal' : 'nowrap', wordBreak: 'break-word' }}>
-            Studio Materium
-          </div>
-
-          {/* Gender links */}
           <div
             className="flex items-center justify-center"
             style={{
               flexDirection: isMobile ? 'column' : 'row',
-              gap: isMobile ? 32 : 60,
+              gap: isMobile ? 32 : 42,
             }}
           >
             {(['men', 'women', 'kids'] as Gender[]).map((g, i) => (
-              <span key={g} className="flex items-center" style={{ gap: isMobile ? 0 : 60, flexDirection: isMobile ? 'column' : 'row' }}>
+              <span key={g} className="flex items-center" style={{ gap: isMobile ? 0 : 42, flexDirection: isMobile ? 'column' : 'row' }}>
                 <motion.button
                   onMouseEnter={() => { if (!isMobile) { setHoveredGender(g); setSlideIdx(0); } }}
                   onMouseLeave={() => { if (!isMobile) setHoveredGender(null); }}
                   onClick={() => handleGenderClick(g)}
                   style={{
-                    fontFamily: "'Cormorant Garamond', serif",
+                    fontFamily: "'Inter', sans-serif",
                     fontSize: genderFontSize,
                     fontWeight: 400,
-                    color: '#fff',
+                    color: '#21493F',
                     textDecoration: 'none',
                     letterSpacing: '0.22em',
                     textTransform: 'uppercase',
@@ -124,28 +123,28 @@ export function LandingPage() {
                     background: 'none',
                     border: 'none',
                     position: 'relative',
-                    paddingBottom: 14,
+                    padding: '0 0 14px',
                     transition: 'letter-spacing 0.5s',
+                    borderRadius: 0,
                   }}
                   whileHover={{ letterSpacing: '0.3em' }}
                 >
                   {g.charAt(0).toUpperCase() + g.slice(1)}
                   <motion.span
-                    style={{ position: 'absolute', bottom: 0, left: '50%', translateX: '-50%', height: 1, background: 'rgba(255,255,255,0.55)' }}
+                    style={{ position: 'absolute', bottom: 0, left: '50%', translateX: '-50%', height: 1, background: '#21493F' }}
                     initial={{ width: 0 }}
                     whileHover={{ width: '100%' }}
                     transition={{ duration: 0.5 }}
                   />
                 </motion.button>
-                {!isMobile && i < 2 && <span style={{ color: 'rgba(255,255,255,0.15)', fontSize: 22, fontWeight: 100 }}>|</span>}
+                {!isMobile && i < 2 && <span style={{ color: '#A7B9AE', fontSize: 18, fontWeight: 300 }}>|</span>}
               </span>
             ))}
           </div>
         </div>
 
-        {/* Footer tagline */}
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: isMobile ? '24px 24px' : '36px 64px' }}>
-          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontSize: isMobile ? 13 : 15, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em' }}>
+          <span style={{ fontFamily: "'Inter', sans-serif", fontStyle: 'italic', fontSize: isMobile ? 13 : 15, color: '#70767A', letterSpacing: '0.1em' }}>
             Crafted with precision. Worn with intention.
           </span>
         </div>

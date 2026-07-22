@@ -35,17 +35,17 @@ export function DesignerDashboard() {
   const gridCols = isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(auto-fill, minmax(300px, 1fr))';
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#fff' }}>
+    <div className="editorial-page">
       <AppNav />
 
       <div style={{ paddingTop: 96, paddingLeft: 'clamp(16px, 5vw, 80px)', paddingRight: 'clamp(16px, 5vw, 80px)', paddingBottom: 80 }}>
 
         {/* Header */}
         <div style={{ marginBottom: 48 }}>
-          <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 10 }}>
+          <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#21493F', marginBottom: 10 }}>
             {user?.name}
           </p>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isMobile ? 28 : isTablet ? 32 : 36, fontWeight: 300, letterSpacing: '0.08em', color: '#fff' }}>
+          <h1 style={{ fontFamily: "'Inter', sans-serif", fontSize: isMobile ? 28 : isTablet ? 32 : 36, fontWeight: 300, letterSpacing: '0.08em', color: '#1B1B1B' }}>
             My Projects
           </h1>
         </div>
@@ -53,12 +53,12 @@ export function DesignerDashboard() {
         {/* Project cards */}
         {myProjects.length === 0 && (
           <div style={{ padding: '80px 0', textAlign: 'center' }}>
-            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontSize: 18, color: 'rgba(255,255,255,0.2)' }}>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontStyle: 'italic', fontSize: 18, color: '#70767A' }}>
               No projects assigned yet.
             </p>
           </div>
         )}
-        <div style={{ display: 'grid', gridTemplateColumns: gridCols, gap: 1, background: myProjects.length > 0 ? '#1e1e1e' : 'transparent' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: gridCols, gap: 16 }}>
           {myProjects.map((p, i) => {
             const client = getUserById(p.clientId);
             const projectItems = items.filter(i => i.projectId === p.id);
@@ -73,9 +73,10 @@ export function DesignerDashboard() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.07 }}
                 onClick={() => openProject(p.id)}
-                style={{ background: '#0a0a0a', padding: '32px', cursor: 'pointer', transition: 'background 0.2s', position: 'relative' }}
-                onMouseEnter={e => (e.currentTarget.style.background = '#0f0f0f')}
-                onMouseLeave={e => (e.currentTarget.style.background = '#0a0a0a')}
+                className="editorial-card"
+                style={{ background: 'rgba(255,255,255,0.82)', padding: '32px', cursor: 'pointer', transition: 'background 0.2s', position: 'relative' }}
+                onMouseEnter={e => (e.currentTarget.style.background = '#FFFFFF')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.82)')}
               >
                 {/* Status badge */}
                 <div style={{ marginBottom: 20 }}>
@@ -85,20 +86,20 @@ export function DesignerDashboard() {
                 </div>
 
                 {/* Project name */}
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 400, letterSpacing: '0.1em', color: '#fff', marginBottom: 6, lineHeight: 1.3 }}>
+                <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 20, fontWeight: 400, letterSpacing: '0.1em', color: '#1B1B1B', marginBottom: 6, lineHeight: 1.3 }}>
                   {p.name}
                 </h3>
-                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.4)', marginBottom: 16 }}>
+                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.08em', color: '#70767A', marginBottom: 16 }}>
                   {client?.name} · Updated {new Date(p.updatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                 </p>
 
                 {/* Approval progress bar */}
                 {projectItems.length > 0 && (
                   <div style={{ marginBottom: 20 }}>
-                    <div style={{ height: 2, background: '#1a1a1a', marginBottom: 6, position: 'relative', overflow: 'hidden' }}>
-                      <div style={{ position: 'absolute', left: 0, top: 0, height: '100%', width: `${Math.round((approved / projectItems.length) * 100)}%`, background: '#2d7a5c', transition: 'width 0.4s' }} />
+                    <div style={{ height: 2, background: '#D9DFDA', marginBottom: 6, position: 'relative', overflow: 'hidden' }}>
+                      <div style={{ position: 'absolute', left: 0, top: 0, height: '100%', width: `${Math.round((approved / projectItems.length) * 100)}%`, background: '#21493F', transition: 'width 0.4s' }} />
                     </div>
-                    <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7.5, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)' }}>
+                    <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7.5, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#70767A' }}>
                       {Math.round((approved / projectItems.length) * 100)}% approved
                     </span>
                   </div>
@@ -108,20 +109,20 @@ export function DesignerDashboard() {
                 {projectItems.length > 0 && (
                   <div style={{ display: 'flex', gap: 16, marginBottom: 24 }}>
                     <div>
-                      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, color: '#fff' }}>{projectItems.length}</div>
-                      <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Items</div>
+                      <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 22, color: '#1B1B1B' }}>{projectItems.length}</div>
+                      <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#70767A' }}>Items</div>
                     </div>
-                    <div style={{ width: 1, background: '#1e1e1e' }} />
+                    <div style={{ width: 1, background: '#D9DFDA' }} />
                     <div>
-                      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, color: '#2d7a5c' }}>{approved}</div>
-                      <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Approved</div>
+                      <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 22, color: '#21493F' }}>{approved}</div>
+                      <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#70767A' }}>Approved</div>
                     </div>
                     {flagged > 0 && (
                       <>
-                        <div style={{ width: 1, background: '#1e1e1e' }} />
+                        <div style={{ width: 1, background: '#D9DFDA' }} />
                         <div>
-                          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, color: '#c9a96e' }}>{flagged}</div>
-                          <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Flagged</div>
+                          <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 22, color: '#21493F' }}>{flagged}</div>
+                          <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#70767A' }}>Flagged</div>
                         </div>
                       </>
                     )}
@@ -132,10 +133,8 @@ export function DesignerDashboard() {
                 {isActive && (
                   <button
                     onClick={e => startBuilding(e, p.id)}
-                    className="flex items-center gap-2"
-                    style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.25em', textTransform: 'uppercase', background: '#fff', color: '#000', border: 'none', padding: '10px 18px', cursor: 'pointer', transition: 'background 0.3s' }}
-                    onMouseEnter={e => (e.currentTarget.style.background = '#c9a96e')}
-                    onMouseLeave={e => (e.currentTarget.style.background = '#fff')}
+                    className="editorial-action flex items-center gap-2"
+                    style={{ fontFamily: "'Poppins', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.25em', textTransform: 'uppercase', background: '#21493F', color: '#FFFFFF', border: '1px solid #21493F', padding: '10px 18px', cursor: 'pointer' }}
                   >
                     <Plus size={12} />
                     Add Items

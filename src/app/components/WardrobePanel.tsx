@@ -38,8 +38,8 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
   };
 
   const panelStyle: React.CSSProperties = isMobile
-    ? { position: 'fixed', bottom: 0, left: 0, right: 0, width: '100%', maxHeight: '85vh', background: '#0a0a0a', border: '1px solid #1a1a1a', zIndex: 101, display: 'flex', flexDirection: 'column', borderRadius: '16px 16px 0 0' }
-    : { position: 'fixed', top: 0, right: 0, bottom: 0, width: 400, background: '#0a0a0a', border: '1px solid #1a1a1a', zIndex: 101, display: 'flex', flexDirection: 'column' };
+    ? { position: 'fixed', bottom: 0, left: 0, right: 0, width: '100%', maxHeight: '85vh', background: '#F8F7F4', border: '1px solid #D9DFDA', zIndex: 101, display: 'flex', flexDirection: 'column', borderRadius: '16px 16px 0 0' }
+    : { position: 'fixed', top: 0, right: 0, bottom: 0, width: 400, background: '#F8F7F4', border: '1px solid #D9DFDA', zIndex: 101, display: 'flex', flexDirection: 'column' };
 
   const initial = isMobile ? { y: '100%' } : { x: '100%' };
   const animate = isMobile ? { y: 0 } : { x: 0 };
@@ -65,18 +65,18 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
             style={panelStyle}
           >
             {/* Header */}
-            <div style={{ padding: '24px 28px', borderBottom: '1px solid #1a1a1a', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
+            <div style={{ padding: '24px 28px', borderBottom: '1px solid #D9DFDA', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
               <div>
-                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#2d7a5c', marginBottom: 4 }}>
+                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#21493F', marginBottom: 4 }}>
                   Wardrobe
                 </p>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 400, letterSpacing: '0.1em', color: '#fff' }}>
+                <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: 20, fontWeight: 400, letterSpacing: '0.1em', color: '#1B1B1B' }}>
                   {activeProject?.name?.split('—')[0]?.trim() ?? 'No Project'}
                 </h3>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.65)' }}>{projectItems.length} items</span>
-                <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.4)' }}>
+                <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 12, color: '#70767A' }}>{projectItems.length} items</span>
+                <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#70767A' }}>
                   <X size={16} />
                 </button>
               </div>
@@ -86,18 +86,18 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
             <div style={{ flex: 1, overflowY: 'auto', padding: '12px 0' }}>
               {projectItems.length === 0 ? (
                 <div style={{ textAlign: 'center', padding: '48px 28px' }}>
-                  <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontSize: 15, color: 'rgba(255,255,255,0.2)' }}>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontStyle: 'italic', fontSize: 15, color: '#70767A' }}>
                     No items added yet.
                   </p>
                 </div>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: '#161616' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: '#D9DFDA' }}>
                   {projectItems.map(item => {
                     const isExpanded = expandedId === item.id;
                     const prod = getProductById(item.categoryId);
 
                     return (
-                      <div key={item.id} style={{ background: '#0a0a0a' }}>
+                      <div key={item.id} style={{ background: '#F8F7F4' }}>
                         {/* Item row */}
                         <div
                           style={{ padding: '12px 16px', display: 'flex', gap: 14, alignItems: 'center', cursor: 'pointer' }}
@@ -110,34 +110,34 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
                             referrerPolicy="no-referrer"
                           />
                           <div style={{ flex: 1, minWidth: 0 }}>
-                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 12, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#fff', marginBottom: 3, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 12, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#1B1B1B', marginBottom: 3, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                               {item.name}
                             </div>
-                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 11, color: 'rgba(255,255,255,0.7)', marginBottom: 2 }}>
+                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 11, color: '#3A3A3A', marginBottom: 2 }}>
                               {item.variant}
                             </div>
-                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 11, color: 'rgba(255,255,255,0.55)', marginBottom: 6 }}>
+                            <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 11, color: '#70767A', marginBottom: 6 }}>
                               {item.brand} · Qty {item.quantity}
                             </div>
-                            <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#2d7a5c', background: 'rgba(45,122,92,0.1)', border: '1px solid rgba(45,122,92,0.2)', padding: '2px 7px' }}>
+                            <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#21493F', background: 'rgba(45,122,92,0.1)', border: '1px solid rgba(45,122,92,0.2)', padding: '2px 7px' }}>
                               {ZONE_OPTS.find(z => z.id === item.zone)?.label ?? item.zone}
                             </span>
                           </div>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
                             <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                              <ChevronDown size={12} color="rgba(255,255,255,0.25)" />
+                              <ChevronDown size={12} color="#70767A" />
                             </motion.div>
                             {confirmDeleteId === item.id ? (
                               <div style={{ display: 'flex', gap: 4 }} onClick={e => e.stopPropagation()}>
                                 <button
                                   onClick={() => { removeItem(item.id); setConfirmDeleteId(null); if (expandedId === item.id) setExpandedId(null); }}
-                                  style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7, background: '#c0392b', color: '#fff', border: 'none', padding: '3px 7px', cursor: 'pointer', letterSpacing: '0.08em' }}
+                                  style={{ fontFamily: "'Poppins', sans-serif", fontSize: 7, background: '#9F3A2F', color: '#FFFFFF', border: 'none', padding: '3px 7px', cursor: 'pointer', letterSpacing: '0.08em' }}
                                 >
                                   Remove
                                 </button>
                                 <button
                                   onClick={() => setConfirmDeleteId(null)}
-                                  style={{ background: 'none', border: '1px solid #333', color: 'rgba(255,255,255,0.4)', padding: '3px 6px', cursor: 'pointer', fontFamily: "'Poppins', sans-serif", fontSize: 7 }}
+                                  style={{ background: 'none', border: '1px solid #A7B9AE', color: '#70767A', padding: '3px 6px', cursor: 'pointer', fontFamily: "'Poppins', sans-serif", fontSize: 7 }}
                                 >
                                   ✕
                                 </button>
@@ -145,9 +145,9 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
                             ) : (
                               <button
                                 onClick={e => { e.stopPropagation(); setConfirmDeleteId(item.id); }}
-                                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.2)', transition: 'color 0.2s' }}
+                                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#70767A', transition: 'color 0.2s' }}
                                 onMouseEnter={e => (e.currentTarget.style.color = '#ff6b6b')}
-                                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
+                                onMouseLeave={e => (e.currentTarget.style.color = '#70767A')}
                               >
                                 <Trash2 size={12} />
                               </button>
@@ -165,28 +165,28 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
                               transition={{ duration: 0.25 }}
                               style={{ overflow: 'hidden' }}
                             >
-                              <div style={{ borderTop: '1px solid #141414', padding: '14px 16px' }}>
+                              <div style={{ borderTop: '1px solid #D9DFDA', padding: '14px 16px' }}>
 
                                 {/* Quantity */}
-                                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', marginBottom: 8 }}>Quantity</p>
-                                <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #222', width: 'fit-content', marginBottom: 14 }}>
+                                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: '#70767A', marginBottom: 8 }}>Quantity</p>
+                                <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #D9DFDA', width: 'fit-content', marginBottom: 14 }}>
                                   <button
                                     onClick={() => updateItemQuantity(item.id, Math.max(1, item.quantity - 1))}
-                                    style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.6)', borderRight: '1px solid #222' }}
+                                    style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F1F2EF', border: 'none', cursor: 'pointer', color: '#70767A', borderRight: '1px solid #D9DFDA' }}
                                   >
                                     <Minus size={9} />
                                   </button>
-                                  <span style={{ width: 40, textAlign: 'center', fontFamily: "'Poppins', sans-serif", fontSize: 12, color: '#fff' }}>{item.quantity}</span>
+                                  <span style={{ width: 40, textAlign: 'center', fontFamily: "'Poppins', sans-serif", fontSize: 12, color: '#1B1B1B' }}>{item.quantity}</span>
                                   <button
                                     onClick={() => updateItemQuantity(item.id, item.quantity + 1)}
-                                    style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.6)', borderLeft: '1px solid #222' }}
+                                    style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F1F2EF', border: 'none', cursor: 'pointer', color: '#70767A', borderLeft: '1px solid #D9DFDA' }}
                                   >
                                     <Plus size={9} />
                                   </button>
                                 </div>
 
                                 {/* Zone selector */}
-                                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', marginBottom: 8 }}>Wardrobe Zone</p>
+                                <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: '#70767A', marginBottom: 8 }}>Wardrobe Zone</p>
                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 3, marginBottom: 14 }}>
                                   {ZONE_OPTS.map(z => (
                                     <button
@@ -200,8 +200,8 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
                                         letterSpacing: '0.1em',
                                         textTransform: 'uppercase',
                                         background: item.zone === z.id ? 'rgba(45,122,92,0.12)' : 'none',
-                                        color: item.zone === z.id ? '#2d7a5c' : 'rgba(255,255,255,0.6)',
-                                        border: `1px solid ${item.zone === z.id ? 'rgba(45,122,92,0.4)' : '#1e1e1e'}`,
+                                        color: item.zone === z.id ? '#21493F' : '#70767A',
+                                        border: `1px solid ${item.zone === z.id ? 'rgba(45,122,92,0.4)' : '#D9DFDA'}`,
                                         cursor: 'pointer',
                                         transition: 'all 0.15s',
                                       }}
@@ -213,10 +213,10 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
 
                                 {/* Storage & retail */}
                                 {(prod.storage || prod.retail) && (
-                                  <div style={{ borderTop: '1px solid #141414', paddingTop: 12 }}>
+                                  <div style={{ borderTop: '1px solid #D9DFDA', paddingTop: 12 }}>
                                     {prod.storage && <StoragePanel storage={prod.storage} compact />}
                                     {prod.retail && (
-                                      <div style={{ borderTop: prod.storage ? '1px solid #161616' : 'none', paddingTop: prod.storage ? 12 : 0 }}>
+                                      <div style={{ borderTop: prod.storage ? '1px solid #D9DFDA' : 'none', paddingTop: prod.storage ? 12 : 0 }}>
                                         <RetailPanel retail={prod.retail} compact />
                                       </div>
                                     )}
@@ -234,13 +234,13 @@ export function WardrobePanel({ open, onClose }: WardrobePanelProps) {
             </div>
 
             {/* Footer */}
-            <div style={{ padding: '20px 28px', borderTop: '1px solid #1a1a1a', flexShrink: 0 }}>
+            <div style={{ padding: '20px 28px', borderTop: '1px solid #D9DFDA', flexShrink: 0 }}>
               <button
                 onClick={handleGoToProject}
                 className="flex items-center justify-center gap-2"
-                style={{ width: '100%', fontFamily: "'Poppins', sans-serif", fontSize: 12, fontWeight: 600, letterSpacing: '0.25em', textTransform: 'uppercase', background: '#fff', color: '#000', border: 'none', padding: '14px', cursor: 'pointer', transition: 'background 0.3s' }}
-                onMouseEnter={e => (e.currentTarget.style.background = '#c9a96e')}
-                onMouseLeave={e => (e.currentTarget.style.background = '#fff')}
+                style={{ width: '100%', fontFamily: "'Poppins', sans-serif", fontSize: 12, fontWeight: 600, letterSpacing: '0.25em', textTransform: 'uppercase', background: '#21493F', color: '#FFFFFF', border: 'none', padding: '14px', cursor: 'pointer', transition: 'background 0.3s' }}
+                onMouseEnter={e => (e.currentTarget.style.background = '#21493F')}
+                onMouseLeave={e => (e.currentTarget.style.background = '#21493F')}
               >
                 View Project <ArrowRight size={12} />
               </button>
